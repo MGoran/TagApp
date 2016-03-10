@@ -1,0 +1,13 @@
+<ion-view view-title="Events">
+  <ion-content padding="true">
+	<ion-item collection-repeat="event in events.list" style="text-align:center">
+		{{event.name}}
+	</ion-item>
+	
+
+        <div style="text-align: center">
+          <button class="button button-block button-positive">Select events to export</button>
+        </div>
+
+  </ion-content>
+</ion-view>
