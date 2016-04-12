@@ -1,0 +1,6 @@
+<ion-view view-title="Recorder">
+	<ion-content padding="true">
+		<a ng-if="!recorderStarted"class="button button-block button-positive" ng-click="startRecorder()">Start Recorder</a>
+		<a ng-if="recorderStarted" class="button button-block button-assertive" ng-click="stopRecorder()">Stop Recorder</a>
+	</ion-content>
+</ion-view>
