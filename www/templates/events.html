@@ -1,17 +1,12 @@
-<ion-view view-title="Events">
+<ion-view view-title="Events" hide-back-button="true">
   <ion-content padding="true">
-	<ion-item style="text-align:center;background:grey;color:white;">
-		Event list
-	</ion-item>
-	<ion-item ng-repeat="event in eventList">
-		{{event.start | date:'medium'}} - {{event.event.name}} - {{event.team}}
-	</ion-item>
+	
 	<ion-item style="text-align:center;background:grey;color:white;margin-top:20px">
 		Add New Event
 	</ion-item>
 	<div style="width:100%">
 		<div style="width:50%;float:left;">
-			<ion-item style="text-align:center;background:grey;color:white;">
+			<ion-item class="team-name" ng-click="changeTeamName(1)">
 				{{team[1]}}
 			</ion-item>
 			<ion-item ng-repeat="event in events" ng-click="setEvent(event, 1)" style="text-align:center">
@@ -19,7 +14,7 @@
 			</ion-item>
 		</div>
 		<div style="width:50%;float:left;">
-			<ion-item style="text-align:center;background:grey;color:white;">
+			<ion-item class="team-name" ng-click="changeTeamName(2)">
 				{{team[2]}}
 			</ion-item>
 			<ion-item ng-repeat="event in events" ng-click="setEvent(event, 2)" style="text-align:center">
@@ -27,9 +22,14 @@
 			</ion-item>
 		</div>
 	</div>
-        <div style="text-align: center">
-          <button class="button button-block button-positive">Select events to export</button>
-        </div>
-
+    <ion-item style="text-align: center;background: none;border: none;">
+        <button class="button button-block gm-btn-green" ui-sref="app.exportevents">Select events to export</button>
+    </ion-item>
+	<ion-item style="text-align:center;background:grey;color:white;">
+		Last 5 Events
+	</ion-item>
+	<ion-item ng-repeat="event in eventList | orderBy: '-start' | limitTo:5">
+		{{event.start | date:'medium'}} - {{event.event.name}} - {{event.team}}
+	</ion-item>
   </ion-content>
 </ion-view>

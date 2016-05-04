@@ -50,6 +50,15 @@ angular.module('starter', ['ionic', 'starter.controllers'])
         }
       }
     })
+	.state('app.exportevents', {
+      url: '/exportevents',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/export-events.html',
+		  controller: 'EventsCtrl'
+        }
+      }
+    })
     .state('app.start', {
       url: '/start',
       views: {
@@ -83,6 +92,15 @@ angular.module('starter', ['ionic', 'starter.controllers'])
 			'menuContent':{
 				templateUrl:'templates/recordingEvents.html',
 				controller: 'RecordingEventsCtrl'
+			}
+		}
+	})
+	.state('app.settings', {
+		url: '/settings', 
+		views:{
+			'menuContent':{
+				templateUrl:'templates/settings.html',
+				controller: 'SettingsCtrl'
 			}
 		}
 	})

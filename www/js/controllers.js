@@ -39,10 +39,28 @@ angular.module('starter.controllers', [])
       $scope.closeLogin();
     }, 1000);
   };
+	if(localStorage.serverIP == undefined || localStorage.serverIP == null || localStorage.serverIP ==""){
+		var serverIP = "84.104.56.233:9090";
+		$rootScope.data = {};
+		localStorage.serverIP = serverIP;
+		$rootScope.data.serverIP = serverIP;
+	}else{
+		$rootScope.data = {};
+		$rootScope.data.serverIP = localStorage.serverIP;
+	}
 })
 
-.controller('PlaylistsCtrl', function($scope,$rootScope) {
-
+.controller('SettingsCtrl', function($scope,$rootScope, $ionicPopup) {
+	$scope.saveSettings = function(){
+		localStorage.serverIP = $rootScope.data.serverIP;
+		var alertPopup = $ionicPopup.alert({
+			title: 'Success',
+			template: "New Settings saved"
+		});						
+		alertPopup.then(function(res) {
+			console.log('Ok');
+		});
+	}
 })
 .controller('EventsCtrl', function($scope, $http, $ionicPopup, $rootScope){
 	$rootScope.team = [];
@@ -52,30 +70,30 @@ angular.module('starter.controllers', [])
 			var settings = {
 				"async": true,
 				"crossDomain": true,
-				"url": "http://84.104.56.233:9090/api/event?recording_id="+$rootScope.recording_id,
+				"url": "http://"+$rootScope.data.serverIP+"/api/event?recording_id="+$rootScope.recording_id,
 				"method": "GET",
 			}
 			$http(settings).then(function(response) {
 				console.log(response);
 				$rootScope.team[1] = response.data.team[0].name;
 				$rootScope.team[2] = response.data.team[1].name;
-				$scope.eventList = response.data.list;
+				$rootScope.eventList = response.data.list;
 				
-				for(i=0;i<$scope.eventList.length;i++){
-					$scope.eventList[i].event = $rootScope.events[$scope.eventList[i].event_type_id - 1];
-					$scope.eventList[i].team = $rootScope.team[$scope.eventList[i].team_id];
+				for(i=0;i<$rootScope.eventList.length;i++){
+					$rootScope.eventList[i].event = $rootScope.events[$rootScope.eventList[i].event_type_id - 1];
+					$rootScope.eventList[i].team = $rootScope.team[$rootScope.eventList[i].team_id];
 					
-					var dateStr = $scope.eventList[i].begin.split("-");
+					var dateStr = $rootScope.eventList[i].begin.split("-");
 					var date = new Date(dateStr[0],dateStr[1],dateStr[2],dateStr[3],dateStr[4],dateStr[5]);
-					$scope.eventList[i].start = date;
-					var dateStr = $scope.eventList[i].end.split("-");
+					$rootScope.eventList[i].start = date;
+					var dateStr = $rootScope.eventList[i].end.split("-");
 					var date = new Date(dateStr[0],dateStr[1],dateStr[2],dateStr[3],dateStr[4],dateStr[5]);
-					$scope.eventList[i].stop = date;
-					$scope.eventList[i].length = ($scope.eventList[i].stop - $scope.eventList[i].start) / 1000;
+					$rootScope.eventList[i].stop = date;
+					$rootScope.eventList[i].length = ($rootScope.eventList[i].stop - $rootScope.eventList[i].start) / 1000;
 					
 					
 				}
-				console.log($scope.eventList);
+				console.log($rootScope.eventList);
 			}, function(err) {
 				console.log(err);
 			});
@@ -83,7 +101,7 @@ angular.module('starter.controllers', [])
 			var settings = {
 			"async": true,
 			"crossDomain": true,
-			"url": "http://84.104.56.233:9090/api/recorder",
+			"url": "http://"+$rootScope.data.serverIP+"/api/recorder",
 			"method": "GET",
 		}
 		$http(settings).then(function(response) {
@@ -100,7 +118,7 @@ angular.module('starter.controllers', [])
 		var settings = {
 			"async": true,
 			"crossDomain": true,
-			"url": "http://84.104.56.233:9090/api/event_type",
+			"url": "http://"+$rootScope.data.serverIP+"/api/event_type",
 			"method": "GET",
 		}
 		$http(settings).then(function(response) {
@@ -114,17 +132,17 @@ angular.module('starter.controllers', [])
 		var settings = {
 		   "async": true,
 		   "crossDomain": true,
-		   "url": "http://84.104.56.233:9090/api/event",
+		   "url": "http://"+$rootScope.data.serverIP+"/api/event",
 		   "method": "POST",
 		   "data": { 'event_type_id':event.id, team_id: team_id}
 		}
 		$http(settings).then(function(response) {
 			console.log(response);
 			$scope.checkCurrentEvents();
-			var alertPopup = $ionicPopup.alert({
-				title: 'New event added!',
-				template: 'Event added succesfully'
-			});
+			// var alertPopup = $ionicPopup.alert({
+				// title: 'New event added!',
+				// template: 'Event added succesfully'
+			// });
 
 			//alertPopup.then(function(res) {
 			//	console.log('Ok');
@@ -141,6 +159,71 @@ angular.module('starter.controllers', [])
 			   });
 		});
 	}
+	$scope.data = {};
+	$scope.changeTeamName = function(team){
+		var myPopup = $ionicPopup.show({
+			template: '<input type="text" ng-model="data.teamname">',
+			title: 'Enter new name for Team'+team,
+			subTitle: 'Current Team name is: '+$rootScope.team[team],
+			scope: $scope,
+			buttons: [
+			  { text: 'Cancel' },
+			  {
+				text: '<b>Save</b>',
+				type: 'gm-btn-green',
+				onTap: function(e) {
+				  if (!$scope.data.teamname) {
+					//don't allow the user to close unless he enters wifi password
+					console.log("skip")
+					//e.preventDefault();
+				  } else {
+					var settings = {
+						  "async": true,
+						  "crossDomain": true,
+						  "url": "http://"+$rootScope.data.serverIP+"/api/team",
+						  "method": "PUT",
+						  "data": JSON.stringify({team_id: team, name: $scope.data.teamname}),
+					}
+					$http(settings).then(function(response) {
+						console.log(response);
+						$scope.checkCurrentEvents();
+					}, function(err) {
+						console.log(err);
+					});
+				  }
+				}
+			  }
+			]
+		  });
+	}
+	$scope.exportEvent = [];
+	$scope.exportSelectedEvents = function(){
+		var selections = [];
+		angular.forEach($scope.exportEvent, function(value, key) {
+			if(value == true) selections.push({event_id: key})
+		});
+		var settings = {
+				  "async": true,
+				  "crossDomain": true,
+				  "url": "http://"+$rootScope.data.serverIP+"/api/export",
+				  "method": "POST",
+				  "data": JSON.stringify({recording_id: $rootScope.recording_id, selections:selections}),
+			}
+			console.log(settings);
+			$http(settings).then(function(response) {
+				console.log(response);
+				var alertPopup = $ionicPopup.alert({
+					 title: 'Success',
+					 template: "Selected Events added for export"
+				   });
+					
+				   alertPopup.then(function(res) {
+					 console.log('Ok');
+				   });
+			}, function(err) {
+				console.log(err);
+			});
+		}
 })
 
 .controller('StartCtrl', function($scope,$rootScope, $stateParams) {
@@ -150,7 +233,7 @@ angular.module('starter.controllers', [])
 		var settings = {
 			"async": true,
 			"crossDomain": true,
-			"url": "http://84.104.56.233:9090/api/recorder",
+			"url": "http://"+$rootScope.data.serverIP+"/api/recorder",
 			"method": "GET",
 		}
 		$http(settings).then(function(response) {
@@ -165,12 +248,10 @@ angular.module('starter.controllers', [])
 		var settings = {
 			  "async": true,
 			  "crossDomain": true,
-			  "url": "http://84.104.56.233:9090/api/recorder",
+			  "url": "http://"+$rootScope.data.serverIP+"/api/recorder",
 			  "method": "PUT",
 			  "data": "{\"recording\":true}",
-			 // 'headers': {'Content-Type': 'text/plain'}
 		}
-		console.log(settings);
 		$http(settings).then(function(response) {
 			console.log(response);
 			if (response.data.error != "") txt = response.data.error;
@@ -192,7 +273,7 @@ angular.module('starter.controllers', [])
 		var settings = {
 			  "async": true,
 			  "crossDomain": true,
-			  "url": "http://84.104.56.233:9090/api/recorder",
+			  "url": "http://"+$rootScope.data.serverIP+"/api/recorder",
 			  "method": "PUT",
 			  "data": "{\"recording\":false}",
 			 // 'headers': {'Content-Type': 'text/plain'}
@@ -220,7 +301,7 @@ angular.module('starter.controllers', [])
 	var settings = {
 	   "async": true,
 	   "crossDomain": true,
-	   "url": "http://84.104.56.233:9090/api/recording",
+	   "url": "http://"+$rootScope.data.serverIP+"/api/recording",
 	   "method": "GET",
 	}
 	$http(settings).then(function(response) {
@@ -244,7 +325,7 @@ angular.module('starter.controllers', [])
 		var settings = {
 			"async": true,
 			"crossDomain": true,
-			"url": "http://84.104.56.233:9090/api/event_type",
+			"url": "http://"+$rootScope.data.serverIP+"/api/event_type",
 			"method": "GET",
 		}
 		$http(settings).then(function(response) {
@@ -261,7 +342,7 @@ angular.module('starter.controllers', [])
 	var settings = {
 	   "async": true,
 	   "crossDomain": true,
-	   "url": "http://84.104.56.233:9090/api/recording/"+$stateParams.recordingId,
+	   "url": "http://"+$rootScope.data.serverIP+"/api/recording/"+$stateParams.recordingId,
 	   "method": "GET",
 	}
 	$http(settings).then(function(response) {
@@ -278,7 +359,7 @@ angular.module('starter.controllers', [])
 		var settings = {
 		   "async": true,
 		   "crossDomain": true,
-		   "url": "http://84.104.56.233:9090/api/event?recording_id="+$stateParams.recordingId,
+		   "url": "http://"+$rootScope.data.serverIP+"/api/event?recording_id="+$stateParams.recordingId,
 		   "method": "GET",
 		}
 		$http(settings).then(function(response) {
