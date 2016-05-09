@@ -103,14 +103,14 @@ angular.module('starter.controllers', [])
 			"crossDomain": true,
 			"url": "http://"+$rootScope.data.serverIP+"/api/recorder",
 			"method": "GET",
-		}
-		$http(settings).then(function(response) {
-			console.log(response);
-			$rootScope.recording_id = response.data.recording_id;
-			$scope.checkCurrentEvents();
-		}, function(err) {
-			console.log(err);
-		});
+			}
+			$http(settings).then(function(response) {
+				console.log(response);
+				$rootScope.recording_id = response.data.recording_id;
+				$scope.checkCurrentEvents();
+			}, function(err) {
+				console.log(err);
+			});
 		}
 	}
 	$scope.checkCurrentEvents();
