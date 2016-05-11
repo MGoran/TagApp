@@ -226,7 +226,8 @@ angular.module('starter.controllers', [])
 		}
 })
 
-.controller('StartCtrl', function($scope,$rootScope, $stateParams) {
+.controller('StartCtrl', function($scope,$rootScope, $stateParams, $ionicSideMenuDelegate) {
+	$ionicSideMenuDelegate.canDragContent(false)
 })
 .controller('RecorderCtrl', function($scope, $stateParams, $http,$ionicPopup, $rootScope){
 	$scope.checkStatus = function(){
@@ -382,6 +383,47 @@ angular.module('starter.controllers', [])
 		});
 	} 
 
+})
+.controller('StreamCtrl',function ($sce,$ionicSideMenuDelegate) {
+	$ionicSideMenuDelegate.canDragContent(false)
+	var controller = this;
+    controller.API = null;
+    controller.onPlayerReady = function(API) {
+        controller.API = API;
+		console.log("touchscreen is", VirtualJoystick.touchScreenAvailable() ? "available" : "not available");
+		var joystick	= new VirtualJoystick({
+			container	: document.getElementById('video_container'),
+			mouseSupport	: true,
+		});
+		joystick.addEventListener('touchStart', function(){
+			console.log('down')
+		})
+		joystick.addEventListener('touchEnd', function(){
+			console.log('up')
+		})
+    };
+	
+	this.config = {
+		sources: [
+			{src: $sce.trustAsResourceUrl("http://static.videogular.com/assets/videos/videogular.mp4"), type: "video/mp4"},
+			{src: $sce.trustAsResourceUrl("http://static.videogular.com/assets/videos/videogular.webm"), type: "video/webm"},
+			{src: $sce.trustAsResourceUrl("http://static.videogular.com/assets/videos/videogular.ogg"), type: "video/ogg"}
+		],
+		tracks: [
+			{
+				src: "http://www.videogular.com/assets/subs/pale-blue-dot.vtt",
+				kind: "subtitles",
+				srclang: "en",
+				label: "English",
+				default: ""
+			}
+		],
+		theme: "lib/videogular-themes-default/videogular.css",
+		plugins: {
+			poster: "img/header-logo.png"
+		}
+	};
+	
 })
 .filter('secondsToDateTime', [function() {
     return function(seconds) {
