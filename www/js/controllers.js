@@ -50,7 +50,8 @@ angular.module('starter.controllers', [])
 	}
 })
 
-.controller('SettingsCtrl', function($scope,$rootScope, $ionicPopup) {
+.controller('SettingsCtrl', function($scope,$rootScope, $ionicPopup, $ionicSideMenuDelegate) {
+	$ionicSideMenuDelegate.canDragContent(true);
 	$scope.saveSettings = function(){
 		localStorage.serverIP = $rootScope.data.serverIP;
 		var alertPopup = $ionicPopup.alert({
@@ -62,7 +63,9 @@ angular.module('starter.controllers', [])
 		});
 	}
 })
-.controller('EventsCtrl', function($scope, $http, $ionicPopup, $rootScope){
+.controller('EventsCtrl', function($scope, $http, $ionicPopup, $rootScope, $ionicSideMenuDelegate,$ionicListDelegate){
+	$ionicSideMenuDelegate.canDragContent(true);
+	$ionicListDelegate.showDelete(true);
 	$rootScope.team = [];
 	$scope.checkCurrentEvents = function(){
 		if($rootScope.recording_id != undefined){
@@ -139,6 +142,43 @@ angular.module('starter.controllers', [])
 		$http(settings).then(function(response) {
 			console.log(response);
 			$scope.checkCurrentEvents();
+			var event_id = response.data.id;
+			var recording_id = response.data.recording_id;
+			var confirmPopup = $ionicPopup.confirm({
+				title: 'Event Added',
+				template: 'Export this event?',
+				cancelText: 'No',
+				okText: 'Yes'
+			});
+
+			confirmPopup.then(function(res) {
+				if(res) {
+					console.log('Export');
+					var settings = {
+					  "async": true,
+					  "crossDomain": true,
+					  "url": "http://"+$rootScope.data.serverIP+"/api/export",
+					  "method": "POST",
+					  "data": JSON.stringify({recording_id: recording_id, selections:{event_id: event_id}}),
+					}
+					console.log(settings);
+					$http(settings).then(function(response) {
+						console.log(response);
+						// var alertPopup = $ionicPopup.alert({
+							 // title: 'Success',
+							 // template: "Event "
+						   // });
+							
+						   // alertPopup.then(function(res) {
+							 // console.log('Ok');
+						   // });
+					}, function(err) {
+						console.log(err);
+					});
+				} else {
+					console.log('Dont Export');
+				}
+			});
 			// var alertPopup = $ionicPopup.alert({
 				// title: 'New event added!',
 				// template: 'Event added succesfully'
@@ -224,12 +264,30 @@ angular.module('starter.controllers', [])
 				console.log(err);
 			});
 		}
+	$scope.deleteEvent = function(event){
+		console.log(event);
+		var settings = {
+			"async": true,
+			"crossDomain": true,
+			"url": "http://"+$rootScope.data.serverIP+"/api/event",
+			"method": "DELETE",
+			"data": JSON.stringify({event_id:event.id}),
+		}
+		console.log(settings);
+		$http(settings).then(function(response) {
+			console.log(response);
+			$scope.checkCurrentEvents();
+		}, function(err) {
+			console.log(err);
+		});
+	}
 })
 
 .controller('StartCtrl', function($scope,$rootScope, $stateParams, $ionicSideMenuDelegate) {
-	$ionicSideMenuDelegate.canDragContent(false)
+	$ionicSideMenuDelegate.canDragContent(true);
 })
-.controller('RecorderCtrl', function($scope, $stateParams, $http,$ionicPopup, $rootScope){
+.controller('RecorderCtrl', function($scope, $stateParams, $http,$ionicPopup, $rootScope,$ionicSideMenuDelegate){
+	$ionicSideMenuDelegate.canDragContent(true);
 	$scope.checkStatus = function(){
 		var settings = {
 			"async": true,
@@ -298,7 +356,8 @@ angular.module('starter.controllers', [])
 	$scope.checkStatus();
 })
 
-.controller('RecordingsCtrl', function($scope, $http, $ionicPopup, $rootScope, $filter){
+.controller('RecordingsCtrl', function($scope, $http, $ionicPopup, $rootScope, $filter,	$ionicSideMenuDelegate){
+	$ionicSideMenuDelegate.canDragContent(true);
 	var settings = {
 	   "async": true,
 	   "crossDomain": true,
@@ -321,7 +380,8 @@ angular.module('starter.controllers', [])
 			console.log(err);
 	});
 })
-.controller('RecordingEventsCtrl', function($scope, $http, $ionicPopup, $stateParams, $rootScope){
+.controller('RecordingEventsCtrl', function($scope, $http, $ionicPopup, $stateParams, $rootScope,$ionicSideMenuDelegate){
+	$ionicSideMenuDelegate.canDragContent(true);
 	if($rootScope.events === undefined){
 		var settings = {
 			"async": true,

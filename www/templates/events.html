@@ -28,8 +28,11 @@
 	<ion-item style="text-align:center;background:grey;color:white;">
 		Last 5 Events
 	</ion-item>
-	<ion-item ng-repeat="event in eventList | orderBy: '-start' | limitTo:5">
-		{{event.start | date:'medium'}} - {{event.event.name}} - {{event.team}}
-	</ion-item>
+	<ion-list  show-delete="1">
+		<ion-item ng-repeat="event in eventList | orderBy: '-start' | limitTo:5">
+			<ion-delete-button class="ion-minus-circled" ng-click="deleteEvent(event)"></ion-delete-button>
+			{{event.start | date:'medium'}} - {{event.event.name}} - {{event.team}}
+		</ion-item>
+	</ion-list>
   </ion-content>
 </ion-view>
