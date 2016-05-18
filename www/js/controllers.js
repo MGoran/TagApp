@@ -465,9 +465,10 @@ angular.module('starter.controllers', [])
 	
 	this.config = {
 		sources: [
-			{src: $sce.trustAsResourceUrl("http://static.videogular.com/assets/videos/videogular.mp4"), type: "video/mp4"},
-			{src: $sce.trustAsResourceUrl("http://static.videogular.com/assets/videos/videogular.webm"), type: "video/webm"},
-			{src: $sce.trustAsResourceUrl("http://static.videogular.com/assets/videos/videogular.ogg"), type: "video/ogg"}
+			{src: $sce.trustAsResourceUrl("http://techslides.com/demos/sample-videos/small.mp4"), type: "video/mp4"},
+			{src: $sce.trustAsResourceUrl("http://techslides.com/demos/sample-videos/small.webm"), type: "video/webm"},
+			{src: $sce.trustAsResourceUrl("http://techslides.com/demos/sample-videos/small.mp4"), type: "video/3gp"},
+			{src: $sce.trustAsResourceUrl("http://techslides.com/demos/sample-videos/small.ogv"), type: "video/ogg"}
 		],
 		tracks: [
 			{
