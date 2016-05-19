@@ -1,7 +1,7 @@
 <ion-view view-title="Stream" >
 	<ion-content padding="true">
 	<div ng-controller="StreamCtrl as controller"  class="videogular-container">
-		<videogular vg-theme="controller.config.theme" vg-player-ready="controller.onPlayerReady($API)" id="video_container" vg-native-fullscreen="false">
+		<videogular vg-theme="controller.config.theme" vg-player-ready="controller.onPlayerReady($API)" id="video_container" vg-native-fullscreen="false" vg-plays-inline="'true'">
 			<vg-media vg-src="controller.config.sources"
 					vg-tracks="controller.config.tracks">
 			</vg-media>
