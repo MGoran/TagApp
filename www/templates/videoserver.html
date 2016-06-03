@@ -1,0 +1,74 @@
+<ion-view view-title="Stream" hide-nav-bar="true">
+	<ion-content padding="false" style="height:100%" class="video-page">
+	<div ng-controller="VideoServerCtrl as controller"  class="videogular-container" >
+
+		<!-- <videogular vg-theme="controller.config.theme" vg-player-ready="controller.onPlayerReady($API)" id="video_container" vg-native-fullscreen="false" vg-plays-inline="'true'"> -->
+		<videogular vg-theme="controller.config.theme" id="video_container" vg-native-fullscreen="false" vg-plays-inline="'true'">
+			<vg-media vg-src="controller.config.sources" vg-hls>
+			</vg-media>
+			<vg-controls style="display:none">
+				<vg-play-pause-button></vg-play-pause-button>
+				<vg-time-display>{{ currentTime | date:'mm:ss' }}</vg-time-display>
+				<vg-scrub-bar>
+					<vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+				</vg-scrub-bar>
+				<vg-time-display>{{ timeLeft | date:'mm:ss' }}</vg-time-display>
+				<vg-volume>
+					<vg-mute-button></vg-mute-button>
+					<vg-volume-bar></vg-volume-bar>
+				</vg-volume>
+				<vg-fullscreen-button></vg-fullscreen-button>
+			</vg-controls>
+ 
+			<vg-overlay-play></vg-overlay-play>
+			<!-- <vg-poster vg-url='controller.config.plugins.poster'></vg-poster> -->
+			<!-- <div class="my-logo-layer" ng-show="controller.API.currentState != 'play'"> -->
+			<div class="my-logo-layer">
+				<img src="img/header-logo.png">
+			</div>
+		<!-- 	<div class="video_controlls" style="opacity:{{data.vc_transparency/100}}"> -->
+				<div class="panel panel-left" style="opacity:{{data.vc_transparency/100}}">
+					<button class="button icon-right ion-arrow-left-c btn-full-width gm-btn-white">Left</button>
+					<button class="button icon-right ion-arrow-up-c btn-full-width gm-btn-white">Up</button>
+					<button class="button btn-full-width gm-btn-white">Go Left</button>
+					<button class="button icon-right ion-minus-round btn-full-width gm-btn-white">Zoom</button>
+					<div style="bottom:0;position: absolute; width:100%">
+						<ion-item class="team-name" ng-click="changeTeamName(1)">
+							{{team[1]}}
+						</ion-item>
+						<ion-item ng-repeat="event in events" ng-click="setEvent(event, 1)" style="text-align:center">
+							{{event.name}}
+						</ion-item>
+					</div>
+				</div>
+				<div class="panel panel-top" style="opacity:{{data.vc_transparency/100}}">
+					<div class="button-bar">
+					  <a class="button gm-btn-white" style="padding: 0;height:auto">L</a>
+					  <a class="button gm-btn-white" style="height:auto">Center</a>
+					  <a class="button gm-btn-white" style="padding: 0;height:auto">R</a>
+					</div>
+				</div>
+				<div class="panel panel-bottom" style="opacity:{{data.vc_transparency/100}}">
+					<a class="button button-positive btn-full-width button-icon icon ion-chevron-up" style="height: auto;" on-swipe-up="onSwipeUp()" ng-click="onSwipeUp()"></a>
+				</div>
+				<div class="panel panel-right" style="opacity:{{data.vc_transparency/100}}">
+					<a ng-if="!recorderStarted" class="button button-positive btn-full-width button-icon icon ion-record" style="height: auto;" ng-click="startRecorder()"></a>
+					<a ng-if="recorderStarted" class="button button-assertive btn-full-width button-icon icon ion-record" style="height: auto;color:{{blinkingColor}}; border-color:white" ng-click="stopRecorder()"></a>
+					<button class="button icon-left ion-arrow-right-c btn-full-width gm-btn-white">Right</button>
+					<button class="button icon-left ion-arrow-down-c btn-full-width gm-btn-white">Down</button>
+					<button class="button btn-full-width gm-btn-white">Go Right</button>
+					<button class="button icon-left ion-plus-round btn-full-width gm-btn-white">Zoom</button>
+					<div style="bottom:0;position: absolute; width:100%">
+						<ion-item class="team-name" ng-click="changeTeamName(2)">
+							{{team[2]}}
+						</ion-item>
+						<ion-item ng-repeat="event in events" ng-click="setEvent(event, 2)" style="text-align:center">
+							{{event.name}}
+						</ion-item>	
+					</div>
+				</div>
+			<!-- </div> -->
+		</videogular>
+	</div>
+	</ion-content>
+</ion-view>

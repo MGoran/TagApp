@@ -1,0 +1,22 @@
+<ion-view view-title="RTSP">
+  <ion-content padding="true">
+	<div style="width:100%">
+		<script>
+		VideoPlayer.play(
+    "rtsp://83.162.175.252:554",
+    {
+        volume: 0.5,
+        scalingMode: VideoPlayer.SCALING_MODE.SCALE_TO_FIT_WITH_CROPPING
+    },
+    function () {
+        console.log("video completed");
+    },
+    function (err) {
+        console.log(err);
+    }
+);
+		</script>
+		
+	</div>
+  </ion-content>
+</ion-view>

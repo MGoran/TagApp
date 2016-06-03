@@ -112,14 +112,38 @@ angular.module('starter', [
 			}
 		}
 	})
-	.state('app.stream', {
-		url: '/stream', 
+	.state('app.videoserver', {
+		url: '/videoserver', 
 		views:{
 			'menuContent':{
-				templateUrl:'templates/stream.html'
+				templateUrl:'templates/videoserver.html'
+			}
+		}
+	})
+	.state('app.streamcontrol', {
+		url: '/streamcontrol', 
+		views:{
+			'menuContent':{
+				templateUrl:'templates/streamcontrol.html'
+			}
+		}
+	})
+	.state('app.mjpeg', {
+		url: '/mjpeg', 
+		views:{
+			'menuContent':{
+				templateUrl:'templates/mjpegtest.html'
+			}
+		}
+	})
+	.state('app.rtsp', {
+		url: '/rtsp', 
+		views:{
+			'menuContent':{
+				templateUrl:'templates/rtsp.html'
 			}
 		}
 	})
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/start');
-});
+})
