@@ -71,21 +71,21 @@
 	margin: auto;
 	overflow: hidden;
 }
- 
+
 @media (min-width: 1200px) {
 	.videogular-container {
 		width: 1170px;
 		height: 658.125px;
 	}
 }
- 
+
 @media (min-width: 992px) and (max-width: 1199px) {
 	.videogular-container {
 		width: 940px;
 		height: 528.75px;
 	}
 }
- 
+
 @media (min-width: 768px) and (max-width: 991px) {
 	.videogular-container {
 		width: 728px;
@@ -164,6 +164,15 @@ div.panel-bottom {
     width: 40%;
 	background-color:rgba(25,25,25,0.5);
 }
+div.panel-modal{
+	width:70%;
+	left:15%;
+	position:absolute;
+	height:80%;
+	top:10%;
+	background:white;
+	z-index:999999999999999999;
+}
 .video-page > div{
 	height:100%;
 }
@@ -198,5 +207,45 @@ videogular .video_controlls{
 	position:absolute;
 	width:100%;
 	height:100%;
-	
+
+}
+@-webkit-keyframes slideUp {
+  0% {
+    top: -100%;
+  }
+  100% {
+    top: 0;
+  }
+}
+@-webkit-keyframes slideUpSmooth {
+  0% {
+    -webkit-transform: translate3d(0,100%,0);
+  }
+  100% {
+    -webkit-transform: translate3d(0,0,0);
+  }
+}
+.slide-up{
+   -webkit-animation: slideUpSmooth ease-in 1;
+  animation: slideUpSmooth ease-in 1;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-duration: 750ms;
+  animation-duration: 750ms;
+}
+@-webkit-keyframes slideDownSmooth {
+  0% {
+    -webkit-transform: translate3d(0,0,0);
+  }
+  100% {
+    -webkit-transform: translate3d(0,100%,0);
+  }
+}
+.slide-down{
+   -webkit-animation: slideDownSmooth ease-in 1;
+  animation: slideDownSmooth ease-in 1;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-duration: 750ms;
+  animation-duration: 750ms;
 }
