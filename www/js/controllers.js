@@ -496,6 +496,21 @@ angular.module('starter.controllers', [])
   })
   .controller('VideoServerCtrl', function($rootScope, $scope, $sce, $ionicSideMenuDelegate, $location, $ionicViewSwitcher, $state, $timeout, $http, $ionicPopup, $interval) {
     //$ionicSideMenuDelegate.canDragContent(false);
+    flowplayer("#hlsjslive", {
+      splash: true,
+      embed: false,
+      ratio: 9 / 16,
+
+      clip: {
+        live: true,
+        sources: [{
+          type: "application/x-mpegurl",
+          //http://84.104.56.233:8080/video/live.m3u8
+          src: "http://84.104.56.233:8080/video/live.m3u8"
+        }]
+      }
+
+    });
     $scope.showEventListModal = false;
     $scope.showEventList = function() {
       $scope.showEventListModal = true;
@@ -512,42 +527,42 @@ angular.module('starter.controllers', [])
     }, 1000);
     var controller = this;
     controller.API = null;
-    controller.onPlayerReady = function(API) {
-      controller.API = API;
-      console.log("touchscreen is", VirtualJoystick.touchScreenAvailable() ? "available" : "not available");
-      var joystick = new VirtualJoystick({
-        container: document.getElementById('video_container'),
-        mouseSupport: true,
-      });
-      joystick.addEventListener('touchStart', function() {
-        console.log('down')
-      })
-      joystick.addEventListener('touchEnd', function() {
-        console.log('up')
-      })
-    };
-
-    this.config = {
-      sources: [{
-          src: $sce.trustAsResourceUrl("http://84.104.56.233:8080/video/live.m3u8"),
-          type: "application/x-mpegURL"
-        }
-        // {src: $sce.trustAsResourceUrl("http://techslides.com/demos/sample-videos/small.webm"), type: "video/webm"},
-        // {src: $sce.trustAsResourceUrl("http://techslides.com/demos/sample-videos/small.mp4"), type: "video/3gp"},
-        // {src: $sce.trustAsResourceUrl("http://techslides.com/demos/sample-videos/small.ogv"), type: "video/ogg"}
-      ],
-      tracks: [{
-        src: "http://www.videogular.com/assets/subs/pale-blue-dot.vtt",
-        kind: "subtitles",
-        srclang: "en",
-        label: "English",
-        default: ""
-      }],
-      theme: "lib/videogular-themes-default/videogular.css",
-      plugins: {
-        poster: "img/header-logo.png"
-      }
-    };
+    // controller.onPlayerReady = function(API) {
+    //   controller.API = API;
+    //   console.log("touchscreen is", VirtualJoystick.touchScreenAvailable() ? "available" : "not available");
+    //   var joystick = new VirtualJoystick({
+    //     container: document.getElementById('video_container'),
+    //     mouseSupport: true,
+    //   });
+    //   joystick.addEventListener('touchStart', function() {
+    //     console.log('down')
+    //   })
+    //   joystick.addEventListener('touchEnd', function() {
+    //     console.log('up')
+    //   })
+    // };
+    //
+    // this.config = {
+    //   sources: [{
+    //       src: $sce.trustAsResourceUrl("http://84.104.56.233:8080/video/live.m3u8"),
+    //       type: "application/x-mpegURL"
+    //     }
+    //     // {src: $sce.trustAsResourceUrl("http://techslides.com/demos/sample-videos/small.webm"), type: "video/webm"},
+    //     // {src: $sce.trustAsResourceUrl("http://techslides.com/demos/sample-videos/small.mp4"), type: "video/3gp"},
+    //     // {src: $sce.trustAsResourceUrl("http://techslides.com/demos/sample-videos/small.ogv"), type: "video/ogg"}
+    //   ],
+    //   tracks: [{
+    //     src: "http://www.videogular.com/assets/subs/pale-blue-dot.vtt",
+    //     kind: "subtitles",
+    //     srclang: "en",
+    //     label: "English",
+    //     default: ""
+    //   }],
+    //   theme: "lib/videogular-themes-default/videogular.css",
+    //   plugins: {
+    //     poster: "img/header-logo.png"
+    //   }
+    // };
     $scope.onSwipeUp = function() {
       console.log("swipe");
       $ionicViewSwitcher.nextDirection('up'); // 'forward', 'back', etc.
@@ -566,6 +581,24 @@ angular.module('starter.controllers', [])
         console.log(response);
         $rootScope.recorderStarted = response.data.recording;
         $rootScope.recording_id = response.data.recording_id;
+      }, function(err) {
+        console.log(err);
+      });
+    }
+    $rootScope.ptzMove = function(direction) {
+      var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "http://" + $rootScope.data.serverIP + "/api/ptz",
+        "method": "PUT",
+        "data": JSON.stringify({
+          "manual": true,
+          "move": direction,
+        })
+      }
+      $http(settings).then(function(response) {
+        console.log(response);
+
       }, function(err) {
         console.log(err);
       });
@@ -908,7 +941,42 @@ angular.module('starter.controllers', [])
         console.log(err);
       });
     }
+    $scope.gotoPreset = function(index) {
+      var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "http://83.162.175.252:8080/cgi-bin/ptz.cgi?action=start&channel=0&code=GotoPreset&arg1=0&arg2=" + index + "&arg3=0",
+        "method": "get",
+        "headers": {
+          'Authorization': 'Basic ' + authdata
+        }
+      }
+      console.log(settings);
+      $http(settings).then(function(response) {
+        console.log(response);
+      }, function(err) {
+        console.log(err);
+      });
+    }
+  })
+  .controller('RtspCtrl', function() {
+    console.log("RTSP");
 
+    flowplayer("#hlsjslive", {
+      splash: true,
+      embed: false,
+      ratio: 9 / 16,
+
+      clip: {
+        live: true,
+        sources: [{
+          type: "application/x-mpegurl",
+          //http://84.104.56.233:8080/video/live.m3u8
+          src: "http://84.104.56.233:8080/video/live.m3u8"
+        }]
+      }
+
+    });
   })
   .filter('secondsToDateTime', [function() {
     return function(seconds) {

@@ -1,46 +1,64 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <title></title>
 
-    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+  <title></title>
 
-    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+  <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+  <link href="css/video-js.min.css" rel="stylesheet">
+  <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
 
-    <!-- ionic/angularjs js -->
-    <script src="lib/ionic/js/ionic.bundle.js"></script>
-	<!-- moment -->
-	<script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+  <!-- ionic/angularjs js -->
+  <script src="lib/ionic/js/ionic.bundle.js"></script>
+  <!-- moment -->
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
 
-	<!-- angular moment -->
-	<script src="http://cdnjs.cloudflare.com/ajax/libs/angular-moment/0.8.2/angular-moment.min.js"></script>
-	<script src="lib/virtual-joystick.js"></script>
+  <!-- angular moment -->
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-moment/0.8.2/angular-moment.min.js"></script>
+  <script src="js/video.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/3.1.0/videojs-contrib-hls.min.js"></script>
+  <script src="lib/virtual-joystick.js"></script>
+  <!-- optional: the quality selector stylesheet -->
+  <link rel="stylesheet" href="http://releases.flowplayer.org/quality-selector/flowplayer.quality-selector.css">
+  <link rel="stylesheet" href="http://releases.flowplayer.org/6.0.5/skin/minimalist.css">
+  <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="http://releases.flowplayer.org/6.0.5/flowplayer.min.js"></script>
+  <!-- ... -->
 
-	
-    <!-- cordova script (this will be a 404 during development) -->
-    <script src="cordova.js"></script>
+  <!-- Flowplayer library -->
+  <script src="http://releases.flowplayer.org/6.0.5/flowplayer.min.js"></script>
 
-	<script src="lib/hls.min.js"></script>
-	<!-- <script src="lib/angular/angular.min.js"></script> -->
-	<script src="lib/angular-sanitize/angular-sanitize.min.js"></script>
-	<script src="lib/videogular/videogular.js"></script>
-	<script src="lib/videogular-controls/vg-controls.js"></script>
-	<script src="lib/videogular-overlay-play/vg-overlay-play.js"></script>
-	<script src="lib/videogular-poster/vg-poster.js"></script>
-	<script src="lib/videogular-buffering/vg-buffering.js"></script>
-	<script src="lib/videogular-hls/vg-hls.js"></script>
+  <!-- load the Flowplayer hlsjs engine, including hls.js -->
+  <script src="http://releases.flowplayer.org/hlsjs/flowplayer.hlsjs.min.js"></script>
 
-    <!-- your app's js -->
-    <script src="js/app.js"></script>
-    <script src="js/controllers.js"></script>
-  </head>
+  <!-- optional: the quality selector plugin for quality selection when hlsjs is not supported -->
+  <script src="http://releases.flowplayer.org/quality-selector/flowplayer.quality-selector.min.js"></script>
 
-  <body ng-app="starter">
-    <ion-nav-view></ion-nav-view>
-  </body>
+  <!-- cordova script (this will be a 404 during development) -->
+  <script src="cordova.js"></script>
+
+  <script src="lib/hls.min.js"></script>
+  <!-- <script src="lib/angular/angular.min.js"></script> -->
+  <script src="lib/angular-sanitize/angular-sanitize.min.js"></script>
+  <script src="lib/videogular/videogular.js"></script>
+  <script src="lib/videogular-controls/vg-controls.js"></script>
+  <script src="lib/videogular-overlay-play/vg-overlay-play.js"></script>
+  <script src="lib/videogular-poster/vg-poster.js"></script>
+  <script src="lib/videogular-buffering/vg-buffering.js"></script>
+  <script src="lib/videogular-hls/vg-hls.js"></script>
+
+  <!-- your app's js -->
+  <script src="js/app.js"></script>
+  <script src="js/controllers.js"></script>
+</head>
+
+<body ng-app="starter">
+  <ion-nav-view></ion-nav-view>
+</body>
+
 </html>
