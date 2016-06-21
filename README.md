@@ -1,5 +1,9 @@
 "# TagApp"
 0.0.6
+-Support for AXIS Camera
+
+"# TagApp"
+0.0.6
 -Added HLS support for Video server stream.
 -Added ptz sample commands for testing controlling from app.
 

@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', [
-		'ionic', 
+		'ionic',
 		'starter.controllers',
 		"ngSanitize",
 		"com.2fdevs.videogular",
@@ -95,7 +95,7 @@ angular.module('starter', [
 		}
 	})
 	.state('app.recording', {
-		url: '/recording/:recordingId', 
+		url: '/recording/:recordingId',
 		views:{
 			'menuContent':{
 				templateUrl:'templates/recordingEvents.html',
@@ -104,7 +104,7 @@ angular.module('starter', [
 		}
 	})
 	.state('app.settings', {
-		url: '/settings', 
+		url: '/settings',
 		views:{
 			'menuContent':{
 				templateUrl:'templates/settings.html',
@@ -113,7 +113,7 @@ angular.module('starter', [
 		}
 	})
 	.state('app.videoserver', {
-		url: '/videoserver', 
+		url: '/videoserver',
 		views:{
 			'menuContent':{
 				templateUrl:'templates/videoserver.html'
@@ -121,15 +121,23 @@ angular.module('starter', [
 		}
 	})
 	.state('app.streamcontrol', {
-		url: '/streamcontrol', 
+		url: '/streamcontrol',
 		views:{
 			'menuContent':{
 				templateUrl:'templates/streamcontrol.html'
 			}
 		}
 	})
+	.state('app.axisstreamcontrol', {
+		url: '/axisstreamcontrol',
+		views:{
+			'menuContent':{
+				templateUrl:'templates/axisstreamcontrol.html'
+			}
+		}
+	})
 	.state('app.mjpeg', {
-		url: '/mjpeg', 
+		url: '/mjpeg',
 		views:{
 			'menuContent':{
 				templateUrl:'templates/mjpegtest.html'
@@ -137,7 +145,7 @@ angular.module('starter', [
 		}
 	})
 	.state('app.rtsp', {
-		url: '/rtsp', 
+		url: '/rtsp',
 		views:{
 			'menuContent':{
 				templateUrl:'templates/rtsp.html'

@@ -891,13 +891,13 @@ angular.module('starter.controllers', [])
   })
   .controller('StreamCtrl', function($rootScope, $scope, $sce, $ionicSideMenuDelegate, $location, $ionicViewSwitcher, $state, $timeout, $http, $ionicPopup, $interval, $ionicModal) {
     var authdata = btoa("admin" + ':' + "admin");
-
+    $scope.streamServer = "http://82.176.144.239:7070/";
     $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata;
     $scope.pan = function(direction) {
       var settings = {
         "async": true,
         "crossDomain": true,
-        "url": "http://83.162.175.252:8080/cgi-bin/ptz.cgi?action=start&channel=0&code=" + direction + "&arg1=0&arg2=3&arg3=0",
+        "url": $scope.streamServer + "cgi-bin/ptz.cgi?action=start&channel=0&code=" + direction + "&arg1=0&arg2=3&arg3=0",
         "method": "get",
         "headers": {
           'Authorization': 'Basic ' + authdata
@@ -910,7 +910,7 @@ angular.module('starter.controllers', [])
           var settings = {
             "async": true,
             "crossDomain": true,
-            "url": "http://83.162.175.252:8080/cgi-bin/ptz.cgi?action=stop&channel=0&code=" + direction + "&arg1=0&arg2=3&arg3=0",
+            "url": $scope.streamServer+ "cgi-bin/ptz.cgi?action=stop&channel=0&code=" + direction + "&arg1=0&arg2=3&arg3=0",
             "method": "get"
           }
           console.log(settings);
@@ -928,7 +928,7 @@ angular.module('starter.controllers', [])
       var settings = {
         "async": true,
         "crossDomain": true,
-        "url": "http://83.162.175.252:8080/cgi-bin/ptz.cgi?action=start&channel=0&code=" + direction + "&arg1=0&arg2=multiple&arg3=0",
+        "url": $scope.streamServer+ "cgi-bin/ptz.cgi?action=start&channel=0&code=" + direction + "&arg1=0&arg2=multiple&arg3=0",
         "method": "get",
         "headers": {
           'Authorization': 'Basic ' + authdata
@@ -945,7 +945,60 @@ angular.module('starter.controllers', [])
       var settings = {
         "async": true,
         "crossDomain": true,
-        "url": "http://83.162.175.252:8080/cgi-bin/ptz.cgi?action=start&channel=0&code=GotoPreset&arg1=0&arg2=" + index + "&arg3=0",
+        "url": $scope.streamServer+ "cgi-bin/ptz.cgi?action=start&channel=0&code=GotoPreset&arg1=0&arg2=" + index + "&arg3=0",
+        "method": "get",
+        "headers": {
+          'Authorization': 'Basic ' + authdata
+        }
+      }
+      console.log(settings);
+      $http(settings).then(function(response) {
+        console.log(response);
+      }, function(err) {
+        console.log(err);
+      });
+    }
+  })
+  .controller('AxisStreamCtrl', function($rootScope, $scope, $sce, $ionicSideMenuDelegate, $location, $ionicViewSwitcher, $state, $timeout, $http, $ionicPopup, $interval, $ionicModal) {
+    var authdata = btoa("root" + ':' + "toor123");
+    $scope.streamServer = "http://82.176.158.74:1010/";
+    $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata;
+    $scope.pan = function(direction) {
+      var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": $scope.streamServer + "/axis-cgi/com/ptz.cgi?move=" + direction,
+        "method": "get",
+        "headers": {
+          'Authorization': 'Basic ' + authdata
+        }
+      }
+        console.log(settings);
+      }, function(err) {
+        console.log(err);
+    }
+    $scope.zoom = function(direction) {
+      var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": $scope.streamServer+ "/axis-cgi/com/ptz.cgi?zoom=" + direction,
+        "method": "get",
+        "headers": {
+          'Authorization': 'Basic ' + authdata
+        }
+      }
+      console.log(settings);
+      $http(settings).then(function(response) {
+        console.log(response);
+      }, function(err) {
+        console.log(err);
+      });
+    }
+    $scope.gotoPreset = function(index) {
+      var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": $scope.streamServer+ "cgi-bin/ptz.cgi?action=start&channel=0&code=GotoPreset&arg1=0&arg2=" + index + "&arg3=0",
         "method": "get",
         "headers": {
           'Authorization': 'Basic ' + authdata
