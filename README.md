@@ -1,4 +1,10 @@
 "# TagApp"
+0.0.7
+-New app wrapper
+-User Support
+-Dashboard sample screen
+
+"# TagApp"
 0.0.6
 -Support for AXIS Camera
 

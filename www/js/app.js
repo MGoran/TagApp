@@ -4,15 +4,16 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', [
-		'ionic',
-		'starter.controllers',
-		"ngSanitize",
-		"com.2fdevs.videogular",
-		"com.2fdevs.videogular.plugins.controls",
-		"com.2fdevs.videogular.plugins.overlayplay",
-		"com.2fdevs.videogular.plugins.poster"
-	])
+angular.module('TagApp', [
+  'ionic',
+  'angularCharts',
+  'main.controller',
+  'login.controller',
+  'home.controller',
+  'panofield.controller',
+  'dahua.controller',
+  'axis.controller'
+])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -34,124 +35,56 @@ angular.module('starter', [
   $stateProvider
 
     .state('app', {
-    url: '/app',
-    abstract: true,
-    templateUrl: 'templates/menu.html',
-    controller: 'AppCtrl'
-  })
+      url: '/app',
+      abstract: true,
+      templateUrl: 'templates/menu.html',
+      controller: 'MainCtrl'
+    })
+    .state('login', {
+      url: '/login',
+      controller: 'LoginCtrl',
+      templateUrl: 'templates/login.html'
+    })
+    .state('app.home', {
+      url: '/home',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/home.html',
+          controller: 'HomeCtrl'
+        }
+      }
 
-  .state('app.search', {
-    url: '/search',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/search.html'
+    })
+    .state('app.panofield', {
+      url: '/panofield',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/panofield.html',
+          controller: 'PanofieldCtrl'
+        }
       }
-    }
-  })
 
-  .state('app.events', {
-      url: '/events',
+    })
+    .state('app.dahua', {
+      url: '/dahua',
       views: {
         'menuContent': {
-          templateUrl: 'templates/events.html',
-		  controller: 'EventsCtrl'
+          templateUrl: 'templates/dahua.html',
+          controller: 'DahuaCtrl'
         }
       }
+
     })
-	.state('app.exportevents', {
-      url: '/exportevents',
+    .state('app.axis', {
+      url: '/axis',
       views: {
         'menuContent': {
-          templateUrl: 'templates/export-events.html',
-		  controller: 'EventsCtrl'
+          templateUrl: 'templates/axis.html',
+          controller: 'AxisCtrl'
         }
       }
-    })
-    .state('app.start', {
-      url: '/start',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/start.html',
-          controller: 'StartCtrl'
-        }
-      }
-    })
-	.state('app.recorder', {
-      url: '/recorder',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/recorder.html',
-          controller: 'RecorderCtrl'
-        }
-      }
-    })
-	.state('app.recordings',{
-		url: '/recordings',
-		views:{
-			'menuContent':{
-				templateUrl:'templates/recordings.html',
-				controller: 'RecordingsCtrl'
-			}
-		}
-	})
-	.state('app.recording', {
-		url: '/recording/:recordingId',
-		views:{
-			'menuContent':{
-				templateUrl:'templates/recordingEvents.html',
-				controller: 'RecordingEventsCtrl'
-			}
-		}
-	})
-	.state('app.settings', {
-		url: '/settings',
-		views:{
-			'menuContent':{
-				templateUrl:'templates/settings.html',
-				controller: 'SettingsCtrl'
-			}
-		}
-	})
-	.state('app.videoserver', {
-		url: '/videoserver',
-		views:{
-			'menuContent':{
-				templateUrl:'templates/videoserver.html'
-			}
-		}
-	})
-	.state('app.streamcontrol', {
-		url: '/streamcontrol',
-		views:{
-			'menuContent':{
-				templateUrl:'templates/streamcontrol.html'
-			}
-		}
-	})
-	.state('app.axisstreamcontrol', {
-		url: '/axisstreamcontrol',
-		views:{
-			'menuContent':{
-				templateUrl:'templates/axisstreamcontrol.html'
-			}
-		}
-	})
-	.state('app.mjpeg', {
-		url: '/mjpeg',
-		views:{
-			'menuContent':{
-				templateUrl:'templates/mjpegtest.html'
-			}
-		}
-	})
-	.state('app.rtsp', {
-		url: '/rtsp',
-		views:{
-			'menuContent':{
-				templateUrl:'templates/rtsp.html'
-			}
-		}
-	})
+
+    });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/start');
-})
+  $urlRouterProvider.otherwise('/login');
+});

@@ -1,0 +1,64 @@
+<ion-view view-title="Panofield" hide-nav-bar="true">
+  <ion-content padding="false" style="height:100%" class="video-page">
+    <divclass="videogular-container">
+      <div style="width:100%; font-size:20;color:white;    height: 100%;">
+        <div id="hlsjslive" class="is-closeable"></div>
+      </div>
+      <div class="panel panel-left" style="opacity:{{data.vc_transparency/100}}">
+        <button class="button icon-right ion-arrow-left-c btn-full-width gm-btn-white" ng-click="ptzMove('Left')">Left</button>
+        <button class="button icon-right ion-arrow-up-c btn-full-width gm-btn-white" ng-click="ptzMove('Up')">Up</button>
+        <button class="button icon-right ion-minus-round btn-full-width gm-btn-white" ng-click="ptzMove('ZoomOut')">Zoom</button>
+        <div style="bottom:0;position: absolute; width:100%">
+          <ion-item class="gm-btn-green" ng-click="changeTeamName(1)" style="text-align:center">
+            {{team[1]}}
+          </ion-item>
+          <ion-item ng-repeat="event in events" ng-click="setEvent(event, 1)" style="text-align:center" class="gm-btn-white">
+            {{event.name}}
+          </ion-item>
+        </div>
+      </div>
+      <div class="panel panel-top" style="opacity:{{data.vc_transparency/100}}">
+        <div class="button-bar">
+          <a class="button gm-btn-white" style="padding: 0;height:auto">L</a>
+          <a class="button gm-btn-white" style="height:auto">Center</a>
+          <a class="button gm-btn-white" style="padding: 0;height:auto">R</a>
+        </div>
+        <a ng-if="!recorderStarted" class="button button-positive btn-full-width button-icon icon ion-record" style="height: auto;" ng-click="startRecorder()"></a>
+        <a ng-if="recorderStarted" class="button button-assertive btn-full-width button-icon icon ion-record" style="height: auto;color:{{blinkingColor}}; border-color:white" ng-click="stopRecorder()"></a>
+      </div>
+      <div class="panel panel-bottom" style="opacity:{{data.vc_transparency/100}}">
+        <a class="button button-positive btn-full-width button-icon icon ion-chevron-up" style="height: auto;" on-swipe-up="showEventList()" ng-click="showEventList()"></a>
+      </div>
+      <div class="panel panel-right" style="opacity:{{data.vc_transparency/100}}">
+        <button class="button icon-left ion-arrow-right-c btn-full-width gm-btn-white" ng-click="ptzMove('Right')">Right</button>
+        <button class="button icon-left ion-arrow-down-c btn-full-width gm-btn-white" ng-click="ptzMove('Down')">Down</button>
+        <button class="button icon-left ion-plus-round btn-full-width gm-btn-white" ng-click="ptzMove('ZoomIn')">Zoom</button>
+        <div style="bottom:0;position: absolute; width:100%">
+          <ion-item class="gm-btn-green" ng-click="changeTeamName(2)" style="text-align:center">
+            {{team[2]}}
+          </ion-item>
+          <ion-item ng-repeat="event in events" ng-click="setEvent(event, 2)" style="text-align:center" class="gm-btn-white">
+            {{event.name}}
+          </ion-item>
+        </div>
+      </div>
+    <div class="panel panel-modal" ng-class="(showEventListModal) ? 'slide-up' : 'slide-down'" id="event-list-modal" ng-show="showEventListModal">
+        <ion-header-bar class="bar bar-header bar-positive">
+          <h1 class="title">Export Events</h1>
+          <button class="button button-clear button-primary" ng-click="hideEventList()">Close</button>
+        </ion-header-bar>
+        <ion-content padding="true">
+
+          <ion-list>
+            <ion-checkbox ng-repeat="event in eventList | orderBy: '-start'" ng-model="exportEvent[event.id]">
+              {{event.start | date:'medium'}} - {{event.event.name}} - {{event.team}}
+            </ion-checkbox>
+          </ion-list>
+          <ion-item style="text-align: center;background: none;border: none;">
+            <button class="button button-block gm-btn-green" ng-click="exportSelectedEvents()">Eport selected</button>
+          </ion-item>
+        </ion-content>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
