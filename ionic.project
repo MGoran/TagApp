@@ -1,4 +1,10 @@
 {
-  "name": "PanofieldController",
-  "app_id": ""
+  "name": "TagApp",
+  "app_id": "",
+  "proxies": [
+    {
+      "path": "/dahua",
+      "proxyUrl": "http://82.176.144.239:7070"
+    }
+  ]
 }

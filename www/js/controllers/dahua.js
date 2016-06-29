@@ -6,11 +6,11 @@ angular.module('dahua.controller', []).controller('DahuaCtrl', function($rootSco
   });
   var authdata = btoa("admin" + ':' + "admin");
   $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata;
-  $scope.pan = function(direction) {
+  $scope.pan = function(direction, action) {
     var settings = {
       "async": true,
       "crossDomain": true,
-      "url": $rootScope.selectedCam.ip + "/cgi-bin/ptz.cgi?action=start&channel=0&code=" + direction + "&arg1=0&arg2=3&arg3=0",
+      "url": $rootScope.selectedCam.ip + "/cgi-bin/ptz.cgi?action="+action+"&channel=0&code=" + direction + "&arg1=0&arg2=3&arg3=0",
       "method": "get",
       "headers": {
         'Authorization': 'Basic ' + authdata
@@ -19,29 +19,15 @@ angular.module('dahua.controller', []).controller('DahuaCtrl', function($rootSco
     console.log(settings);
     $http(settings).then(function(response) {
       console.log(response);
-      $timeout(function() {
-        var settings = {
-          "async": true,
-          "crossDomain": true,
-          "url": $rootScope.selectedCam.ip + "/cgi-bin/ptz.cgi?action=stop&channel=0&code=" + direction + "&arg1=0&arg2=3&arg3=0",
-          "method": "get"
-        }
-        console.log(settings);
-        $http(settings).then(function(response) {
-          console.log(response);
-        }, function(err) {
-          console.log(err);
-        });
-      }, 2000);
     }, function(err) {
       console.log(err);
     });
   }
-  $scope.zoom = function(direction) {
+  $scope.zoom = function(direction, action) {
     var settings = {
       "async": true,
       "crossDomain": true,
-      "url": $rootScope.selectedCam.ip + "/cgi-bin/ptz.cgi?action=start&channel=0&code=" + direction + "&arg1=0&arg2=multiple&arg3=0",
+      "url": $rootScope.selectedCam.ip + "/cgi-bin/ptz.cgi?action="+action+"&channel=0&code=" + direction + "&arg1=0&arg2=multiple&arg3=0",
       "method": "get",
       "headers": {
         'Authorization': 'Basic ' + authdata

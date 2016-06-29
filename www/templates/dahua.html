@@ -1,41 +1,42 @@
 <ion-view view-title="Dahua Control" hide-nav-bar="true">
 	<ion-content padding="false" style="height:100%" class="video-page">
-	<div class="videogular-container" >
+		<div class="videogular-container">
 
-		<img src="{{selectedCam.ip}}/axis-cgi/mjpg/video.cgi?camera=1" class="mjpeg_video"/>
-		<div class="mjpeg_controls" style="opacity:{{data.vc_transparency/100}}">
-			<div class="panel panel-left">
-				<div style="">
-					<button class="button icon-right ion-arrow-left-c btn-full-width gm-btn-white" ng-click="pan('Left')">Left</button>
-					<button class="button icon-right ion-arrow-up-c btn-full-width gm-btn-white" ng-click="pan('Up')">Up</button>
-					<button class="button icon-right ion-minus-round btn-full-width gm-btn-white" ng-click="zoom('ZoomWide')">Zoom</button>
+			<img src="{{selectedCam.ip}}/axis-cgi/mjpg/video.cgi?camera=1" class="mjpeg_video" />
+			<div class="mjpeg_controls" style="opacity:{{data.vc_transparency/100}}">
+				<div class="panel panel-left">
+					<div style="">
+						<button class="button icon-right ion-arrow-left-c btn-full-width gm-btn-white gm-btn-height" on-release="pan('Left', 'stop')" on-touch="pan('Left', 'start')">Left</button>
+						<button class="button icon-right ion-arrow-up-c btn-full-width gm-btn-white gm-btn-height" on-release="pan('Up', 'stop')" on-touch="pan('Up', 'start')">Up</button>
+						<button class="button icon-right ion-minus-round btn-full-width gm-btn-white gm-btn-height" on-release="zoom('ZoomWide', 'stop')" on-touch="zoom('ZoomWide', 'start')">Zoom</button>
+					</div>
+				</div>
+
+				<div class="panel panel-right">
+					<div style="">
+						<button class="button icon-left ion-arrow-right-c btn-full-width gm-btn-white gm-btn-height" on-release="pan('Right', 'stop')" on-touch="pan('Right', 'start')">Right</button>
+						<button class="button icon-left ion-arrow-down-c btn-full-width gm-btn-white gm-btn-height" on-release="pan('Down', 'stop')" on-touch="pan('Down', 'start')">Down</button>
+						<button class="button icon-left ion-plus-round btn-full-width gm-btn-white gm-btn-height" on-release="zoom('ZoomTele', 'stop')" on-touch="zoom('ZoomTele', 'start')">Zoom</button>
+					</div>
+				</div>
+				<div class="panel panel-top" style="opacity:{{data.vc_transparency/100}}">
+					<div class="button-bar">
+						<a class="button gm-btn-white" style="padding: 0;height:auto">L</a>
+						<a class="button gm-btn-white" style="height:auto">Center</a>
+						<a class="button gm-btn-white" style="padding: 0;height:auto">R</a>
+					</div>
+					<a ng-if="!recorderStarted" class="button button-positive btn-full-width button-icon icon ion-record" style="height: auto;"></a>
+					<a ng-if="recorderStarted" class="button button-assertive btn-full-width button-icon icon ion-record" style="height: auto;color:{{blinkingColor}}; border-color:white"></a>
+				</div>
+				<div class="panel panel-bottom">
+					<div class="button-bar">
+						<a class="button gm-btn-white" style="padding: 0;height:auto" ng-click="gotoPreset(1)">1</a>
+						<a class="button gm-btn-white" style="height:auto" ng-click="gotoPreset(2)">2</a>
+						<a class="button gm-btn-white" style="height:auto" ng-click="gotoPreset(3)">3</a>
+						<a class="button gm-btn-white" style="padding: 0;height:auto" ng-click="gotoPreset(4)">4</a>
+					</div>
 				</div>
 			</div>
 		</div>
-		<div class="panel panel-right">
-			<div style="">
-				<button class="button icon-left ion-arrow-right-c btn-full-width gm-btn-white" ng-click="pan('Right')">Right</button>
-				<button class="button icon-left ion-arrow-down-c btn-full-width gm-btn-white" ng-click="pan('Down')">Down</button>
-				<button class="button icon-left ion-plus-round btn-full-width gm-btn-white" ng-click="zoom('ZoomTele')">Zoom</button>
-			</div>
-		</div>
-    <div class="panel panel-top" style="opacity:{{data.vc_transparency/100}}">
-      <div class="button-bar">
-        <a class="button gm-btn-white" style="padding: 0;height:auto">L</a>
-        <a class="button gm-btn-white" style="height:auto">Center</a>
-        <a class="button gm-btn-white" style="padding: 0;height:auto">R</a>
-      </div>
-      <a ng-if="!recorderStarted" class="button button-positive btn-full-width button-icon icon ion-record" style="height: auto;"></a>
-      <a ng-if="recorderStarted" class="button button-assertive btn-full-width button-icon icon ion-record" style="height: auto;color:{{blinkingColor}}; border-color:white"></a>
-    </div>
-		<div class="panel panel-bottom">
-			<div class="button-bar">
-				<a class="button gm-btn-white" style="padding: 0;height:auto" ng-clicl="gotoPreset(1)">1</a>
-				<a class="button gm-btn-white" style="height:auto" ng-clicl="gotoPreset(2)">2</a>
-				<a class="button gm-btn-white" style="height:auto" ng-clicl="gotoPreset(3)">3</a>
-				<a class="button gm-btn-white" style="padding: 0;height:auto" ng-clicl="gotoPreset(4)">4</a>
-			</div>
-		</div>
-	</div>
 	</ion-content>
 </ion-view>

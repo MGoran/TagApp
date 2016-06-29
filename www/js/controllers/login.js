@@ -8,7 +8,8 @@ angular.module('login.controller', []).controller('LoginCtrl', function($rootSco
         cameras: [{
           name: "Dahua Stream Example",
           type: "Dahua",
-          ip: "http://82.176.144.239:7070",
+          //ip: "/dahua",
+          ip:"http://82.176.144.239:7070",
           user: "admin",
           pass: "admin"
         }, {

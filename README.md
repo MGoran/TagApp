@@ -1,4 +1,9 @@
 "# TagApp"
+0.0.9
+-Dahua commands: move while button is pressed
+-UI Changes
+
+"# TagApp"
 0.0.8
 -New app wrapper
 -User Support

@@ -143,6 +143,7 @@ videogular div#joystick {
   padding: 0;
   margin: 0;
 }
+
 div.panel-left {
   position: absolute;
   display: block;
@@ -152,6 +153,7 @@ div.panel-left {
   width: 20%;
   background-color: rgba(25, 25, 25, 0.5);
   padding-bottom: 20px;
+  padding-top:50px;
 }
 div.panel-right {
   position: absolute;
@@ -162,6 +164,7 @@ div.panel-right {
   height: 100%;
   width: 20%;
   background-color: rgba(25, 25, 25, 0.5);
+  padding-top:50px;
 }
 div.panel-top {
   position: absolute;
@@ -172,6 +175,7 @@ div.panel-top {
   /* height: 15%; */
   width: 40%;
   background-color: rgba(25, 25, 25, 0.5);
+  padding-top:50px;
 }
 div.panel-bottom {
   position: absolute;
@@ -269,4 +273,8 @@ videogular .video_controlls {
 #hlsjslive {
   background-color: #2f2f4f;
       height: 100%;
+}
+
+.gm-btn-height{
+  height:75px;
 }
