@@ -1,4 +1,13 @@
 "# TagApp"
+0.0.10
+-Changes in UI
+-Back button for Dahua screen
+-Control speed of Dahua camera trough settings page
+-Play Dahua video from substream
+
+-Dahua commands: move while button is pressed
+-UI Changes
+"# TagApp"
 0.0.9
 -Dahua commands: move while button is pressed
 -UI Changes

@@ -153,7 +153,7 @@ div.panel-left {
   width: 20%;
   background-color: rgba(25, 25, 25, 0.5);
   padding-bottom: 20px;
-  padding-top:50px;
+  /*padding-top:50px;*/
 }
 div.panel-right {
   position: absolute;
@@ -164,7 +164,7 @@ div.panel-right {
   height: 100%;
   width: 20%;
   background-color: rgba(25, 25, 25, 0.5);
-  padding-top:50px;
+  /*padding-top:50px;*/
 }
 div.panel-top {
   position: absolute;
@@ -175,13 +175,13 @@ div.panel-top {
   /* height: 15%; */
   width: 40%;
   background-color: rgba(25, 25, 25, 0.5);
-  padding-top:50px;
+  /*padding-top:50px;*/
 }
 div.panel-bottom {
   position: absolute;
   display: block;
   z-index: 50;
-  bottom: 0;
+  bottom: 50px;
   left: 30%;
   width: 40%;
   background-color: rgba(25, 25, 25, 0.5);
@@ -197,6 +197,10 @@ div.panel-modal {
 }
 .video-page> div {
   height: 100%;
+  top: 0 !important;
+}
+.video-page{
+    /*top: 0 !important;*/
 }
 .btn-full {
   width: 100%;
@@ -277,4 +281,7 @@ videogular .video_controlls {
 
 .gm-btn-height{
   height:75px;
+}
+.header-bar{
+  height:50px;
 }

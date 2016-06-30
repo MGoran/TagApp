@@ -12,7 +12,9 @@ angular.module('TagApp', [
   'home.controller',
   'panofield.controller',
   'dahua.controller',
-  'axis.controller'
+  'axis.controller',
+  'settings.controller',
+  'recorder.service'
 ])
 
 .run(function($ionicPlatform) {
@@ -81,6 +83,16 @@ angular.module('TagApp', [
         'menuContent': {
           templateUrl: 'templates/axis.html',
           controller: 'AxisCtrl'
+        }
+      }
+
+    })
+    .state('app.settings', {
+      url: '/settings',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/settings.html',
+          controller: 'SettingsCtrl'
         }
       }
 

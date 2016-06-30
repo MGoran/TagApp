@@ -10,8 +10,10 @@ angular.module('login.controller', []).controller('LoginCtrl', function($rootSco
           type: "Dahua",
           //ip: "/dahua",
           ip:"http://82.176.144.239:7070",
+          //recorder_ip: "/dahua_recorder",
+          recorder_ip: "http://82.176.144.239:5050",
           user: "admin",
-          pass: "admin"
+          pass: "admin",
         }, {
           name: "Axis Stream Example",
           type: "Axis",

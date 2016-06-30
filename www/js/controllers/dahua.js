@@ -1,4 +1,4 @@
-angular.module('dahua.controller', []).controller('DahuaCtrl', function($rootScope, $scope, $ionicModal, $timeout, $state, $interval, $http, $ionicPopup) {
+angular.module('dahua.controller', []).controller('DahuaCtrl', function($rootScope, $scope, $ionicModal, $timeout, $state, $interval, $http, $ionicPopup, recorder) {
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     if (!$rootScope.isUser()) {
       $state.go('login')
@@ -10,7 +10,7 @@ angular.module('dahua.controller', []).controller('DahuaCtrl', function($rootSco
     var settings = {
       "async": true,
       "crossDomain": true,
-      "url": $rootScope.selectedCam.ip + "/cgi-bin/ptz.cgi?action="+action+"&channel=0&code=" + direction + "&arg1=0&arg2=3&arg3=0",
+      "url": $rootScope.selectedCam.ip + "/cgi-bin/ptz.cgi?action="+action+"&channel=0&code=" + direction + "&arg1=0&arg2="+$rootScope.data.dahua_speed+"&arg3=0",
       "method": "get",
       "headers": {
         'Authorization': 'Basic ' + authdata
@@ -57,4 +57,6 @@ angular.module('dahua.controller', []).controller('DahuaCtrl', function($rootSco
       console.log(err);
     });
   }
+  var data = recorder.getStateOfRecorder($rootScope.selectedCam.recorder_ip);
+  console.log(data);
 });
