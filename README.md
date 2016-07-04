@@ -1,4 +1,9 @@
 "# TagApp"
+0.0.11
+-Changes in UI
+-Enabling all recorder functions on Stream screens
+
+"# TagApp"
 0.0.10
 -Changes in UI
 -Back button for Dahua screen

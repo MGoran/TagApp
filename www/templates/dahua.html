@@ -1,54 +1,111 @@
 <ion-view view-title="Dahua Control" hide-nav-bar="true">
+	<!-- <div class="header-bar" style="opacity:{{data.vc_transparency/100}}">
+		<ion-header-bar class="bar-stable bar bar-header" align-title="center">
+			<button ng-click="$ionicGoBack()" class="button back-button buttons button-clear header-item"><i class="icon ion-ios-arrow-back"></i>
+				<span class="back-text" style="transform: translate3d(0px, 0px, 0px);"><span class="default-title hide">Back</span><span class="previous-title">Home</span></span>
+			</button>
+			<div class="buttons buttons-left header-item"><span class="left-buttons">
+		<button class="button button-icon button-clear ion-navicon hide" menu-toggle="left">
+		</button>
+	</span></div>
+			<div class="title title-center header-item" style="left: 76px; right: 76px; transform: translate3d(0px, 0px, 0px);">Dahua Control</div>
+		</ion-header-bar>
+	</div> -->
 	<ion-content padding="false" style="height:100%" class="video-page">
 		<div class="videogular-container">
 
 			<img src="{{selectedCam.ip}}/axis-cgi/mjpg/video.cgi?camera=5&subtype=1" class="mjpeg_video" />
-			<div class="header-bar" style="opacity:{{data.vc_transparency/100}}">
-				<ion-header-bar class="bar-stable bar bar-header" align-title="center">
-					<button ng-click="$ionicGoBack()" class="button back-button buttons button-clear header-item"><i class="icon ion-ios-arrow-back"></i>
-						<span class="back-text" style="transform: translate3d(0px, 0px, 0px);"><span class="default-title hide">Back</span><span class="previous-title">Home</span></span>
-					</button>
-					<div class="buttons buttons-left header-item"><span class="left-buttons">
-        <button class="button button-icon button-clear ion-navicon hide" menu-toggle="left">
-        </button>
-      </span></div>
-					<div class="title title-center header-item" style="left: 76px; right: 76px; transform: translate3d(0px, 0px, 0px);">Dahua Control</div>
-				</ion-header-bar>
-			</div>
+
 			<div class="mjpeg_controls" style="opacity:{{data.vc_transparency/100}}" style="top:50px">
 				<div class="panel panel-left">
-					<div style="">
-						<button class="button icon-right ion-arrow-left-c btn-full-width gm-btn-white gm-btn-height" on-release="pan('Left', 'stop')" on-touch="pan('Left', 'start')">Left</button>
-						<button class="button icon-right ion-arrow-up-c btn-full-width gm-btn-white gm-btn-height" on-release="pan('Up', 'stop')" on-touch="pan('Up', 'start')">Up</button>
-						<button class="button icon-right ion-minus-round btn-full-width gm-btn-white gm-btn-height" on-release="zoom('ZoomWide', 'stop')" on-touch="zoom('ZoomWide', 'start')">Zoom</button>
+					<div class="btn-stack">
+						<button class="button icon ion-arrow-left-c gm-btn-white gm-btn-height" on-release="pan('Left', 'stop')" on-touch="pan('Left', 'start')"></button>
+						<button class="button icon ion-arrow-up-c  gm-btn-white gm-btn-height" on-release="pan('Up', 'stop')" on-touch="pan('Up', 'start')"></button>
+						<button class="button icon ion-minus-round  gm-btn-white gm-btn-height" on-release="zoom('ZoomWide', 'stop')" on-touch="zoom('ZoomWide', 'start')"></button>
 					</div>
 				</div>
 
 				<div class="panel panel-right">
-					<div style="">
-						<button class="button icon-left ion-arrow-right-c btn-full-width gm-btn-white gm-btn-height" on-release="pan('Right', 'stop')" on-touch="pan('Right', 'start')">Right</button>
-						<button class="button icon-left ion-arrow-down-c btn-full-width gm-btn-white gm-btn-height" on-release="pan('Down', 'stop')" on-touch="pan('Down', 'start')">Down</button>
-						<button class="button icon-left ion-plus-round btn-full-width gm-btn-white gm-btn-height" on-release="zoom('ZoomTele', 'stop')" on-touch="zoom('ZoomTele', 'start')">Zoom</button>
+					<div class="btn-stack">
+						<button class="button icon ion-arrow-right-c  gm-btn-white gm-btn-height" on-release="pan('Right', 'stop')" on-touch="pan('Right', 'start')"></button>
+						<button class="button icon ion-arrow-down-c  gm-btn-white gm-btn-height" on-release="pan('Down', 'stop')" on-touch="pan('Down', 'start')"></button>
+						<button class="button icon ion-plus-round  gm-btn-white gm-btn-height" on-release="zoom('ZoomTele', 'stop')" on-touch="zoom('ZoomTele', 'start')"></button>
 					</div>
 				</div>
 				<div class="panel panel-top" style="opacity:{{data.vc_transparency/100}}">
-					<div class="button-bar">
+					<!-- <div class="button-bar">
 						<a class="button gm-btn-white" style="padding: 0;height:auto">L</a>
 						<a class="button gm-btn-white" style="height:auto">Center</a>
 						<a class="button gm-btn-white" style="padding: 0;height:auto">R</a>
-					</div>
-					<a ng-if="!recorderStarted" class="button button-positive btn-full-width button-icon icon ion-record" style="height: auto;"></a>
-					<a ng-if="recorderStarted" class="button button-assertive btn-full-width button-icon icon ion-record" style="height: auto;color:{{blinkingColor}}; border-color:white"></a>
+					</div> -->
+					<a ng-click="setStateOfRecorder(true)" ng-if="!data.recorder.recording" class="button button-positive btn-full-width button-icon icon ion-record" style="height: auto;"></a>
+					<a ng-click="setStateOfRecorder(false)" ng-if="data.recorder.recording" class="button button-assertive btn-full-width button-icon icon ion-record" style="height: auto;color:{{blinkingColor}}; border-color:white"></a>
 				</div>
-				<div class="panel panel-bottom">
-					<div class="button-bar">
-						<a class="button gm-btn-white" style="padding: 0;height:auto" ng-click="gotoPreset(1)">1</a>
-						<a class="button gm-btn-white" style="height:auto" ng-click="gotoPreset(2)">2</a>
-						<a class="button gm-btn-white" style="height:auto" ng-click="gotoPreset(3)">3</a>
-						<a class="button gm-btn-white" style="padding: 0;height:auto" ng-click="gotoPreset(4)">4</a>
+				<div class="panel panel-left-bottom ">
+					<div style="bottom:0; width:100%">
+						<ion-item class="gm-btn-green" ng-click="changeTeamName(1)" style="text-align:center">
+							{{data.teams.team[0].name}}
+						</ion-item>
+						<ion-item ng-repeat="event in data.event_types" ng-click="setEvent(event, 1)" style="text-align:center" class="gm-btn-white">
+							{{event.name}}
+						</ion-item>
+					</div>
+				</div>
+				<div class="panel panel-bottom ">
+					<div class="zone-buttons">
+						<table style="height: 200px;width: 100%;">
+							<tr>
+								<th class="border" style="border-right:0;width: 15%;" ng-click="gotoPreset(2)">&nbsp;</th>
+								<th class="border" style="border-left:0;border-bottom:0" ng-click="gotoPreset(2)">&nbsp;</th>
+								<th class="border" style="border-bottom:0;width: 30%;" ng-click="gotoPreset(3)">&nbsp;</th>
+								<th class="border" style="border-right:0;border-bottom:0" ng-click="gotoPreset(4)">&nbsp;</th>
+								<th class="border" style="border-left:0;width: 15%;" ng-click="gotoPreset(4)">&nbsp;</th>
+							</tr>
+							<tr style="height: 50%;">
+								<th class="border" ng-click="gotoPreset(1)">&nbsp;</th>
+								<th class="border" style="border-top:0;border-bottom:0" ng-click="gotoPreset(2)">&nbsp;</th>
+								<th class="border" style="border-top:0;border-bottom:0" ng-click="gotoPreset(3)">&nbsp;</th>
+								<th class="border" style="border-top:0;border-bottom:0;" ng-click="gotoPreset(4)">&nbsp;</th>
+								<th class="border" ng-click="gotoPreset(5)">&nbsp;</th>
+							</tr>
+							<tr>
+								<th class="border" style="border-right:0;" ng-click="gotoPreset(2)">&nbsp;</th>
+								<th class="border" style="border-left:0; border-top:0" ng-click="gotoPreset(2)">&nbsp;</th>
+								<th class="border" style="border-top:0;" ng-click="gotoPreset(3)">&nbsp;</th>
+								<th class="border" style="border-right:0;border-top:0" ng-click="gotoPreset(4)">&nbsp;</th>
+								<th class="border" style="border-left:0;" ng-click="gotoPreset(4)">&nbsp;</th>
+							</tr>
+						</table>
+					</div>
+					<a class="button button-positive btn-full-width button-icon icon ion-chevron-up" style="height: auto;" on-swipe-up="showEventList()" ng-click="showEventList()"></a>
+				</div>
+				<div class="panel panel-right-bottom ">
+					<div style="bottom:0; width:100%">
+						<ion-item class="gm-btn-green" ng-click="changeTeamName(2)" style="text-align:center">
+							{{data.teams.team[1].name}}
+						</ion-item>
+						<ion-item ng-repeat="event in data.event_types" ng-click="setEvent(event, 2)" style="text-align:center" class="gm-btn-white">
+							{{event.name}}
+						</ion-item>
 					</div>
 				</div>
 			</div>
-		</div>
+			<div class="panel panel-modal" ng-class="(showEventListModal) ? 'slide-up' : 'slide-down'" id="event-list-modal" ng-show="showEventListModal" style="opacity:{{data.vc_transparency/100}}">
+				<!-- <ion-header-bar class="bar bar-header">
+					<h1 class="title">Export Events</h1>
+					<button class="button button-clear button-primary" ng-click="hideEventList()">Close</button>
+				</ion-header-bar> -->
+				<ion-list>
+					<ion-checkbox ng-repeat="event in data.eventList | orderBy: '-start'" ng-model="exportEvent[event.id]">
+						{{event.start | date:'medium'}} - {{event.event.name}} - {{event.team}}
+					</ion-checkbox>
+				</ion-list>
+				<ion-item style="text-align: center;background: none;border: none;">
+					<button class="button button-block gm-btn-green" ng-click="exportSelectedEvents()">Eport selected</button>
+					<button class="button button-block gm-btn-white" ng-click="hideEventList()">Close</button>
+				</ion-item>
+	</ion-content>
+	</div>
+	</div>
 	</ion-content>
 </ion-view>
