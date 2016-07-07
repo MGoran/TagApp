@@ -1,4 +1,4 @@
-angular.module('main.controller', []).controller('MainCtrl', function($rootScope, $scope, $ionicModal, $timeout, $state) {
+angular.module('main.controller', []).controller('MainCtrl', function($rootScope, $scope, $ionicModal, $timeout, $state,  $ionicLoading) {
   $rootScope.isUser = function (){
     console.log($rootScope.user)
     return $rootScope.user !==undefined && $rootScope.user.validated
@@ -16,4 +16,16 @@ angular.module('main.controller', []).controller('MainCtrl', function($rootScope
     $rootScope.user = {};
     $state.go('login');
   }
+	$scope.showLoading = function() {
+    $ionicLoading.show({
+      template: '<ion-spinner></ion-spinner>'
+    }).then(function(){
+       console.log("The loading indicator is now displayed");
+    });
+  };
+  $scope.hideLoading = function(){
+    $ionicLoading.hide().then(function(){
+       console.log("The loading indicator is now hidden");
+    });
+  };
 });

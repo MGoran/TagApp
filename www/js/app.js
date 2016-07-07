@@ -14,7 +14,13 @@ angular.module('TagApp', [
   'dahua.controller',
   'axis.controller',
   'settings.controller',
-  'recorder.service'
+  'recorder.service',
+  'timer',
+  "ngSanitize",
+  "com.2fdevs.videogular",
+	"com.2fdevs.videogular.plugins.controls",
+	"com.2fdevs.videogular.plugins.buffering",
+	"com.2fdevs.videogular.plugins.overlayplay"
 ])
 
 .run(function($ionicPlatform) {

@@ -144,22 +144,36 @@ videogular div#joystick {
   padding: 0;
   margin: 0;
 }
-div.panel-left {
+div.panel-top-controlls {
   position: absolute;
   display: block;
   z-index: 50;
   top: 0;
-  /*height: 100%;*/
-  /*width: 10%;*/
+	padding-top:20px;
+  /*height: 60px;*/
+  width: 100%;
+  /*background-color: rgba(25, 25, 25, 0.5);*/
+}
+div.panel-left {
+  position: absolute;
+  display: block;
+  z-index: 50;
+  top: 75px;
   background-color: rgba(25, 25, 25, 0.5);
-  /*padding-bottom: 20px;*/
-  /*padding-top:50px;*/
+}
+div.panel-left-2 {
+  position: absolute;
+  display: block;
+  z-index: 50;
+	left:50px;
+  top: 75px;
+  /*background-color: rgba(25, 25, 25, 0.5);*/
 }
 div.panel-right {
   position: absolute;
   display: block;
   z-index: 50;
-  top: 0;
+  top: 75px;
   right: 0;
   /*height: 100%;*/
   /*width: 10%;*/
@@ -188,7 +202,7 @@ div.panel-top {
   position: absolute;
   display: block;
   z-index: 50;
-  top: 0;
+  top: 60px;
   left: 30%;
   /*height: 15%;*/
   width: 40%;
@@ -219,8 +233,8 @@ div.panel-modal {
   background-color: rgba(25, 25, 25, 0.5);
   z-index: 999999999999999999;
 }
-.panel-modal .bar-header{
-	background-color: rgba(25, 25, 25, 0.5);
+.panel-modal .bar-header {
+  background-color: rgba(25, 25, 25, 0.5);
 }
 .video-page> div {
   height: 100%;
@@ -513,4 +527,12 @@ videogular .video_controlls {
 .btn-stack .button {
   display: block !important;
   width: 80px;
+}
+.limit-child-height> div.list {
+  max-height: 465px;
+  overflow: scroll;
+}
+.playback-modal{
+	background:black !important;
+	opacity:1;
 }

@@ -17,6 +17,45 @@
 			<img src="{{selectedCam.ip}}/axis-cgi/mjpg/video.cgi?camera=5&subtype=1" class="mjpeg_video" />
 
 			<div class="mjpeg_controls" style="opacity:{{data.vc_transparency/100}}" style="top:50px">
+				<div class="panel panel-top-controlls">
+					<div class="row" style="text-align:center;margin-left:0;padding: 0;">
+						<div class="col col-5">
+							<a class="button gm-btn-white button-icon icon ion-ios-arrow-back" style="color:white;border:0" href="#/app/home">
+								<!-- <i class="icon ion-android-exit"></i> -->
+							</a>
+						</div>
+						<div class="col col-25">
+						</div>
+						<div class="col col-10">
+
+						</div>
+						<div class="col col-25" style="text-align:center">
+							<!-- <a class="button gm-btn-white button-icon icon ion-reply" style="color:white;display: inline-block;border:0" href="#" ng-if="data.lastEvent && data.recorder.recording"> -->
+								<!-- <i class="icon ion-reply"></i> -->
+							</a>
+							<h2 style="color:white;text-align:center;margin:0;margin-top: 7px;display: inline-block;width:60%">
+								<timer ng-if="data.recorder.recording" start-time="data.setStartTime">{{hours}}:{{minutes}}:{{seconds}}</timer>
+								<span ng-if="!data.recorder.recording">0:0:0</span>
+							</h2>
+							<!-- <div style=""> -->
+							<a ng-click="setStateOfRecorder(true)" ng-if="!data.recorder.recording" class="button gm-btn-white button-icon icon ion-record" style="height: auto;display: inline-block;border:0">
+								<!-- <i class="icon ion-record"></i> -->
+							</a>
+							<a ng-click="setStateOfRecorder(false)" ng-if="data.recorder.recording" class="button button-icon icon ion-record gm-btn-white" style="height: auto;color:{{blinkingColor}}; border-color:white;display: inline-block;border:0">
+								<!-- <i class="icon ion-record"></i> -->
+							</a>
+							<!-- </div> -->
+						</div>
+						<div class="col col-10">
+
+						</div>
+						<div class="col col-10">
+						</div>
+						<div class="col col-20">
+						</div>
+
+					</div>
+				</div>
 				<div class="panel panel-left">
 					<div class="btn-stack">
 						<button class="button icon ion-arrow-left-c gm-btn-white gm-btn-height" on-release="pan('Left', 'stop')" on-touch="pan('Left', 'start')"></button>
@@ -24,9 +63,14 @@
 						<button class="button icon ion-minus-round  gm-btn-white gm-btn-height" on-release="zoom('ZoomWide', 'stop')" on-touch="zoom('ZoomWide', 'start')"></button>
 					</div>
 				</div>
+				<div class="panel panel-left">
+					<div class="btn-stack">
 
+					</div>
+				</div>
 				<div class="panel panel-right">
 					<div class="btn-stack">
+
 						<button class="button icon ion-arrow-right-c  gm-btn-white gm-btn-height" on-release="pan('Right', 'stop')" on-touch="pan('Right', 'start')"></button>
 						<button class="button icon ion-arrow-down-c  gm-btn-white gm-btn-height" on-release="pan('Down', 'stop')" on-touch="pan('Down', 'start')"></button>
 						<button class="button icon ion-plus-round  gm-btn-white gm-btn-height" on-release="zoom('ZoomTele', 'stop')" on-touch="zoom('ZoomTele', 'start')"></button>
@@ -38,8 +82,7 @@
 						<a class="button gm-btn-white" style="height:auto">Center</a>
 						<a class="button gm-btn-white" style="padding: 0;height:auto">R</a>
 					</div> -->
-					<a ng-click="setStateOfRecorder(true)" ng-if="!data.recorder.recording" class="button button-positive btn-full-width button-icon icon ion-record" style="height: auto;"></a>
-					<a ng-click="setStateOfRecorder(false)" ng-if="data.recorder.recording" class="button button-assertive btn-full-width button-icon icon ion-record" style="height: auto;color:{{blinkingColor}}; border-color:white"></a>
+
 				</div>
 				<div class="panel panel-left-bottom ">
 					<div style="bottom:0; width:100%">
@@ -77,7 +120,7 @@
 							</tr>
 						</table>
 					</div>
-					<a class="button button-positive btn-full-width button-icon icon ion-chevron-up" style="height: auto;" on-swipe-up="showEventList()" ng-click="showEventList()"></a>
+					<a class="button button-positive btn-full-width button-icon icon ion-chevron-up" style="height: auto;" on-swipe-up="showPlaybackList()" ng-click="showPlaybackList()"></a>
 				</div>
 				<div class="panel panel-right-bottom ">
 					<div style="bottom:0; width:100%">
@@ -91,11 +134,7 @@
 				</div>
 			</div>
 			<div class="panel panel-modal" ng-class="(showEventListModal) ? 'slide-up' : 'slide-down'" id="event-list-modal" ng-show="showEventListModal" style="opacity:{{data.vc_transparency/100}}">
-				<!-- <ion-header-bar class="bar bar-header">
-					<h1 class="title">Export Events</h1>
-					<button class="button button-clear button-primary" ng-click="hideEventList()">Close</button>
-				</ion-header-bar> -->
-				<ion-list>
+				<ion-list class="limit-child-height">
 					<ion-checkbox ng-repeat="event in data.eventList | orderBy: '-start'" ng-model="exportEvent[event.id]">
 						{{event.start | date:'medium'}} - {{event.event.name}} - {{event.team}}
 					</ion-checkbox>
@@ -104,8 +143,54 @@
 					<button class="button button-block gm-btn-green" ng-click="exportSelectedEvents()">Eport selected</button>
 					<button class="button button-block gm-btn-white" ng-click="hideEventList()">Close</button>
 				</ion-item>
-	</ion-content>
-	</div>
-	</div>
+			</div>
+			<div class="panel panel-modal" ng-class="(showPlaybackListModal) ? 'slide-up' : 'slide-down'" id="playback-list-modal" ng-show="showPlaybackListModal" style="opacity:{{data.vc_transparency/100}}">
+				<ion-list class="limit-child-height">
+					<!-- <ion-checkbox ng-repeat="event in data.eventList | orderBy: '-start'" ng-model="exportEvent[event.id]">
+						{{event.start | date:'medium'}} - {{event.event.name}} - {{event.team}}
+					</ion-checkbox> -->
+					<a class="item item-icon-left" ng-click="showPlaybackVideo(video)" ng-repeat="video in data.videos | orderBy: '-id'">
+						<i class="icon" ng-if="video.state !== 'Finished'"><ion-spinner></ion-spinner></i>
+						<i class="icon ion-play" ng-if="video.state === 'Finished'"></i> {{video.file_name}}
+						<span class="item-note">
+								 <span>{{video.state}}</span>
+						</span>
+					</a>
+				</ion-list>
+				<ion-item style="text-align: center;background: none;border: none;">
+					<button class="button button-block gm-btn-white" ng-click="hidePlaybackList()">Close</button>
+				</ion-item>
+			</div>
+			<div class="panel panel-modal playback-modal" ng-class="(showPlaybackVideoModal) ? 'slide-up' : 'slide-down'" id="playback-video-modal" ng-show="showPlaybackVideoModal" style="width: 80%;left: 10%;height: 75%;">
+				<ion-header-bar class="bar bar-header bar-positive">
+					<button class="button button-clear button-primary" ng-click="hidePlaybackVideo()">Close</button>
+				</ion-header-bar>
+				<ion-content padding="false">
+					<!-- <div id="playbackVideoHolder" class="is-closeable"></div> -->
+					<videogular  vg-update-time="onUpdateTime($currentTime, $duration)" vg-theme="config.theme.url" vg-native-fullscreen="false" vg-plays-inline="'true'" vg-native-controls="false" >
+						<vg-media vg-src="config.sources">
+						</vg-media>
+						<!-- <vg-controls vg-autohide="config.plugins.controls.autoHide" vg-autohide-time="config.plugins.controls.autoHideTime"> -->
+						<vg-controls>
+							<vg-play-pause-button></vg-play-pause-button>
+							<vg-time-display>{{ currentTime | date:'mm:ss':'+0000' }}</vg-time-display>
+							<vg-scrub-bar>
+								<vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+							</vg-scrub-bar>
+							<vg-time-display>{{ timeLeft | date:'mm:ss':'+0000' }}</vg-time-display>
+							<vg-time-display>{{ totalTime | date:'mm:ss':'+0000' }}</vg-time-display>
+							<!-- <vg-volume>
+								<vg-mute-button></vg-mute-button>
+								<vg-volume-bar></vg-volume-bar>
+							</vg-volume> -->
+							<vg-playback-button></vg-playback-button>
+							<!-- <vg-fullscreen-button></vg-fullscreen-button> -->
+						</vg-controls>
+						<vg-buffering></vg-buffering>
+						<vg-overlay-play></vg-overlay-play>
+					</videogular>
+				</ion-content>
+			</div>
+		</div>
 	</ion-content>
 </ion-view>

@@ -5,6 +5,7 @@ angular.module('login.controller', []).controller('LoginCtrl', function($rootSco
     if ($scope.data.username === "admin" && $scope.data.password === "admin") {
       $rootScope.user = {
         validated: true,
+				id: 1,
         cameras: [{
           name: "Dahua Stream Example",
           type: "Dahua",

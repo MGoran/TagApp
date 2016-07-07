@@ -121,6 +121,7 @@ angular.module('recorder.service', []).service('recorder', function($http) {
         "method": "POST",
         "data": data
       }
+			console.log(settings);
       return $http(settings)
     }
     //Delete Queued video export

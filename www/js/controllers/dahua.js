@@ -1,4 +1,4 @@
-angular.module('dahua.controller', []).controller('DahuaCtrl', function($rootScope, $scope, $ionicModal, $timeout, $state, $interval, $http, $ionicPopup, $interval, recorder) {
+angular.module('dahua.controller', []).controller('DahuaCtrl', function($rootScope, $scope, $ionicModal, $timeout, $state, $interval, $http, $ionicPopup, $interval, $sce, recorder) {
   $scope.team = [];
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     if (!$rootScope.isUser()) {
@@ -68,10 +68,69 @@ angular.module('dahua.controller', []).controller('DahuaCtrl', function($rootSco
       console.log(err);
     });
   }
+  $scope.onUpdateTime = function(currentTime, totalTime) {
+    $timeout(function() {
+      $scope.currentTime = currentTime;
+      $scope.totalTime = totalTime;
+    })
+  };
+  $scope.showPlaybackVideoModal = false;
+  $scope.showPlaybackVideo = function(video) {
+    console.log(video);
+    var video_src = $rootScope.selectedCam.recorder_ip + "/download/" + $scope.data.recordingDetails.directory + "/Export/" + video.file_name;
+    video_src = encodeURI(video_src);
+    console.log(video_src)
+      //video_src = "http://82.176.144.239:5050/download/2016-07-07-14-03-05/Export/Event_2016-07-07-14-03-46-048_Event%201_Swiss.mp4"
+    $scope.showPlaybackVideoModal = true;
+    // flowplayer("#playbackVideoHolder", {
+    //   splash: true,
+    //   embed: false,
+    //   ratio: 9 / 16,
+    //   clip: {
+    //     live: true,
+    //     sources: [{
+    //       type: 'video/mp4',
+    //       src: video_src
+    //     }]
+    //   }
+    //
+    // });
+    //video_src = "videos/example2.mp4"
+    $scope.config = {
+      preload: "auto",
+      sources: [{
+        src: $sce.trustAsResourceUrl(video_src),
+        type: "video/mp4"
+      }],
+      theme: {
+        url: "http://www.videogular.com/styles/themes/default/latest/videogular.css"
+      },
+      plugins: {
+        controls: {
+          autoHide: false,
+          autoHideTime: 3000
+        }
+      }
+    };
+  }
+  $scope.hidePlaybackVideo = function() {
+    $scope.showPlaybackVideoModal = false;
+  }
+  $scope.showPlaybackListModal = false;
+  $scope.showPlaybackList = function() {
+    //$scope.getEventList();
+    $scope.getRecordingDetails();
+    $scope.getExportQueue();
+    $scope.showPlaybackListModal = true;
+  }
+  $scope.hidePlaybackList = function() {
+    $scope.showPlaybackListModal = false;
+  }
   $scope.showEventListModal = false;
   $scope.showEventList = function() {
     $scope.getEventList();
-		$scope.getRecordingDetails();
+    $scope.getRecordingDetails();
+    $scope.getExportQueue();
     $scope.showEventListModal = true;
   }
   $scope.hideEventList = function() {
@@ -82,8 +141,12 @@ angular.module('dahua.controller', []).controller('DahuaCtrl', function($rootSco
     promise.then(
       function(response) {
         $scope.data.recorder = response.data;
+        $scope.data.setStartTime = new Date().getTime() - response.data.duration;
         console.log($scope.data);
         $scope.getTeamNames($rootScope.selectedCam.recorder_ip, $scope.data.recorder.recording_id);
+        $scope.getEventList();
+        $scope.getRecordingDetails();
+        $scope.data.lastEvent = false;
       },
       function(error) {
         console.log(error)
@@ -91,46 +154,84 @@ angular.module('dahua.controller', []).controller('DahuaCtrl', function($rootSco
     );
   }
   $scope.setStateOfRecorder = function(run) {
+
     var data = {
       "recording": run,
       "streaming": run
     }
-    var promise = recorder.setStateOfRecorder($rootScope.selectedCam.recorder_ip, data);
-    promise.then(
-      function(response) {
-        console.log(response);
-        //$scope.data.recorder = response.data;
-        $scope.getStateOfRecorder();
-      },
-      function(error) {
-        console.log(error)
-      }
-    );
+    if (!run) {
+      var confirmPopup = $ionicPopup.confirm({
+        title: 'Stop Recorder',
+        template: 'Are you sure you want to stop recorder?'
+      });
+      confirmPopup.then(function(res) {
+        if (res) {
+          $scope.showLoading();
+          var promise = recorder.setStateOfRecorder($rootScope.selectedCam.recorder_ip, data);
+          promise.then(
+            function(response) {
+              console.log(response);
+              //$scope.data.recorder = response.data;
+              $scope.getStateOfRecorder();
+              $scope.hideLoading();
+            },
+            function(error) {
+              console.log(error);
+              $scope.hideLoading();
+            }
+          );
+        } else {
+
+        }
+      });
+    } else {
+      $scope.showLoading();
+      var promise = recorder.setStateOfRecorder($rootScope.selectedCam.recorder_ip, data);
+      promise.then(
+        function(response) {
+          console.log(response);
+          //$scope.data.recorder = response.data;
+          $scope.getStateOfRecorder();
+          $scope.hideLoading();
+        },
+        function(error) {
+          console.log(error);
+          $scope.hideLoading();
+        }
+      );
+    }
   }
   $scope.getCameraProfiles = function() {
+    $scope.showLoading();
     var promise = recorder.getCameraProfiles($rootScope.selectedCam.recorder_ip);
     promise.then(
       function(response) {
         $scope.data.cameraProfiles = response;
+        $scope.hideLoading();
       },
       function(error) {
-        console.log(error)
+        console.log(error);
+        $scope.hideLoading();
       }
     );
   }
   $scope.getEventTypes = function() {
+    $scope.showLoading();
     var promise = recorder.getEventTypes($rootScope.selectedCam.recorder_ip);
     promise.then(
       function(response) {
         $scope.data.event_types = response.data.list;
         console.log($scope.data);
+        $scope.hideLoading();
       },
       function(error) {
-        console.log(error)
+        console.log(error);
+        $scope.hideLoading();
       }
     );
   }
   $scope.getEventList = function() {
+    $scope.showLoading();
     var promise = recorder.getEventList($rootScope.selectedCam.recorder_ip, $scope.data.recorder.recording_id);
     promise.then(
       function(response) {
@@ -151,22 +252,27 @@ angular.module('dahua.controller', []).controller('DahuaCtrl', function($rootSco
           $scope.data.eventList[i].stop = date;
           $scope.data.eventList[i].length = ($scope.data.eventList[i].stop - $scope.data.eventList[i].start) / 1000;
         }
-        console.log($rootScope.eventList);
+        console.log($rootScope.data);
+        $scope.hideLoading();
       },
       function(error) {
-        console.log(error)
+        console.log(error);
+        $scope.hideLoading();
       }
     );
   }
   $scope.getTeamNames = function(ip, recording_id) {
+    $scope.showLoading();
     var promise = recorder.getTeamNames(ip, recording_id);
     promise.then(
       function(response) {
         $scope.data.teams = response.data;
         console.log($scope.data);
+        $scope.hideLoading();
       },
       function(error) {
-        console.log(error)
+        console.log(error);
+        $scope.hideLoading();
       }
     );
   }
@@ -214,18 +320,22 @@ angular.module('dahua.controller', []).controller('DahuaCtrl', function($rootSco
       "team_id": team_id,
       "recording_id": $scope.data.recorder.recording_id,
     }
+    var event_name = event.name;
+    var team_name = $scope.data.teams.team[team_id - 1].name;
+    $scope.showLoading();
     var promise = recorder.setEvent($rootScope.selectedCam.recorder_ip, data);
     promise.then(
       function(response) {
-				console.log(response);
+        console.log(response);
         var event_id = response.data.id;
+        $scope.data.lastEvent = event_id;
         var recording_id = response.data.recording_id;
         var data = {
           recording_id: recording_id,
-          selections: {
-            event_id: event_id
-          },
-					file_name: event_id + "-" + recording_id + "-" + response.data.time
+          //selections: {
+          event_id: event_id,
+          //},
+          file_name: "" + event_name + "-Evt-" + recording_id + "-Rec-" + team_name + "-Team-" + response.data.time
         }
         var exp_promise = recorder.queueExport($rootScope.selectedCam.recorder_ip, data);
         exp_promise.then(
@@ -233,7 +343,8 @@ angular.module('dahua.controller', []).controller('DahuaCtrl', function($rootSco
             console.log("exported");
             console.log(response);
             $scope.getEventList();
-						$scope.getRecordingDetails();
+            $scope.getRecordingDetails();
+            $scope.getExportQueue();
           },
           function(error) {
             console.log(error);
@@ -246,13 +357,14 @@ angular.module('dahua.controller', []).controller('DahuaCtrl', function($rootSco
     );
   }
   $scope.exportSelectedEvents = function() {
+    $scope.showLoading();
     var selections = [];
     angular.forEach($scope.data.exportEvent, function(value, key) {
       if (value == true) selections.push({
         event_id: key
       })
     });
-    var data= {
+    var data = {
       recording_id: $rootScope.data.recorder.recording_id,
       selections: selections
     }
@@ -260,6 +372,7 @@ angular.module('dahua.controller', []).controller('DahuaCtrl', function($rootSco
     promise.then(
       function(response) {
         console.log(response);
+        $scope.hideLoading();
         var alertPopup = $ionicPopup.alert({
           title: 'Success',
           template: "Selected Events added for export"
@@ -270,19 +383,40 @@ angular.module('dahua.controller', []).controller('DahuaCtrl', function($rootSco
         });
       },
       function(error) {
-        console.log(error)
+        console.log(error);
+        $scope.hideLoading();
       }
     );
   }
-	$scope.getRecordingDetails = function(){
-		var promise = recorder.getDetailsOfRecording($rootScope.selectedCam.recorder_ip, $scope.data.recorder.recording_id);
-		promise.then(
-			function(response) {
-				console.log(response);
-			},
-			function(error) {
-				console.log(error);
-			}
-		)
-	}
+  $scope.getRecordingDetails = function() {
+    $scope.showLoading();
+    var promise = recorder.getDetailsOfRecording($rootScope.selectedCam.recorder_ip, $scope.data.recorder.recording_id);
+    promise.then(
+      function(response) {
+        $scope.data.playbackList = response.data.export;
+        $scope.data.recordingDetails = response.data;
+        console.log($scope.data);
+        $scope.hideLoading();
+      },
+      function(error) {
+        console.log(error);
+        $scope.hideLoading();
+      }
+    )
+  }
+  $scope.getExportQueue = function() {
+    $scope.showLoading();
+    var promise = recorder.getExportQueue($rootScope.selectedCam.recorder_ip);
+    promise.then(
+      function(response) {
+        console.log(response);
+        $scope.data.videos = response.data.export;
+        $scope.hideLoading();
+      },
+      function(error) {
+        console.log(error);
+        $scope.hideLoading();
+      }
+    )
+  }
 });

@@ -2,6 +2,10 @@
 0.0.11
 -Changes in UI
 -Enabling all recorder functions on Stream screens
+-Recording current time
+-Show list of exported videos
+-Show videos being processed
+-Exit to Home screen
 
 "# TagApp"
 0.0.10
