@@ -30,7 +30,8 @@ angular.module('login.controller', []).controller('LoginCtrl', function($rootSco
         }, {
           name: "Panofield Example",
           type: "Panofield",
-          ip: "http://84.104.56.233:9090",
+					ip: "http://84.104.56.233:8080",
+          recorder_ip: "http://84.104.56.233:9090",
           user: "",
           pass: ""
         }]

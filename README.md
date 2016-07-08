@@ -1,4 +1,8 @@
 "# TagApp"
+0.0.12
+-Panofield screen adaptaton to new features
+
+"# TagApp"
 0.0.11
 -Changes in UI
 -Enabling all recorder functions on Stream screens

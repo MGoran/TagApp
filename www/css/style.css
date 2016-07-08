@@ -144,12 +144,15 @@ videogular div#joystick {
   padding: 0;
   margin: 0;
 }
+.panel{
+	z-index:9999999;
+}
 div.panel-top-controlls {
   position: absolute;
   display: block;
   z-index: 50;
   top: 0;
-	padding-top:20px;
+  padding-top: 20px;
   /*height: 60px;*/
   width: 100%;
   /*background-color: rgba(25, 25, 25, 0.5);*/
@@ -165,7 +168,7 @@ div.panel-left-2 {
   position: absolute;
   display: block;
   z-index: 50;
-	left:50px;
+  left: 50px;
   top: 75px;
   /*background-color: rgba(25, 25, 25, 0.5);*/
 }
@@ -271,9 +274,11 @@ videogular .video_controlls {
   left: 0;
 }
 .mjpeg_controls {
-  position: absolute;
+  position: fixed;
   width: 100%;
   height: 100%;
+  top: 0;
+  /*z-index: 9999999;*/
 }
 @-webkit-keyframes slideUp {
   0% {
@@ -318,6 +323,7 @@ videogular .video_controlls {
 #hlsjslive {
   background-color: #2f2f4f;
   height: 100%;
+  z-index: 0;
 }
 .gm-btn-height {
   height: 75px;
@@ -532,7 +538,10 @@ videogular .video_controlls {
   max-height: 465px;
   overflow: scroll;
 }
-.playback-modal{
-	background:black !important;
-	opacity:1;
+.playback-modal {
+  background: black !important;
+  opacity: 1;
+}
+.flowplayer.is-error {
+  background: none;
 }

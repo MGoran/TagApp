@@ -1,8 +1,10 @@
-angular.module('panofield.controller', []).controller('PanofieldCtrl', function($rootScope, $scope, $ionicModal, $timeout, $state, $interval, $http, $ionicPopup) {
+angular.module('panofield.controller', []).controller('PanofieldCtrl', function($rootScope, $scope, $ionicModal, $timeout, $state, $interval, $http, $ionicPopup, $interval, $sce, recorder) {
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     if (!$rootScope.isUser()) {
       $state.go('login')
     }
+    $scope.getEventTypes();
+    $scope.getStateOfRecorder();
   });
   flowplayer("#hlsjslive", {
     splash: true,
@@ -18,6 +20,13 @@ angular.module('panofield.controller', []).controller('PanofieldCtrl', function(
     }
 
   });
+  $scope.blinkingColor = "white";
+  $interval(function() {
+    if ($scope.blinkingColor === "red")
+      $scope.blinkingColor = "white";
+    else
+      $scope.blinkingColor = "red";
+  }, 1000);
   $scope.showEventListModal = false;
   $scope.showEventList = function() {
     $scope.showEventListModal = true;
@@ -41,26 +50,11 @@ angular.module('panofield.controller', []).controller('PanofieldCtrl', function(
       $state.go('app.events');
     });
   }
-  $rootScope.checkStatus = function() {
-    var settings = {
-      "async": true,
-      "crossDomain": true,
-      "url": $rootScope.selectedCam.ip + "/api/recorder",
-      "method": "GET",
-    }
-    $http(settings).then(function(response) {
-      console.log(response);
-      $rootScope.recorderStarted = response.data.recording;
-      $rootScope.recording_id = response.data.recording_id;
-    }, function(err) {
-      console.log(err);
-    });
-  }
   $rootScope.ptzMove = function(direction) {
     var settings = {
       "async": true,
       "crossDomain": true,
-      "url": $rootScope.selectedCam.ip + "/api/ptz",
+      "url": $rootScope.selectedCam.recorder_ip + "/api/ptz",
       "method": "PUT",
       "data": JSON.stringify({
         "manual": true,
@@ -74,191 +68,209 @@ angular.module('panofield.controller', []).controller('PanofieldCtrl', function(
       console.log(err);
     });
   }
-  $rootScope.startRecorder = function() {
-    var settings = {
-      "async": true,
-      "crossDomain": true,
-      "url": $rootScope.selectedCam.ip + "/api/recorder",
-      "method": "PUT",
-      "data": JSON.stringify({
-        recording: true,
-        streaming: true
-      })
-    }
-    $http(settings).then(function(response) {
-      console.log(response);
-      if (response.data.error != "") txt = response.data.error;
-      else txt = 'Recorder started';
-      var alertPopup = $ionicPopup.alert({
-        title: 'Recorder',
-        template: txt
-      });
-
-      alertPopup.then(function(res) {
-        console.log('Ok');
-        $scope.checkStatus();
-      });
-    }, function(err) {
-      console.log(err);
-    });
-  }
-  $rootScope.stopRecorder = function() {
-    var settings = {
-      "async": true,
-      "crossDomain": true,
-      "url": $rootScope.selectedCam.ip + "/api/recorder",
-      "method": "PUT",
-      "data": "{\"recording\":false}",
-      // 'headers': {'Content-Type': 'text/plain'}
-    }
-    console.log(settings);
-    $http(settings).then(function(response) {
-      console.log(response);
-      var alertPopup = $ionicPopup.alert({
-        title: 'Recorder',
-        template: 'Recorder stoped'
-      });
-
-      alertPopup.then(function(res) {
-        console.log('Ok');
-        $scope.checkStatus();
-      });
-    }, function(err) {
-      console.log(err);
-    });
-  }
-  $scope.checkStatus();
-  $rootScope.team = [];
-  $scope.checkCurrentEvents = function() {
-    if ($rootScope.recording_id != undefined) {
-      console.log($rootScope.recording_id);
-      var settings = {
-        "async": true,
-        "crossDomain": true,
-        "url": $rootScope.selectedCam.ip + "/api/event?recording_id=" + $rootScope.recording_id,
-        "method": "GET",
-      }
-      $http(settings).then(function(response) {
-        console.log(response);
-        $rootScope.team[1] = response.data.team[0].name;
-        $rootScope.team[2] = response.data.team[1].name;
-        $rootScope.eventList = response.data.list;
-
-        for (i = 0; i < $rootScope.eventList.length; i++) {
-          $rootScope.eventList[i].event = $rootScope.events[$rootScope.eventList[i].event_type_id - 1];
-          $rootScope.eventList[i].team = $rootScope.team[$rootScope.eventList[i].team_id];
-
-          var dateStr = $rootScope.eventList[i].begin.split("-");
-          var date = new Date(dateStr[0], dateStr[1], dateStr[2], dateStr[3], dateStr[4], dateStr[5]);
-          $rootScope.eventList[i].start = date;
-          var dateStr = $rootScope.eventList[i].end.split("-");
-          var date = new Date(dateStr[0], dateStr[1], dateStr[2], dateStr[3], dateStr[4], dateStr[5]);
-          $rootScope.eventList[i].stop = date;
-          $rootScope.eventList[i].length = ($rootScope.eventList[i].stop - $rootScope.eventList[i].start) / 1000;
-
-
+  $scope.onUpdateTime = function(currentTime, totalTime) {
+    $timeout(function() {
+      $scope.currentTime = currentTime;
+      $scope.totalTime = totalTime;
+    })
+  };
+  $scope.showPlaybackVideoModal = false;
+  $scope.showPlaybackVideo = function(video) {
+    console.log(video);
+    var video_src = $rootScope.selectedCam.recorder_ip + "/download/" + $scope.data.recordingDetails.directory + "/Export/" + video.file_name;
+    video_src = encodeURI(video_src);
+    console.log(video_src)
+    $scope.showPlaybackVideoModal = true;
+    //video_src = "videos/example2.mp4"
+    $scope.config = {
+      preload: "auto",
+      sources: [{
+        src: $sce.trustAsResourceUrl(video_src),
+        type: "video/mp4"
+      }],
+      theme: {
+        url: "http://www.videogular.com/styles/themes/default/latest/videogular.css"
+      },
+      plugins: {
+        controls: {
+          autoHide: false,
+          autoHideTime: 3000
         }
-        console.log($rootScope.eventList);
-      }, function(err) {
-        console.log(err);
-      });
-    } else {
-      var settings = {
-        "async": true,
-        "crossDomain": true,
-        "url": $rootScope.selectedCam.ip + "/api/recorder",
-        "method": "GET",
       }
-      $http(settings).then(function(response) {
-        console.log(response);
-        $rootScope.recording_id = response.data.recording_id;
-        $scope.checkCurrentEvents();
-      }, function(err) {
-        console.log(err);
-      });
-    }
+    };
   }
-  $scope.checkCurrentEvents();
-  if ($rootScope.events === undefined) {
-    var settings = {
-      "async": true,
-      "crossDomain": true,
-      "url": $rootScope.selectedCam.ip + "/api/event_type",
-      "method": "GET",
-    }
-    $http(settings).then(function(response) {
-      console.log(response);
-      $rootScope.events = response.data.list;
-    }, function(err) {
-      console.log(err);
-    });
+  $scope.hidePlaybackVideo = function() {
+    $scope.showPlaybackVideoModal = false;
   }
-  $scope.setEvent = function(event, team_id) {
-    var settings = {
-      "async": true,
-      "crossDomain": true,
-      "url": $rootScope.selectedCam.ip + "/api/event",
-      "method": "POST",
-      "data": {
-        'event_type_id': event.id,
-        team_id: team_id
+  $scope.showPlaybackListModal = false;
+  $scope.showPlaybackList = function() {
+    //$scope.getEventList();
+    $scope.getRecordingDetails();
+    $scope.getExportQueue();
+    $scope.showPlaybackListModal = true;
+  }
+  $scope.hidePlaybackList = function() {
+    $scope.showPlaybackListModal = false;
+  }
+  $scope.showEventListModal = false;
+  $scope.showEventList = function() {
+    $scope.getEventList();
+    $scope.getRecordingDetails();
+    $scope.getExportQueue();
+    $scope.showEventListModal = true;
+  }
+  $scope.hideEventList = function() {
+    $scope.showEventListModal = false;
+  }
+  $scope.getStateOfRecorder = function() {
+    var promise = recorder.getStateOfRecorder($rootScope.selectedCam.recorder_ip);
+    promise.then(
+      function(response) {
+        $scope.data.recorder = response.data;
+        $scope.data.setStartTime = new Date().getTime() - response.data.duration;
+        console.log($scope.data);
+        $scope.getTeamNames($rootScope.selectedCam.recorder_ip, $scope.data.recorder.recording_id);
+        $scope.getEventList();
+        $scope.getRecordingDetails();
+        $scope.data.lastEvent = false;
+				$scope.hideLoading();
+      },
+      function(error) {
+        console.log(error);
+				$scope.hideLoading();
       }
-    }
-    $http(settings).then(function(response) {
-      console.log(response);
-      $scope.checkCurrentEvents();
-      var event_id = response.data.id;
-      var recording_id = response.data.recording_id;
-      var confirmPopup = $ionicPopup.confirm({
-        title: 'Event Added',
-        template: 'Export this event?',
-        cancelText: 'No',
-        okText: 'Yes'
-      });
+    );
+  }
+  $scope.setStateOfRecorder = function(run) {
 
+    var data = {
+      "recording": run,
+      "streaming": run
+    }
+    if (!run) {
+      var confirmPopup = $ionicPopup.confirm({
+        title: 'Stop Recorder',
+        template: 'Are you sure you want to stop recorder?'
+      });
       confirmPopup.then(function(res) {
         if (res) {
-          console.log('Export');
-          var settings = {
-            "async": true,
-            "crossDomain": true,
-            "url": $rootScope.selectedCam.ip + "/api/export",
-            "method": "POST",
-            "data": JSON.stringify({
-              recording_id: recording_id,
-              selections: {
-                event_id: event_id
-              }
-            }),
-          }
-          console.log(settings);
-          $http(settings).then(function(response) {
-            console.log(response);
-          }, function(err) {
-            console.log(err);
-          });
+          $scope.showLoading();
+          var promise = recorder.setStateOfRecorder($rootScope.selectedCam.recorder_ip, data);
+          promise.then(
+            function(response) {
+              console.log(response);
+              //$scope.data.recorder = response.data;
+              $scope.getStateOfRecorder();
+              $scope.hideLoading();
+            },
+            function(error) {
+              console.log(error);
+              $scope.hideLoading();
+            }
+          );
         } else {
-          console.log('Dont Export');
+
         }
       });
+    } else {
+      $scope.showLoading();
+      var promise = recorder.setStateOfRecorder($rootScope.selectedCam.recorder_ip, data);
+      promise.then(
+        function(response) {
+          console.log(response);
+          //$scope.data.recorder = response.data;
+          $scope.getStateOfRecorder();
+          $scope.hideLoading();
+        },
+        function(error) {
+          console.log(error);
+          $scope.hideLoading();
+        }
+      );
+    }
+  }
+  $scope.getCameraProfiles = function() {
+    $scope.showLoading();
+    var promise = recorder.getCameraProfiles($rootScope.selectedCam.recorder_ip);
+    promise.then(
+      function(response) {
+        $scope.data.cameraProfiles = response;
+        $scope.hideLoading();
+      },
+      function(error) {
+        console.log(error);
+        $scope.hideLoading();
+      }
+    );
+  }
+  $scope.getEventTypes = function() {
+		console.log("Get event Types")
+    $scope.showLoading();
+    var promise = recorder.getEventTypes($rootScope.selectedCam.recorder_ip);
+    promise.then(
+      function(response) {
+        $scope.data.event_types = response.data.list;
+        console.log($scope.data);
+        $scope.hideLoading();
+      },
+      function(error) {
+        console.log(error);
+        $scope.hideLoading();
+      }
+    );
+  }
+  $scope.getEventList = function() {
+    $scope.showLoading();
+		$scope.team = [];
+    var promise = recorder.getEventList($rootScope.selectedCam.recorder_ip, $scope.data.recorder.recording_id);
+    promise.then(
+      function(response) {
+        console.log(response);
+        $scope.team[1] = response.data.team[0].name;
+        $scope.team[2] = response.data.team[1].name;
+        $scope.data.eventList = response.data.list;
 
-    }, function(err) {
-      console.log(err);
-      var alertPopup = $ionicPopup.alert({
-        title: 'Problem',
-        template: err.data.error
-      });
+        for (i = 0; i < $scope.data.eventList.length; i++) {
+          $scope.data.eventList[i].event = $scope.data.event_types[$scope.data.eventList[i].event_type_id - 1];
+          $scope.data.eventList[i].team = $scope.team[$scope.data.eventList[i].team_id];
 
-      alertPopup.then(function(res) {
-        console.log('Ok');
-      });
-    });
+          var dateStr = $scope.data.eventList[i].begin.split("-");
+          var date = new Date(dateStr[0], dateStr[1], dateStr[2], dateStr[3], dateStr[4], dateStr[5]);
+          $scope.data.eventList[i].start = date;
+          var dateStr = $scope.data.eventList[i].end.split("-");
+          var date = new Date(dateStr[0], dateStr[1], dateStr[2], dateStr[3], dateStr[4], dateStr[5]);
+          $scope.data.eventList[i].stop = date;
+          $scope.data.eventList[i].length = ($scope.data.eventList[i].stop - $scope.data.eventList[i].start) / 1000;
+        }
+        console.log($rootScope.data);
+        $scope.hideLoading();
+      },
+      function(error) {
+        console.log(error);
+        $scope.hideLoading();
+      }
+    );
+  }
+  $scope.getTeamNames = function(ip, recording_id) {
+    $scope.showLoading();
+    var promise = recorder.getTeamNames(ip, recording_id);
+    promise.then(
+      function(response) {
+        $scope.data.teams = response.data;
+        console.log($scope.data);
+        $scope.hideLoading();
+      },
+      function(error) {
+        console.log(error);
+        $scope.hideLoading();
+      }
+    );
   }
   $scope.changeTeamName = function(team) {
     var myPopup = $ionicPopup.show({
       template: '<input type="text" ng-model="data.teamname">',
       title: 'Enter new name for Team' + team,
-      subTitle: 'Current Team name is: ' + $rootScope.team[team],
+      subTitle: 'Current Team name is: ' + $scope.data.teams.team[team - 1].name,
       scope: $scope,
       buttons: [{
         text: 'Cancel'
@@ -271,77 +283,132 @@ angular.module('panofield.controller', []).controller('PanofieldCtrl', function(
             console.log("skip")
               //e.preventDefault();
           } else {
-            var settings = {
-              "async": true,
-              "crossDomain": true,
-              "url": $rootScope.selectedCam.ip + "/api/team",
-              "method": "PUT",
-              "data": JSON.stringify({
-                team_id: team,
-                name: $scope.data.teamname
-              }),
+            data = {
+              team_id: team,
+              name: $scope.data.teamname
             }
-            $http(settings).then(function(response) {
-              console.log(response);
-              $scope.checkCurrentEvents();
-            }, function(err) {
-              console.log(err);
-            });
+            $scope.data.teamname = "";
+            var promise = recorder.setTeamName($rootScope.selectedCam.recorder_ip, $scope.data.recorder.recording_id);
+            promise.then(
+              function(response) {
+                //$scope.data.teams = response.data;
+                console.log($scope.data);
+                $scope.getTeamNames($rootScope.selectedCam.recorder_ip, $scope.data.recorder.recording_id);
+              },
+              function(error) {
+                console.log(error)
+              }
+            );
           }
         }
       }]
     });
   }
-  $scope.exportEvent = [];
+  $scope.setEvent = function(event, team_id) {
+    var data = {
+      "event_type_id": event.id,
+      "team_id": team_id,
+      "recording_id": $scope.data.recorder.recording_id,
+    }
+    var event_name = event.name;
+    var team_name = $scope.data.teams.team[team_id - 1].name;
+    $scope.showLoading();
+    var promise = recorder.setEvent($rootScope.selectedCam.recorder_ip, data);
+    promise.then(
+      function(response) {
+        console.log(response);
+        var event_id = response.data.id;
+        $scope.data.lastEvent = event_id;
+        var recording_id = response.data.recording_id;
+        var data = {
+          recording_id: recording_id,
+          //selections: {
+          event_id: event_id,
+          //},
+          file_name: "" + event_name + "-Evt-" + recording_id + "-Rec-" + team_name + "-Team-" + response.data.time
+        }
+        var exp_promise = recorder.queueExport($rootScope.selectedCam.recorder_ip, data);
+        exp_promise.then(
+          function(response) {
+            console.log("exported");
+            console.log(response);
+            $scope.getEventList();
+            $scope.getRecordingDetails();
+            $scope.getExportQueue();
+						$scope.hideLoading();
+          },
+          function(error) {
+            console.log(error);
+						$scope.hideLoading();
+          }
+        )
+      },
+      function(error) {
+        console.log(error)
+      }
+    );
+  }
   $scope.exportSelectedEvents = function() {
+    $scope.showLoading();
     var selections = [];
-    angular.forEach($scope.exportEvent, function(value, key) {
+    angular.forEach($scope.data.exportEvent, function(value, key) {
       if (value == true) selections.push({
         event_id: key
       })
     });
-    var settings = {
-      "async": true,
-      "crossDomain": true,
-      "url": $rootScope.selectedCam.ip + "/api/export",
-      "method": "POST",
-      "data": JSON.stringify({
-        recording_id: $rootScope.recording_id,
-        selections: selections
-      }),
+    var data = {
+      recording_id: $rootScope.data.recorder.recording_id,
+      selections: selections
     }
-    console.log(settings);
-    $http(settings).then(function(response) {
-      console.log(response);
-      var alertPopup = $ionicPopup.alert({
-        title: 'Success',
-        template: "Selected Events added for export"
-      });
+    var promise = recorder.queueExport($rootScope.selectedCam.recorder_ip, data);
+    promise.then(
+      function(response) {
+        console.log(response);
+        $scope.hideLoading();
+        var alertPopup = $ionicPopup.alert({
+          title: 'Success',
+          template: "Selected Events added for export"
+        });
 
-      alertPopup.then(function(res) {
-        console.log('Ok');
-      });
-    }, function(err) {
-      console.log(err);
-    });
+        alertPopup.then(function(res) {
+          console.log('Ok');
+        });
+      },
+      function(error) {
+        console.log(error);
+        $scope.hideLoading();
+      }
+    );
   }
-  $scope.deleteEvent = function(event) {
-    console.log(event);
-    var settings = {
-      "async": true,
-      "crossDomain": true,
-      "url": $rootScope.selectedCam.ip + "/api/event",
-      "method": "DELETE",
-      "data": JSON.stringify({
-        event_id: event.id
-      }),
-    }
-    console.log(settings);
-    $http(settings).then(function(response) {
-      console.log(response);
-      $scope.checkCurrentEvents();
-    }, function(err) {
-      console.log(err);
-    });
+  $scope.getRecordingDetails = function() {
+    $scope.showLoading();
+    var promise = recorder.getDetailsOfRecording($rootScope.selectedCam.recorder_ip, $scope.data.recorder.recording_id);
+    promise.then(
+      function(response) {
+        $scope.data.playbackList = response.data.export;
+        $scope.data.recordingDetails = response.data;
+        console.log($scope.data);
+        $scope.hideLoading();
+      },
+      function(error) {
+        console.log(error);
+        $scope.hideLoading();
+      }
+    )
+  }
+  $scope.getExportQueue = function() {
+    $scope.showLoading();
+    var promise = recorder.getExportQueue($rootScope.selectedCam.recorder_ip);
+    promise.then(
+      function(response) {
+        console.log(response);
+        $scope.data.videos = response.data.export;
+        $scope.hideLoading();
+      },
+      function(error) {
+        console.log(error);
+        $scope.hideLoading();
+      }
+    )
   }
 });

@@ -80,21 +80,7 @@ angular.module('dahua.controller', []).controller('DahuaCtrl', function($rootSco
     var video_src = $rootScope.selectedCam.recorder_ip + "/download/" + $scope.data.recordingDetails.directory + "/Export/" + video.file_name;
     video_src = encodeURI(video_src);
     console.log(video_src)
-      //video_src = "http://82.176.144.239:5050/download/2016-07-07-14-03-05/Export/Event_2016-07-07-14-03-46-048_Event%201_Swiss.mp4"
     $scope.showPlaybackVideoModal = true;
-    // flowplayer("#playbackVideoHolder", {
-    //   splash: true,
-    //   embed: false,
-    //   ratio: 9 / 16,
-    //   clip: {
-    //     live: true,
-    //     sources: [{
-    //       type: 'video/mp4',
-    //       src: video_src
-    //     }]
-    //   }
-    //
-    // });
     //video_src = "videos/example2.mp4"
     $scope.config = {
       preload: "auto",
