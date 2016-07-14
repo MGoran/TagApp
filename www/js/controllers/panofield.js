@@ -1,4 +1,6 @@
-angular.module('panofield.controller', []).controller('PanofieldCtrl', function($rootScope, $scope, $ionicModal, $timeout, $state, $interval, $http, $ionicPopup, $interval, $sce, recorder) {
+angular.module('panofield.controller', []).controller('PanofieldCtrl', function($rootScope, $scope, $ionicModal, $timeout, $state, $interval, $http, $ionicPopup, $interval, $sce, $cordovaFileTransfer, recorder) {
+  $scope.data = {};
+  $scope.data.downloadingPlayback = false;
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     if (!$rootScope.isUser()) {
       $state.go('login')
@@ -74,18 +76,103 @@ angular.module('panofield.controller', []).controller('PanofieldCtrl', function(
       $scope.totalTime = totalTime;
     })
   };
+
+  $scope.isDownloaded = function() {
+		$scope.fileExists = [];
+		console.log($scope.data.videos.length);
+    for (i = 0; i < $scope.data.videos.length; i++) {
+      var video = $scope.data.videos[i];
+			if(ionic.Platform.isAndroid()){
+	    	var targetPath = cordova.file.externalDataDirectory + video.file_name.replace(/\s+/g, '');
+			}else{
+				var targetPath = cordova.file.	documentsDirectory + video.file_name.replace(/\s+/g, '');
+			}
+      window.resolveLocalFileSystemURL(targetPath, function() {
+        $timeout(function() {
+          console.log("File Found");
+          $scope.fileExists.unshift(true);
+					console.log($scope.fileExists);
+        })
+      }, function() {
+        $timeout(function() {
+          $scope.fileExists.unshift(false);
+          console.log("File Not Found");
+					console.log($scope.fileExists);
+        })
+      });
+    }
+    return false;
+  }
   $scope.showPlaybackVideoModal = false;
   $scope.showPlaybackVideo = function(video) {
+    // $timeout(function() {
+    //   $scope.data.videos = $scope.data.videos;
+    // })
+
     console.log(video);
     var video_src = $rootScope.selectedCam.recorder_ip + "/download/" + $scope.data.recordingDetails.directory + "/Export/" + video.file_name;
     video_src = encodeURI(video_src);
-    console.log(video_src)
+    console.log(video_src);
+    var url = video_src;
+		if(ionic.Platform.isAndroid()){
+    	var targetPath = cordova.file.externalDataDirectory + video.file_name.replace(/\s+/g, '');
+		}else{
+			var targetPath = cordova.file.	documentsDirectory + video.file_name.replace(/\s+/g, '');
+		}
+    var trustHosts = true;
+    var options = {};
+    window.resolveLocalFileSystemURL(targetPath, function() {
+      console.log("file found");
+      $scope.startPlayback(targetPath);
+    }, function() {
+      console.log("file not found");
+      $scope.data.downloadingPlayback = true;
+      $cordovaFileTransfer.download(url, targetPath, options, trustHosts)
+        .then(function(result) {
+          console.log(result);
+          $scope.startPlayback(targetPath);
+          $scope.data.downloadingPlayback = false;
+					$scope.isDownloaded();
+        }, function(err) {
+          console.log(err);
+          $scope.data.downloadingPlayback = false;
+					$scope.isDownloaded();
+        }, function(progress) {
+          $timeout(function() {
+            $scope.downloadProgress = (progress.loaded / progress.total) * 100;
+            console.log($scope.downloadProgress);
+          });
+        });
+    });
+  }
+  $scope.video_src = "file:///storage/emulated/0/Android/data/com.ionicframework.panofieldcontroller439292/files/FreeKick-Evt-11-Rec-Team2-Team-2016-07-13-17-46-14-646.mp4";
+  $scope.startPlayback = function(targetPath) {
     $scope.showPlaybackVideoModal = true;
     //video_src = "videos/example2.mp4"
+    targetPath = decodeURI(targetPath);
+    console.log(targetPath);
+    // $timeout(function() {
+    //   $scope.video_src = "file:///storage/emulated/0/Android/data/com.ionicframework.panofieldcontroller439292/files/FreeKick-Evt-11-Rec-Team2-Team-2016-07-13-17-46-14-646.mp4";
+    // });
+    // flowplayer("#playbackVideoHolderPanofield", {
+    //   splash: true,
+    //   embed: false,
+    //   ratio: 9 / 16,
+    //   clip: {
+    //     live: false,
+    //     sources: [{
+    //       type: "video/mp4",
+    //       src: targetPath
+    //     }]
+    //   }
+    //
+    // });
     $scope.config = {
       preload: "auto",
+      autoPlay: false,
       sources: [{
-        src: $sce.trustAsResourceUrl(video_src),
+        // src: $sce.trustAsResourceUrl(targetPath),
+        src: targetPath,
         type: "video/mp4"
       }],
       theme: {
@@ -104,7 +191,7 @@ angular.module('panofield.controller', []).controller('PanofieldCtrl', function(
   }
   $scope.showPlaybackListModal = false;
   $scope.showPlaybackList = function() {
-    //$scope.getEventList();
+
     $scope.getRecordingDetails();
     $scope.getExportQueue();
     $scope.showPlaybackListModal = true;
@@ -133,11 +220,11 @@ angular.module('panofield.controller', []).controller('PanofieldCtrl', function(
         $scope.getEventList();
         $scope.getRecordingDetails();
         $scope.data.lastEvent = false;
-				$scope.hideLoading();
+        $scope.hideLoading();
       },
       function(error) {
         console.log(error);
-				$scope.hideLoading();
+        $scope.hideLoading();
       }
     );
   }
@@ -204,7 +291,7 @@ angular.module('panofield.controller', []).controller('PanofieldCtrl', function(
     );
   }
   $scope.getEventTypes = function() {
-		console.log("Get event Types")
+    console.log("Get event Types")
     $scope.showLoading();
     var promise = recorder.getEventTypes($rootScope.selectedCam.recorder_ip);
     promise.then(
@@ -221,7 +308,7 @@ angular.module('panofield.controller', []).controller('PanofieldCtrl', function(
   }
   $scope.getEventList = function() {
     $scope.showLoading();
-		$scope.team = [];
+    $scope.team = [];
     var promise = recorder.getEventList($rootScope.selectedCam.recorder_ip, $scope.data.recorder.recording_id);
     promise.then(
       function(response) {
@@ -335,11 +422,11 @@ angular.module('panofield.controller', []).controller('PanofieldCtrl', function(
             $scope.getEventList();
             $scope.getRecordingDetails();
             $scope.getExportQueue();
-						$scope.hideLoading();
+            $scope.hideLoading();
           },
           function(error) {
             console.log(error);
-						$scope.hideLoading();
+            $scope.hideLoading();
           }
         )
       },
@@ -404,6 +491,7 @@ angular.module('panofield.controller', []).controller('PanofieldCtrl', function(
         console.log(response);
         $scope.data.videos = response.data.export;
         $scope.hideLoading();
+				$scope.isDownloaded();
       },
       function(error) {
         console.log(error);

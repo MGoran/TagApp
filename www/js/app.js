@@ -16,6 +16,7 @@ angular.module('TagApp', [
   'settings.controller',
   'recorder.service',
   'timer',
+	'ngCordova',
   "ngSanitize",
   "com.2fdevs.videogular",
 	"com.2fdevs.videogular.plugins.controls",

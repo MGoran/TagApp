@@ -1,6 +1,7 @@
 "# TagApp"
 0.0.12
 -Panofield screen adaptaton to new features
+-Downloading playback functionality
 
 "# TagApp"
 0.0.11
