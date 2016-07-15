@@ -135,6 +135,7 @@ angular.module('panofield.controller', []).controller('PanofieldCtrl', function(
 					$scope.isDownloaded();
         }, function(err) {
           console.log(err);
+					alert(JSON.stringify(err));
           $scope.data.downloadingPlayback = false;
 					$scope.isDownloaded();
         }, function(progress) {
