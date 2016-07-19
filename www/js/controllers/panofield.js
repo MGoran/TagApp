@@ -82,11 +82,12 @@ angular.module('panofield.controller', []).controller('PanofieldCtrl', function(
 		console.log($scope.data.videos.length);
     for (i = 0; i < $scope.data.videos.length; i++) {
       var video = $scope.data.videos[i];
-			if(ionic.Platform.isAndroid()){
-	    	var targetPath = cordova.file.externalDataDirectory + video.file_name.replace(/\s+/g, '');
-			}else{
-				var targetPath = cordova.file.	documentsDirectory + video.file_name.replace(/\s+/g, '');
-			}
+			// if(ionic.Platform.isAndroid()){
+	    // 	var targetPath = cordova.file.externalDataDirectory + video.file_name.replace(/\s+/g, '');
+			// }else{
+			// 	var targetPath = cordova.file.	documentsDirectory + video.file_name.replace(/\s+/g, '');
+			// }
+			var targetPath = cordova.file.dataDirectory + video.file_name.replace(/\s+/g, '');
       window.resolveLocalFileSystemURL(targetPath, function() {
         $timeout(function() {
           console.log("File Found");
@@ -114,11 +115,12 @@ angular.module('panofield.controller', []).controller('PanofieldCtrl', function(
     video_src = encodeURI(video_src);
     console.log(video_src);
     var url = video_src;
-		if(ionic.Platform.isAndroid()){
-    	var targetPath = cordova.file.externalDataDirectory + video.file_name.replace(/\s+/g, '');
-		}else{
-			var targetPath = cordova.file.	documentsDirectory + video.file_name.replace(/\s+/g, '');
-		}
+		// if(ionic.Platform.isAndroid()){
+    // 	var targetPath = cordova.file.externalDataDirectory + video.file_name.replace(/\s+/g, '');
+		// }else{
+		// 	var targetPath = cordova.file.	documentsDirectory + video.file_name.replace(/\s+/g, '');
+		// }
+		var targetPath = cordova.file.dataDirectory + video.file_name.replace(/\s+/g, '');
     var trustHosts = true;
     var options = {};
     window.resolveLocalFileSystemURL(targetPath, function() {

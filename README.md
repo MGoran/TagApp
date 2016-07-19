@@ -1,4 +1,8 @@
 "# TagApp"
+0.0.14
+-Same file path for android and iOS
+
+"# TagApp"
 0.0.13
 -Enabling debug for file upload
 
