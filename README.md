@@ -1,4 +1,8 @@
 "# TagApp"
+0.0.15
+-More debugging
+
+"# TagApp"
 0.0.14
 -Same file path for android and iOS
 
