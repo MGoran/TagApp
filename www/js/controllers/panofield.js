@@ -1,4 +1,5 @@
 angular.module('panofield.controller', []).controller('PanofieldCtrl', function($rootScope, $scope, $ionicModal, $timeout, $state, $interval, $http, $ionicPopup, $interval, $sce, $cordovaFileTransfer, recorder) {
+
   $scope.data = {};
   $scope.data.downloadingPlayback = false;
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
@@ -78,27 +79,30 @@ angular.module('panofield.controller', []).controller('PanofieldCtrl', function(
   };
 
   $scope.isDownloaded = function() {
-		$scope.fileExists = [];
-		console.log($scope.data.videos.length);
+
+    $scope.fileExists = [];
+    console.log($scope.data.videos.length);
     for (i = 0; i < $scope.data.videos.length; i++) {
       var video = $scope.data.videos[i];
-			// if(ionic.Platform.isAndroid()){
-	    // 	var targetPath = cordova.file.externalDataDirectory + video.file_name.replace(/\s+/g, '');
-			// }else{
-			// 	var targetPath = cordova.file.	documentsDirectory + video.file_name.replace(/\s+/g, '');
-			// }
-			var targetPath = cordova.file.dataDirectory + video.file_name.replace(/\s+/g, '');
+      // if(ionic.Platform.isAndroid()){
+      // 	var targetPath = cordova.file.externalDataDirectory + video.file_name.replace(/\s+/g, '');
+      // }else{
+      // 	var targetPath = cordova.file.	documentsDirectory + video.file_name.replace(/\s+/g, '');
+      // }
+			alert("Check Target Path");
+      var targetPath = cordova.file.dataDirectory + video.file_name.replace(/\s+/g, '');
+			alert(targetPath);
       window.resolveLocalFileSystemURL(targetPath, function() {
         $timeout(function() {
           console.log("File Found");
           $scope.fileExists.unshift(true);
-					console.log($scope.fileExists);
+          console.log($scope.fileExists);
         })
       }, function() {
         $timeout(function() {
           $scope.fileExists.unshift(false);
           console.log("File Not Found");
-					console.log($scope.fileExists);
+          console.log($scope.fileExists);
         })
       });
     }
@@ -115,12 +119,12 @@ angular.module('panofield.controller', []).controller('PanofieldCtrl', function(
     video_src = encodeURI(video_src);
     console.log(video_src);
     var url = video_src;
-		// if(ionic.Platform.isAndroid()){
+    // if(ionic.Platform.isAndroid()){
     // 	var targetPath = cordova.file.externalDataDirectory + video.file_name.replace(/\s+/g, '');
-		// }else{
-		// 	var targetPath = cordova.file.	documentsDirectory + video.file_name.replace(/\s+/g, '');
-		// }
-		var targetPath = cordova.file.dataDirectory + video.file_name.replace(/\s+/g, '');
+    // }else{
+    // 	var targetPath = cordova.file.	documentsDirectory + video.file_name.replace(/\s+/g, '');
+    // }
+    var targetPath = cordova.file.dataDirectory + video.file_name.replace(/\s+/g, '');
     var trustHosts = true;
     var options = {};
     window.resolveLocalFileSystemURL(targetPath, function() {
@@ -134,12 +138,12 @@ angular.module('panofield.controller', []).controller('PanofieldCtrl', function(
           console.log(result);
           $scope.startPlayback(targetPath);
           $scope.data.downloadingPlayback = false;
-					$scope.isDownloaded();
+          $scope.isDownloaded();
         }, function(err) {
           console.log(err);
-					alert(JSON.stringify(err));
+          alert(JSON.stringify(err));
           $scope.data.downloadingPlayback = false;
-					$scope.isDownloaded();
+          $scope.isDownloaded();
         }, function(progress) {
           $timeout(function() {
             $scope.downloadProgress = (progress.loaded / progress.total) * 100;
@@ -494,7 +498,7 @@ angular.module('panofield.controller', []).controller('PanofieldCtrl', function(
         console.log(response);
         $scope.data.videos = response.data.export;
         $scope.hideLoading();
-				$scope.isDownloaded();
+        $scope.isDownloaded();
       },
       function(error) {
         console.log(error);
