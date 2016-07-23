@@ -89,9 +89,9 @@ angular.module('panofield.controller', []).controller('PanofieldCtrl', function(
       // }else{
       // 	var targetPath = cordova.file.	documentsDirectory + video.file_name.replace(/\s+/g, '');
       // }
-			alert("Check Target Path");
+			//alert("Check Target Path");
       var targetPath = cordova.file.dataDirectory + video.file_name.replace(/\s+/g, '');
-			alert(targetPath);
+			//alert(targetPath);
       window.resolveLocalFileSystemURL(targetPath, function() {
         $timeout(function() {
           console.log("File Found");

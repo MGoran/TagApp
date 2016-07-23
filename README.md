@@ -1,4 +1,9 @@
 "# TagApp"
+0.0.16
+-Fixing package.json for iOS platform
+-Fixing file-transfer error on iOS
+
+"# TagApp"
 0.0.15
 -More debugging
 
