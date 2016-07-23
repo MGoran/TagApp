@@ -24,8 +24,8 @@
 						<!-- <i class="icon ion-reply"></i> -->
 						</a>
 						<h2 style="color:white;text-align:center;margin:0;margin-top: 7px;display: inline-block;width:60%">
-								<timer ng-if="data.recorder.recording" start-time="data.setStartTime">{{hours}}:{{minutes}}:{{seconds}}</timer>
-								<span ng-if="!data.recorder.recording">0:0:0</span>
+								<timer ng-if="data.recorder.recording" start-time="data.setStartTime">{{hhours}}:{{mminutes}}:{{sseconds}}</timer>
+								<span ng-if="!data.recorder.recording">00:00:00</span>
 							</h2>
 						<!-- <div style=""> -->
 						<a ng-click="setStateOfRecorder(true)" ng-if="!data.recorder.recording" class="button gm-btn-white button-icon icon ion-record" style="height: auto;display: inline-block;border:0">
