@@ -82,14 +82,13 @@
 	</platform>
 	<icon src="resources\android\icon\drawable-xhdpi-icon.png"/>
 
-	<plugin name="cordova-plugin-device"/>
-	<plugin name="cordova-plugin-console"/>
-	<plugin name="cordova-plugin-whitelist"/>
-	<plugin name="cordova-plugin-splashscreen"/>
-	<plugin name="cordova-plugin-statusbar"/>
-	<plugin name="ionic-plugin-keyboard"/>
-	<plugin name="cordova-plugin-compat"/>
-	<plugin name="cordova-plugin-file-transfer"/>
-	<plugin name="cordova-plugin-device"/>
-	<plugin name="cordova-plugin-file"/>
+	<plugin name="cordova-plugin-device" spec="1.1.2"/>
+	<plugin name="cordova-plugin-console" spec="1.0.3"/>
+	<plugin name="cordova-plugin-whitelist" spec="1.2.2"/>
+	<plugin name="cordova-plugin-splashscreen" spec="3.2.2"/>
+	<plugin name="cordova-plugin-statusbar" spec="2.1.3"/>
+	<plugin name="ionic-plugin-keyboard" spec="2.2.1"/>
+	<plugin name="cordova-plugin-file" spec="4.2.0"/>
+	<plugin name="cordova-plugin-file-transfer" spec="1.5.1"/>
+	<plugin name="cordova-plugin-compat" spec="1.0.0"/>
 </widget>
