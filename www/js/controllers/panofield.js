@@ -90,12 +90,12 @@ angular.module('panofield.controller', []).controller('PanofieldCtrl', function(
       // 	var targetPath = cordova.file.	documentsDirectory + video.file_name.replace(/\s+/g, '');
       // }
 			//alert("Check Target Path");
-			alert("Check 1");
-			alert(JSON.stringify(cordova));
-			alert("Check 2");
-			alert(JSON.stringify(cordova.file));
-			alert("Check 3");
-			alert(JSON.stringify(cordova.file.dataDirectory));
+			// alert("Check 1");
+			// alert(JSON.stringify(cordova));
+			// alert("Check 2");
+			// alert(JSON.stringify(cordova.file));
+			// alert("Check 3");
+			// alert(JSON.stringify(cordova.file.dataDirectory));
       var targetPath = cordova.file.dataDirectory + video.file_name.replace(/\s+/g, '');
 			//alert(targetPath);
       window.resolveLocalFileSystemURL(targetPath, function() {
