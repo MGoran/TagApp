@@ -6,7 +6,6 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('TagApp', [
   'ionic',
-  'angularCharts',
   'main.controller',
   'login.controller',
   'home.controller',
