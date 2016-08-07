@@ -1,7 +1,15 @@
 "# TagApp"
+0.0.28
+-Annotation email notification
+
+"# TagApp"
 0.0.27
 -Optimisations
 -Offline mode
+
+"# TagApp"
+0.0.17 - 0.0.26
+-Missing plugins on iOS, phonegap build testing, and emulator testing
 
 "# TagApp"
 0.0.16

@@ -432,6 +432,17 @@ angular.module('panofield.controller', []).controller('PanofieldCtrl', function(
           function(response) {
             console.log("exported");
             console.log(response);
+						cordova.plugins.email.open({
+						    to:          "goranmaslic92@gmail.com", // email addresses for TO field
+						    cc:          "", // email addresses for CC field
+						    bcc:         "", // email addresses for BCC field
+						    attachments: "", // file paths or base64 data streams
+						    subject:    "Event added", // subject of the email
+						    body:       "WTF", // email body (for HTML, set isHtml to true)
+						    isHtml:    true, // indicats if the body is HTML or plain text
+						}, function () {
+					    alert('email view dismissed');
+						}, this);
             $scope.getEventList();
             $scope.getRecordingDetails();
             $scope.getExportQueue();
