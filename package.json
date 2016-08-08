@@ -24,7 +24,11 @@
     "cordova-plugin-compat",
     "cordova-plugin-file-transfer",
     "cordova-plugin-file",
-    "cordova-plugin-email-composer@0.8.3"
+    "cordova-plugin-email-composer@0.8.3",
+    {
+      "locator": "https://github.com/katzer/cordova-plugin-email-composer.git#0.8.2",
+      "id": "de.appplant.cordova.plugin.email-composer"
+    }
   ],
   "cordovaPlatforms": [
     "android"

@@ -1,4 +1,4 @@
-angular.module('panofield.controller', []).controller('PanofieldCtrl', function($rootScope, $scope, $ionicModal, $timeout, $state, $interval, $http, $ionicPopup, $interval, $sce, $cordovaFileTransfer, recorder) {
+angular.module('panofield.controller', []).controller('PanofieldCtrl', function($rootScope, $scope, $ionicModal, $timeout, $state, $interval, $http, $ionicPopup, $interval, $sce, $cordovaFileTransfer, recorder, $cordovaEmailComposer) {
 
   $scope.data = {};
   $scope.data.downloadingPlayback = false;
@@ -427,22 +427,38 @@ angular.module('panofield.controller', []).controller('PanofieldCtrl', function(
           //},
           file_name: "" + event_name + "-Evt-" + recording_id + "-Rec-" + team_name + "-Team-" + response.data.time
         }
+				var event_time = response.data.time;
         var exp_promise = recorder.queueExport($rootScope.selectedCam.recorder_ip, data);
         exp_promise.then(
           function(response) {
             console.log("exported");
-            console.log(response);
-						cordova.plugins.email.open({
-						    to:          "goranmaslic92@gmail.com", // email addresses for TO field
-						    cc:          "", // email addresses for CC field
-						    bcc:         "", // email addresses for BCC field
-						    attachments: "", // file paths or base64 data streams
-						    subject:    "Event added", // subject of the email
-						    body:       "WTF", // email body (for HTML, set isHtml to true)
-						    isHtml:    true, // indicats if the body is HTML or plain text
+						console.log(event_name);
+						console.log(team_name);
+            console.log(response.data.time);
+						$cordovaEmailComposer.isAvailable().then(function() {
+							var xml = '<?xml version="1.0"?>';
+							xml += '<video>';
+							xml += '  <event id="'+event_id+'" name="'+event_name+'">';
+							xml += '      <Team id="'+team_id+'">'+team_name+'</Team>';
+							xml += '      <Time>'+event_time+'</Time>';
+							xml += '  </event>';
+							xml += '</video>';
+							var email = {
+						    to: $rootScope.data.email_to,
+						    cc: '',
+						    bcc: [],
+						    attachments: [],
+						    subject: $rootScope.data.email_subject,
+						    body: xml,
+						    isHtml: false
+						  };
+
+						 $cordovaEmailComposer.open(email).then(null, function () {
+						   //alert("Email client closed");
+						 });
 						}, function () {
-					    alert('email view dismissed');
-						}, this);
+						 	alert("Email service not available")
+						});
             $scope.getEventList();
             $scope.getRecordingDetails();
             $scope.getExportQueue();

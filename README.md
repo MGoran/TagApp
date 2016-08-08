@@ -1,6 +1,7 @@
 "# TagApp"
 0.0.28
--Annotation email notification
+-Annotation email XML message
+-Email notification settings
 
 "# TagApp"
 0.0.27

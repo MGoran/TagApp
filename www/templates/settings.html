@@ -17,6 +17,17 @@
         <input type="range" name="dahua_speed" min="1" max="8" ng-model="data.dahua_speed">
         <i class="icon ion-ios-speedometer"></i>
       </div>
+			<div class="item item-divider">
+        Email Notification
+      </div>
+			<label class="item item-input">
+				<span class="input-label">To:</span>
+				<input type="text" name="email_to" ng-model="data.email_to">
+			</label>
+			<label class="item item-input">
+				<span class="input-label">Subject:</span>
+				<input type="text" name="email_subject" ng-model="data.email_subject" >
+			</label>
       <button class="item button button-block gm-btn-green" ng-click="saveSettings()">
         Save
       </button>
