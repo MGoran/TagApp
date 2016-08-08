@@ -40,6 +40,8 @@
 		<splash src="resources\android\splash\drawable-port-xhdpi-screen.png" density="port-xhdpi"/>
 		<splash src="resources\android\splash\drawable-port-xxhdpi-screen.png" density="port-xxhdpi"/>
 		<splash src="resources\android\splash\drawable-port-xxxhdpi-screen.png" density="port-xxxhdpi"/>
+
+		<plugin spec="https://github.com/katzer/cordova-plugin-email-composer.git#0.8.2" source="git" />
 	</platform>
 	<platform name="ios">
 		<!-- images are determined by width and height. The following are supported -->
@@ -79,6 +81,8 @@
 		<!-- iPad Spotlight and Settings Icon -->
 		<icon src="resources/ios/icon/icon-50.png" width="50" height="50"/>
 		<icon src="resources/ios/icon/icon-50@2x.png" width="100" height="100"/>
+
+		<plugin name="cordova-plugin-email-composer" source="npm" version="0.8.3" />
 	</platform>
 	<icon src="resources\android\icon\drawable-xhdpi-icon.png"/>
 
@@ -91,5 +95,5 @@
 	<plugin name="cordova-plugin-file" spec="4.2.0"/>
 	<plugin name="cordova-plugin-file-transfer" spec="1.5.1"/>
 	<plugin name="cordova-plugin-compat" spec="1.0.0"/>
-	<plugin spec="https://github.com/katzer/cordova-plugin-email-composer.git#0.8.2" source="git" />
+
 </widget>
