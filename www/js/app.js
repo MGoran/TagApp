@@ -10,10 +10,14 @@ angular.module('TagApp', [
   'login.controller',
   'home.controller',
   'panofield.controller',
+	'annotationController.controller',
   'dahua.controller',
   'axis.controller',
   'settings.controller',
+	'eventTypes.controller',
   'recorder.service',
+	'cameraMovement.service',
+	'recorderControll.service',
   'timer',
 	'ngCordova',
   "ngSanitize",
@@ -102,7 +106,28 @@ angular.module('TagApp', [
         }
       }
 
+    }).state('app.event_types', {
+      url: '/event_types',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/event_types.html',
+          controller: 'EventTypesCtrl'
+        }
+      }
+
+    }).state('app.annotation_controller', {
+      url: '/annotation_controller',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/annotation_controller.html',
+          controller: 'AnnotationControllerCtrl'
+        }
+      }
+
     });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/login');
 });
+String.prototype.capitalizeFirstLetter = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}

@@ -1,0 +1,21 @@
+<ion-view view-title="Settings">
+	<ion-content padding="true">
+		<ul class="list">
+			<li class="item item-divider">
+				Defined Event Type
+			</li>
+			<li class="item item-button-right" ng-repeat="event_type in data.event_types">
+				{{event_type.name}}
+				<button class="button button-assertive" ng-click="remove(data.event_types, $index)">
+					<i class="icon ion-trash-a"></i>
+				</button>
+			</li>
+
+		</ul>
+	</ion-content>
+	<ion-footer-bar class="bar-positive" ng-click="addNewEventTypeModal()">
+		<p class="title">
+			Add new Event Type
+		</p>
+	</ion-footer-bar>
+</ion-view>

@@ -5,14 +5,16 @@ angular.module('home.controller', []).controller('HomeCtrl', function($rootScope
     }
   });
   $scope.openStream = function(cam) {
-    console.log(cam);
-    $rootScope.selectedCam = cam;
-    if (cam.type === "Panofield") {
-      $state.go('app.panofield');
-    } else if (cam.type === "Dahua") {
-      $state.go('app.dahua');
-    } else if (cam.type === "Axis") {
-      $state.go('app.axis');
-    }
+    // console.log(cam);
+    // $rootScope.selectedCam = cam;
+    // if (cam.type === "Panofield") {
+    //   $state.go('app.panofield');
+    // } else if (cam.type === "Dahua") {
+    //   $state.go('app.dahua');
+    // } else if (cam.type === "Axis") {
+    //   $state.go('app.axis');
+    // }
+		$rootScope.selectedCam = cam;
+		$state.go('app.annotation_controller');
   }
 });

@@ -1,4 +1,17 @@
 "# TagApp"
+0.1.0
+New login (camera ip, camera type, recorder ip, recorder type ,username and password)
+
+camera type [ dahua or axis ]
+recorder type [ vMix or Panofield ] those are select boxes...
+
+Controlling of camera is working in this version too,
+Adding events is possible trough menu, Email settings are in email (you can set subject and email to). You can also define event seconds before, event seconds after (for annotation). When you add event email is sent to (email_to from settings page, default is my email)
+
+Recorder start/stop for vMix is working. (time is also shown like for panofield);
+
+
+"# TagApp"
 0.0.28
 -Annotation email XML message
 -Email notification settings

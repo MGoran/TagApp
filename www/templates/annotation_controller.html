@@ -1,0 +1,104 @@
+<ion-view view-title="{{selectedCam.name}}" hide-nav-bar="true">
+	<ion-content padding="false" style="height:100%" class="video-page">
+		<img ng-src="{{videoSource}}" class="annotation_video" />
+		<div class="annotation_controlls" style="opacity:{{data.vc_transparency/100}}">
+			<div class="panel panel-top-controlls" style="opacity:{{data.vc_transparency/100}}">
+				<div class="row" style="text-align:center;margin-left:0;padding: 0;">
+					<div class="col col-5">
+						<a class="button gm-btn-white button-icon icon ion-ios-arrow-back" style="color:white;border:0" href="#/app/home">
+						</a>
+					</div>
+					<div class="col col-25">
+					</div>
+					<div class="col col-10">
+
+					</div>
+					<div class="col col-25" style="text-align:center">
+						<h2 style="color:white;text-align:center;margin:0;margin-top: 7px;display: inline-block;width:60%">
+								<timer ng-if="recorder.recording" start-time="recorder.time" max-time-unit="'minute'">{{mminutes}}:{{sseconds}}</timer>
+								<span ng-if="!recorder.recording">00:00</span>
+							</h2>
+						<a ng-click="startRecorder()" ng-if="!recorder.recording" class="button gm-btn-white button-icon icon ion-record" style="height: auto;display: inline-block;border:0">
+						</a>
+						<a ng-click="stopRecorder()" ng-if="recorder.recording" class="button button-icon icon ion-record gm-btn-white" style="height: auto;color:{{blinkingColor}}; border-color:white;display: inline-block;border:0">
+						</a>
+					</div>
+					<div class="col col-10">
+					</div>
+					<div class="col col-10">
+					</div>
+					<div class="col col-20">
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-left" style="opacity:{{data.vc_transparency/100}}">
+				<div class="btn-stack">
+					<button class="button icon ion-arrow-left-c gm-btn-white gm-btn-height" on-release="ptzMove('left', 'stop')" on-touch="ptzMove('left', 'start')"></button>
+					<button class="button icon ion-arrow-up-c  gm-btn-white gm-btn-height" on-release="ptzMove('up', 'stop')" on-touch="ptzMove('up', 'start')"></button>
+					<button class="button icon ion-minus-round  gm-btn-white gm-btn-height" on-release="ptzZoom('-', 'stop')" on-touch="ptzZoom('-', 'start')"></button>
+				</div>
+			</div>
+			<div class="panel panel-left">
+				<div class="btn-stack">
+
+				</div>
+			</div>
+			<div class="panel panel-right" style="opacity:{{data.vc_transparency/100}}">
+				<div class="btn-stack">
+					<button class="button icon ion-arrow-right-c gm-btn-white gm-btn-height" on-release="ptzMove('right', 'stop')" on-touch="ptzMove('right', 'start')"></button>
+					<button class="button icon ion-arrow-down-c  gm-btn-white gm-btn-height" on-release="ptzMove('down', 'stop')" on-touch="ptzMove('down', 'start')"></button>
+					<button class="button icon ion-plus-round  gm-btn-white gm-btn-height" on-release="ptzZoom('+', 'stop')" on-touch="ptzZoom('+', 'start')"></button>
+				</div>
+			</div>
+			<div class="panel panel-top" style="opacity:{{data.vc_transparency/100}}">
+			</div>
+			<div class="panel panel-left-bottom " style="opacity:{{data.vc_transparency/100}}">
+				<div style="bottom:0; width:100%">
+					<ion-item class="gm-btn-green" ng-click="changeTeamName(1)" style="text-align:center">
+						{{data.team2}}
+					</ion-item>
+					<ion-item ng-repeat="event in data.event_types" ng-click="addEvent(event, data.team1)" style="text-align:center" class="gm-btn-white">
+						{{event.name}}
+					</ion-item>
+				</div>
+			</div>
+			<div class="panel panel-bottom " style="opacity:{{data.vc_transparency/100}}">
+				<div class="zone-buttons">
+					<table style="height: 200px;width: 100%;">
+						<tr>
+							<th class="border" style="border-right:0;width: 15%;" ng-click="gotoPreset(2)">&nbsp;</th>
+							<th class="border" style="border-left:0;border-bottom:0" ng-click="gotoPreset(2)">&nbsp;</th>
+							<th class="border" style="border-bottom:0;width: 30%;" ng-click="gotoPreset(3)">&nbsp;</th>
+							<th class="border" style="border-right:0;border-bottom:0" ng-click="gotoPreset(4)">&nbsp;</th>
+							<th class="border" style="border-left:0;width: 15%;" ng-click="gotoPreset(4)">&nbsp;</th>
+						</tr>
+						<tr style="height: 50%;">
+							<th class="border" ng-click="gotoPreset(1)">&nbsp;</th>
+							<th class="border" style="border-top:0;border-bottom:0" ng-click="gotoPreset(2)">&nbsp;</th>
+							<th class="border" style="border-top:0;border-bottom:0" ng-click="gotoPreset(3)">&nbsp;</th>
+							<th class="border" style="border-top:0;border-bottom:0;" ng-click="gotoPreset(4)">&nbsp;</th>
+							<th class="border" ng-click="gotoPreset(5)">&nbsp;</th>
+						</tr>
+						<tr>
+							<th class="border" style="border-right:0;" ng-click="gotoPreset(2)">&nbsp;</th>
+							<th class="border" style="border-left:0; border-top:0" ng-click="gotoPreset(2)">&nbsp;</th>
+							<th class="border" style="border-top:0;" ng-click="gotoPreset(3)">&nbsp;</th>
+							<th class="border" style="border-right:0;border-top:0" ng-click="gotoPreset(4)">&nbsp;</th>
+							<th class="border" style="border-left:0;" ng-click="gotoPreset(4)">&nbsp;</th>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="panel panel-right-bottom " style="opacity:{{data.vc_transparency/100}}">
+				<div style="bottom:0; width:100%">
+					<ion-item class="gm-btn-green" ng-click="changeTeamName(2)" style="text-align:center">
+						{{data.team2}}
+					</ion-item>
+					<ion-item ng-repeat="event in data.event_types" ng-click="addEvent(event, data.team2)" style="text-align:center" class="gm-btn-white">
+						{{event.name}}
+					</ion-item>
+				</div>
+			</div>
+		</div>
+	</ion-content>
+</ion-view>

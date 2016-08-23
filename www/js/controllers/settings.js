@@ -1,19 +1,26 @@
-angular.module('settings.controller', []).controller('SettingsCtrl', function($scope, $rootScope, $ionicPopup) {
-  $rootScope.isUser = function (){
+angular.module('settings.controller', []).controller('SettingsCtrl', function($scope, $rootScope, $ionicPopup, $state) {
+  $rootScope.isUser = function() {
     console.log($rootScope.user)
-    return $rootScope.user !==undefined && $rootScope.user.validated
+    return $rootScope.user !== undefined && $rootScope.user.validated
   }
-  $scope.saveSettings = function() {
-      localStorage.vc_transparency = $rootScope.data.vc_transparency;
-      localStorage.dahua_speed = $rootScope.data.dahua_speed;
-			localStorage.email_to = $rootScope.data.email_to;
-			localStorage.email_subject = $rootScope.data.email_subject;
-      var alertPopup = $ionicPopup.alert({
-        title: 'Success',
-        template: "New Settings saved"
-      });
-      alertPopup.then(function(res) {
-        console.log('Ok');
-      });
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    if (!$rootScope.isUser()) {
+      $state.go('login')
     }
+  });
+  $scope.saveSettings = function() {
+    localStorage.vc_transparency = $rootScope.data.vc_transparency;
+    localStorage.dahua_speed = $rootScope.data.dahua_speed;
+    localStorage.email_to = $rootScope.data.email_to;
+    localStorage.email_subject = $rootScope.data.email_subject;
+    localStorage.event_after = 10;
+    localStorage.event_before = 5;
+    var alertPopup = $ionicPopup.alert({
+      title: 'Success',
+      template: "New Settings saved"
+    });
+    alertPopup.then(function(res) {
+      console.log('Ok');
+    });
+  }
 });

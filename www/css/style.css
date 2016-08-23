@@ -144,8 +144,8 @@ videogular div#joystick {
   padding: 0;
   margin: 0;
 }
-.panel{
-	z-index:9999999;
+.panel {
+  z-index: 9999999;
 }
 div.panel-top-controlls {
   position: absolute;
@@ -544,4 +544,20 @@ videogular .video_controlls {
 }
 .flowplayer.is-error {
   background: none;
+}
+.annotation_video {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9000000;
+}
+.annotation_controlls {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9000001;
 }
