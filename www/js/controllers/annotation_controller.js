@@ -1,4 +1,4 @@
-angular.module('annotationController.controller', []).controller('AnnotationControllerCtrl', function($rootScope, $scope, $ionicPopup, $timeout, $state, cameraMovement, recorderControll, $interval, $cordovaEmailComposer) {
+angular.module('annotationController.controller', []).controller('AnnotationControllerCtrl', function($rootScope, $scope, $ionicPopup, $timeout, $state, cameraMovement, recorderControll, $interval, $cordovaEmailComposer, $filter) {
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     if (!$rootScope.isUser()) {
       $state.go('login')
@@ -93,35 +93,68 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
 
   $scope.addEvent = function(event, team) {
     if (!$scope.recorder.recording) return false;
-    var start = (parseInt($scope.recorder.duration) - parseInt($rootScope.data.event_before));
-    var end = parseInt($scope.recorder.duration) + parseInt($rootScope.data.event_after);
-    var xml = '<?xml version="1.0"?>';
-    xml += "	<annotation>";
-    xml += "	<team>" + team + "</team>";
-    xml += "	<event start='" + start + "' end='" + end + "'>" + event.name + "</event>";
-    xml += "	<camera type='" + $rootScope.selectedCam.cameraType + "' ip='" + $rootScope.selectedCam.cameraIP + "'></camera>";
-    xml += "	<recorder type='" + $rootScope.selectedCam.recorderType + "' ip='" + $rootScope.selectedCam.recorderIP + "'></recorder>";
-    xml += "</annotation>";
-    var deviceInformation = ionic.Platform.device();
-    console.log(deviceInformation)
-    console.log(xml)
-    return false;
-    $cordovaEmailComposer.isAvailable().then(function() {
-      var email = {
-        to: $rootScope.data.email_to,
-        cc: '',
-        bcc: [],
-        attachments: [],
-        subject: $rootScope.data.email_subject,
-        body: xml,
-        isHtml: false
-      };
+    $scope.selection = {};
+    console.log($scope.recorder);
+    console.log($rootScope.data);
+    var html = "";
+    html += '<ion-list>';
+    console.log(team);
+    angular.forEach(team.players, function(player) {
+      html += ' <ion-radio ng-model="selection.player" ng-value="' + player.id + '">#' + player.number + ' - ' + player.name + '</ion-radio>';
+    })
+    html += '</ion-list>'
+    var myPopup = $ionicPopup.show({
+      template: html,
+      title: 'Select player',
+      subTitle: 'Not required',
+      scope: $scope,
+      buttons: [{
+        text: '<b>Continue</b>',
+        type: 'button-positive',
+        onTap: function(e) {
+          return $scope.selection;
+        }
+      }]
+    });
+    myPopup.then(function(res) {
+      console.log(res)
+      if (res.player !== undefined) {
+        var player = $filter("filter")(team.players, {
+          id: res.player
+        })[0];
+      }
+      var start = (parseInt($scope.recorder.duration) - parseInt($rootScope.data.event_before));
+      var end = parseInt($scope.recorder.duration) + parseInt($rootScope.data.event_after);
+      var xml = '<?xml version="1.0"?>';
+      xml += "	<annotation>";
+      xml += "	<team>" + team.name + "</team>";
+      if (player !== undefined)
+        xml += "  <player number='" + player.number + "'>" + player.name + "</player>";
+      xml += "	<event start='" + start + "' end='" + end + "'>" + event.name + "</event>";
+      xml += "	<camera type='" + $rootScope.selectedCam.cameraType + "' ip='" + $rootScope.selectedCam.cameraIP + "'></camera>";
+      xml += "	<recorder type='" + $rootScope.selectedCam.recorderType + "' ip='" + $rootScope.selectedCam.recorderIP + "'></recorder>";
+      xml += "</annotation>";
+      var deviceInformation = ionic.Platform.device();
+      console.log(deviceInformation)
+      console.log(xml)
+    //  return false;
+      $cordovaEmailComposer.isAvailable().then(function() {
+        var email = {
+          to: $rootScope.data.email_to,
+          cc: '',
+          bcc: [],
+          attachments: [],
+          subject: $rootScope.data.email_subject,
+          body: xml,
+          isHtml: false
+        };
 
-      $cordovaEmailComposer.open(email).then(null, function() {
-        console.log("email client closed");
+        $cordovaEmailComposer.open(email).then(null, function() {
+          console.log("email client closed");
+        });
+      }, function() {
+        alert("Email service not available")
       });
-    }, function() {
-      alert("Email service not available")
     });
   }
 

@@ -15,6 +15,7 @@ angular.module('TagApp', [
   'axis.controller',
   'settings.controller',
 	'eventTypes.controller',
+	'teams.controller',
   'recorder.service',
 	'cameraMovement.service',
 	'recorderControll.service',
@@ -121,6 +122,15 @@ angular.module('TagApp', [
         'menuContent': {
           templateUrl: 'templates/annotation_controller.html',
           controller: 'AnnotationControllerCtrl'
+        }
+      }
+
+    }).state('app.teams', {
+      url: '/teams',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/teams.html',
+          controller: 'TeamsCtrl'
         }
       }
 

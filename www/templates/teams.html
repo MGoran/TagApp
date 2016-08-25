@@ -1,0 +1,33 @@
+<ion-view view-title="Teams">
+	<ion-content padding="true" class="has-footer">
+		<ul class="list">
+			<li class="item item item-button-right">
+				{{selectedTeam.name}}
+				<button class="button button-balanced" ng-click="editTeamName()">
+					<i class="icon ion-edit"></i>
+				</button>
+			</li>
+			<li class="item item-divider">
+				Player List
+			</li>
+			<li class="item item-button-right" ng-repeat="player in selectedTeam.players">
+				#{{player.number}} - {{player.name}}
+				<button class="button button-assertive" ng-click="remove($index)">
+					<i class="icon ion-trash-a"></i>
+				</button>
+			</li>
+		</ul>
+		<button class="button button-full button-positive" ng-click="addNewPlayer()">
+			Add new player
+		</button>
+	</ion-content>
+	<ion-footer-bar class="bar-stable">
+		<div class="buttons" ng-click="selectTeam(1)">
+			<button class="button  button-positive">Team 1 Setup</button>
+		</div>
+		<h1 class="title"></h1>
+		<div class="buttons" ng-click="selectTeam(2)">
+			<button class="button button-positive">Team 2 Setup</button>
+		</div>
+	</ion-footer-bar>
+</ion-view>
