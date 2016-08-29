@@ -72,6 +72,17 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     promise.then(function(response) {
       console.log(response);
       $timeout(function() {
+        var date = $filter("date")(new Date(), "dd MMMM yyyy - hh-mm a");
+        var filename = "capture - " + date;
+        if ($rootScope.data.recordings[filename] === undefined) {
+          localStorage.lastRecordedVideo = filename;
+          console.log(date);
+          $rootScope.data.recordings["capture - " + date] = {
+            annotations: []
+          }
+          localStorage.recordings = JSON.stringify($rootScope.data.recordings);
+        }
+        console.log($rootScope.data.recordings);
         $scope.getRecorderState();
       }, 1000);
     }, function(error) {
@@ -85,6 +96,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
       console.log(response);
       $timeout(function() {
         $scope.getRecorderState();
+        $scope.sendRecordingXML();
       }, 1000);
     }, function(error) {
       console.log(error);
@@ -96,6 +108,16 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     $scope.selection = {};
     console.log($scope.recorder);
     console.log($rootScope.data);
+    $rootScope.data.recordings = JSON.parse(localStorage.recordings);
+
+    if ($rootScope.data.player_picker) {
+      $scope.selectPlayer(event, team);
+    } else {
+      $scope.addEventToList(event, team, null);
+    }
+  }
+
+  $scope.selectPlayer = function(event, team) {
     var html = "";
     html += '<ion-list>';
     console.log(team);
@@ -117,47 +139,76 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
       }]
     });
     myPopup.then(function(res) {
-      console.log(res)
+      console.log(res);
+      var player = null;
       if (res.player !== undefined) {
         var player = $filter("filter")(team.players, {
           id: res.player
         })[0];
       }
-      var start = (parseInt($scope.recorder.duration) - parseInt($rootScope.data.event_before));
-      var end = parseInt($scope.recorder.duration) + parseInt($rootScope.data.event_after);
-      var xml = '<?xml version="1.0"?>';
-      xml += "	<annotation>";
-      xml += "	<team>" + team.name + "</team>";
-      if (player !== undefined)
-        xml += "  <player number='" + player.number + "'>" + player.name + "</player>";
-      xml += "	<event start='" + start + "' end='" + end + "'>" + event.name + "</event>";
-      xml += "	<camera type='" + $rootScope.selectedCam.cameraType + "' ip='" + $rootScope.selectedCam.cameraIP + "'></camera>";
-      xml += "	<recorder type='" + $rootScope.selectedCam.recorderType + "' ip='" + $rootScope.selectedCam.recorderIP + "'></recorder>";
-      xml += "</annotation>";
-      var deviceInformation = ionic.Platform.device();
-      console.log(deviceInformation)
-      console.log(xml)
-    //  return false;
-      $cordovaEmailComposer.isAvailable().then(function() {
-        var email = {
-          to: $rootScope.data.email_to,
-          cc: '',
-          bcc: [],
-          attachments: [],
-          subject: $rootScope.data.email_subject,
-          body: xml,
-          isHtml: false
-        };
+      $scope.addEventToList(event, team, player);
 
-        $cordovaEmailComposer.open(email).then(null, function() {
-          console.log("email client closed");
-        });
-      }, function() {
-        alert("Email service not available")
-      });
-    });
+    })
+  };
+
+  $scope.addEventToList = function(event, team, player) {
+    $rootScope.data.recordings = JSON.parse(localStorage.recordings);
+    console.log($rootScope.data.recordings)
+    console.log($rootScope.data.recordings[localStorage.lastRecordedVideo])
+    var annotation = {
+      team: team,
+      player: player,
+      start: parseInt($scope.recorder.duration) - parseInt($rootScope.data.event_before),
+      end: parseInt($scope.recorder.duration) + parseInt($rootScope.data.event_after),
+      event: event,
+      camera: $rootScope.selectedCam
+    }
+    $rootScope.data.recordings[localStorage.lastRecordedVideo].annotations.push(annotation);
+    localStorage.recordings = JSON.stringify($rootScope.data.recordings);
   }
 
+  $scope.sendRecordingXML = function() {
+    var annotations = $rootScope.data.recordings[localStorage.lastRecordedVideo].annotations;
+    var camera = annotations[0].camera;
+    var xml = '<?xml version="1.0"?>';
+    xml += '<recording>';
+    xml += "	<camera type='" + camera.cameraType + "' ip='" + camera.cameraIP + "'></camera>";
+    xml += "	<recorder type='" + camera.recorderType + "' ip='" + camera.recorderIP + "'></recorder>";
+    xml += "	<annotations>";
+    angular.forEach(annotations, function(a) {
+      xml += "	<annotation>";
+      xml += "		<team>" + a.team.name + "</team>";
+      if (a.player !== null) {
+        xml += "  <player number='" + a.player.number + "'>" + a.player.name + "</player>";
+      }
+      xml += "		<event start='" + a.start + "' end='" + a.end + "'>" + a.event.name + "</event>";
+      xml += "  </annotation>";
+    });
+    xml += "	</annotations>";
+    xml += '</recording>';
+    console.log(xml);
+    /*
+     * DELETE NEXT RETURN FOR PRODUCTION
+     */
+    //return false;
+    $cordovaEmailComposer.isAvailable().then(function() {
+      var email = {
+        to: $rootScope.data.email_to,
+        cc: '',
+        bcc: [],
+        attachments: [],
+        subject: $rootScope.data.email_subject,
+        body: xml,
+        isHtml: false
+      };
+
+      $cordovaEmailComposer.open(email).then(null, function() {
+        console.log("email client closed");
+      });
+    }, function() {
+      alert("Email service not available")
+    });
+  }
   $scope.stringToBool = function(value) {
     if (value.toLowerCase() === "true") return true;
     return false

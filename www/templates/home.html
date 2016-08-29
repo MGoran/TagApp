@@ -1,18 +1,14 @@
 <ion-view view-title="Home">
-  <ion-content>
-
-    <div class="list">
-
-      <div class="item item-divider">
-        View Live
-      </div>
-      <div class="item item-avatar" ng-repeat="cam in user.cameras" ng-click="openStream(cam)">
-        <p class="camera-list-item-left"><i class='ion-videocamera'></i></p>
-        <h2>{{cam.name}}</h2>
-        <p>{{cam.type}}</p>
-      </div>
-
-
-    </div>
-  </ion-content>
+	<ion-content>
+		<iv class="list">
+			<div class="item item-divider">
+				View Live
+			</div>
+			<div class="item item-avatar" ng-repeat="cam in user.cameras" ng-click="openStream(cam)">
+				<p class="camera-list-item-left"><i class='ion-videocamera'></i></p>
+				<h2>{{cam.name}}</h2>
+				<p>{{cam.type}}</p>
+			</div>
+			</div>
+	</ion-content>
 </ion-view>

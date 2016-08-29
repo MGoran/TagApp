@@ -1,4 +1,10 @@
 "# TagApp"
+0.1.1
+-Turning on and off player picker
+-Sending xml at the end of the recording
+-Saving recording data on device
+
+"# TagApp"
 0.1.0
 New login (camera ip, camera type, recorder ip, recorder type ,username and password)
 
