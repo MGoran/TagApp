@@ -4,13 +4,16 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
       $state.go('login')
     }
   });
-  $scope.$on("$ionicView.enter", function(event, data) {
-    console.log($rootScope.selectedCam);
-    if ($rootScope.selectedCam.cameraType === "Dahua") {
+  $scope.getCameraView = function() {
+    if ($rootScope.selectedCam.cameraType === "Axis") {
       $scope.videoSource = "http://" + $rootScope.selectedCam.cameraIP + "/axis-cgi/mjpg/video.cgi?camera=1";
-    } else if ($rootScope.selectedCam.cameraType === "Axis") {
+    } else if ($rootScope.selectedCam.cameraType === "Dahua") {
       $scope.videoSource = "http://" + $rootScope.selectedCam.cameraIP + "/axis-cgi/mjpg/video.cgi?camera=5&subtype=1";
     }
+  }
+  $scope.$on("$ionicView.enter", function(event, data) {
+    console.log($rootScope.selectedCam);
+    $scope.getCameraView();
     $scope.recorder = {};
     $scope.getRecorderState();
     $scope.blinkingColor = "white";
@@ -51,6 +54,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
 
 
   $scope.getRecorderState = function() {
+    $scope.getCameraView();
     var promise = recorderControll.getRecorderState($rootScope.selectedCam);
     promise.then(function(response) {
       var xml = $.parseXML(response.data);
