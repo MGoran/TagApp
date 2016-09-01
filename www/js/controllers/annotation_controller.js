@@ -57,15 +57,21 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     $scope.getCameraView();
     var promise = recorderControll.getRecorderState($rootScope.selectedCam);
     promise.then(function(response) {
-      var xml = $.parseXML(response.data);
-      $xml = $(xml);
-      $scope.recorder.recording = $scope.stringToBool($xml.find("recording").text());
-      $scope.recorder.external = $scope.stringToBool($xml.find("external").text());
-      $scope.recorder.streaming = $scope.stringToBool($xml.find("streaming").text());
-      $scope.recorder.duration = $xml.find("recording").attr("duration");
-      $scope.recorder.time = new Date().getTime() - ($scope.recorder.duration * 1000);
+      if ($rootScope.selectedCam.recorderType === "vMix") {
+        var xml = $.parseXML(response.data);
+        $xml = $(xml);
+        $scope.recorder.recording = $scope.stringToBool($xml.find("recording").text());
+        $scope.recorder.streaming = $scope.stringToBool($xml.find("streaming").text());
+        $scope.recorder.duration = $xml.find("recording").attr("duration");
+        $scope.recorder.time = new Date().getTime() - ($scope.recorder.duration * 1000);
+      } else if ($rootScope.selectedCam.recorderType === "Panofield") {
+        console.log(response);
+        $scope.recorder.recording = response.data.recording;
+        $scope.recorder.streaming = response.data.streaming;
+        $scope.recorder.duration = response.data.duration;
+        $scope.recorder.time = new Date().getTime() - ($scope.recorder.duration * 1000);
+      }
       console.log($scope.recorder);
-      $xml = $(xml);
     }, function(error) {
       console.log(error);
     })
@@ -173,6 +179,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
 
   $scope.sendRecordingXML = function() {
     var annotations = $rootScope.data.recordings[localStorage.lastRecordedVideo].annotations;
+    if (annotations.length === 0) return false;
     var camera = annotations[0].camera;
     var xml = '<?xml version="1.0"?>';
     xml += '<recording>';

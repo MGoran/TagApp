@@ -15,6 +15,19 @@ angular.module('recorderControll.service', []).service('recorderControll', funct
           }
         }
         break;
+      case "Panofield":
+        {
+          var settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": "http://" + camera.recorderIP + "/api/recorder",
+            "method": "get",
+            "headers": {
+              'Authorization': 'Basic ' + btoa(camera.username + ':' + camera.password)
+            }
+          }
+        }
+        break;
     }
     return $http(settings)
   }
@@ -27,6 +40,22 @@ angular.module('recorderControll.service', []).service('recorderControll', funct
             "crossDomain": true,
             "url": "http://" + camera.recorderIP + "/api/?function=StartRecording",
             "method": "get",
+            "headers": {
+              'Authorization': 'Basic ' + btoa(camera.username + ':' + camera.password)
+            }
+          }
+        }
+        break;
+      case "Panofield":
+        {
+          var settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": "http://" + camera.recorderIP + "/api/recorder",
+            "method": "PUT",
+            "data": {
+              recording: true
+            },
             "headers": {
               'Authorization': 'Basic ' + btoa(camera.username + ':' + camera.password)
             }
@@ -46,6 +75,22 @@ angular.module('recorderControll.service', []).service('recorderControll', funct
             "crossDomain": true,
             "url": "http://" + camera.recorderIP + "/api/?function=StopRecording",
             "method": "get",
+            "headers": {
+              'Authorization': 'Basic ' + btoa(camera.username + ':' + camera.password)
+            }
+          }
+        }
+        break;
+      case "Panofield":
+        {
+          var settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": "http://" + camera.recorderIP + "/api/recorder",
+            "method": "PUT",
+            "data": {
+              recording: false
+            },
             "headers": {
               'Authorization': 'Basic ' + btoa(camera.username + ':' + camera.password)
             }
