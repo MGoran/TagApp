@@ -69,7 +69,20 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
         $scope.recorder.recording = response.data.recording;
         $scope.recorder.streaming = response.data.streaming;
         $scope.recorder.duration = response.data.duration;
-        $scope.recorder.time = new Date().getTime() - ($scope.recorder.duration * 1000);
+        $scope.recorder.time = new Date().getTime() - ($scope.recorder.duration);
+        $scope.recorder.recording_id = response.data.recording_id;
+        var promise = recorderControll.setTeamName($rootScope.data.team1, $rootScope.selectedCam);
+        promise.then(function(response) {
+          console.log(response);
+        }, function(error) {
+          console.log(error);
+        })
+        var promise = recorderControll.setTeamName($rootScope.data.team2, $rootScope.selectedCam);
+        promise.then(function(response) {
+          console.log(response);
+        }, function(error) {
+          console.log(error);
+        })
       }
       console.log($scope.recorder);
     }, function(error) {
@@ -88,9 +101,11 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
           localStorage.lastRecordedVideo = filename;
           console.log(date);
           $rootScope.data.recordings["capture - " + date] = {
-            annotations: []
+            annotations: [],
+            recording_id: response.data.recording_id
           }
           localStorage.recordings = JSON.stringify($rootScope.data.recordings);
+
         }
         console.log($rootScope.data.recordings);
         $scope.getRecorderState();
@@ -113,7 +128,8 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     })
   }
 
-  $scope.addEvent = function(event, team) {
+  $scope.addEvent = function(event, team, team_id) {
+    team.team_id = team_id;
     if (!$scope.recorder.recording) return false;
     $scope.selection = {};
     console.log($scope.recorder);
@@ -164,18 +180,41 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
   $scope.addEventToList = function(event, team, player) {
     $rootScope.data.recordings = JSON.parse(localStorage.recordings);
     console.log($rootScope.data.recordings)
-    console.log($rootScope.data.recordings[localStorage.lastRecordedVideo])
-    var annotation = {
-      team: team,
-      player: player,
-      start: parseInt($scope.recorder.duration) - parseInt($rootScope.data.event_before),
-      end: parseInt($scope.recorder.duration) + parseInt($rootScope.data.event_after),
-      event: event,
-      camera: $rootScope.selectedCam
+    console.log($rootScope.data.recordings[localStorage.lastRecordedVideo]);
+    if ($rootScope.selectedCam.recorderType === "vMix") {
+      var annotation = {
+        team: team,
+        player: player,
+        start: parseInt($scope.recorder.duration) - parseInt($rootScope.data.event_before),
+        end: parseInt($scope.recorder.duration) + parseInt($rootScope.data.event_after),
+        event: event,
+        camera: $rootScope.selectedCam
+      }
+      $rootScope.data.recordings[localStorage.lastRecordedVideo].annotations.push(annotation);
+      localStorage.recordings = JSON.stringify($rootScope.data.recordings);
+    } else if ($rootScope.selectedCam.recorderType === "Panofield") {
+      var annotation = {
+        team: team,
+        player: player,
+        start: parseInt($scope.recorder.duration) - parseInt($rootScope.data.event_before),
+        end: parseInt($scope.recorder.duration) + parseInt($rootScope.data.event_after),
+        event: event,
+        camera: $rootScope.selectedCam
+      }
+      console.log(annotation);
+      var promise = recorderControll.addEvent(annotation, $rootScope.selectedCam);
+      promise.then(function(response) {
+        console.log(response);
+        annotation.id = response.data.id
+        $rootScope.data.recordings[localStorage.lastRecordedVideo].annotations.push(annotation);
+        console.log($rootScope.data.recordings[localStorage.lastRecordedVideo])
+        localStorage.recordings = JSON.stringify($rootScope.data.recordings);
+      }, function(error) {
+        console.log(error)
+      });
     }
-    $rootScope.data.recordings[localStorage.lastRecordedVideo].annotations.push(annotation);
-    localStorage.recordings = JSON.stringify($rootScope.data.recordings);
   }
+
 
   $scope.sendRecordingXML = function() {
     var annotations = $rootScope.data.recordings[localStorage.lastRecordedVideo].annotations;

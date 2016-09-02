@@ -15,10 +15,12 @@ angular.module('main.controller', []).controller('MainCtrl', function($rootScope
     $rootScope.data.event_after = 10;
     $rootScope.data.event_before = 5;
     $rootScope.data.team1 = {
+			"id": 1,
       "name": "Team1",
       "players": []
     };
     $rootScope.data.team2 = {
+			"id": 2,
       "name": "Team2",
       "players": []
     };

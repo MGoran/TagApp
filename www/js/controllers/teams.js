@@ -1,4 +1,4 @@
-angular.module('teams.controller', []).controller('TeamsCtrl', function($rootScope, $scope, $ionicPopup, $timeout, $state) {
+angular.module('teams.controller', []).controller('TeamsCtrl', function($rootScope, $scope, $ionicPopup, $timeout, $state, recorderControll) {
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.player = {};
     $rootScope.data.team1 = JSON.parse(localStorage.team1);
@@ -54,14 +54,14 @@ angular.module('teams.controller', []).controller('TeamsCtrl', function($rootSco
       console.log($rootScope.data)
       if ($scope.selectedIndex === 1) {
         $rootScope.data.team1.players.push({
-					"id": $rootScope.data.team1.players.length,
+          "id": $rootScope.data.team1.players.length,
           "number": res.number,
           "name": res.name
         });
         $scope.selectedTeam = $rootScope.data.team1;
       } else {
         $rootScope.data.team2.players.push({
-					"id": $rootScope.data.team1.players.length,
+          "id": $rootScope.data.team1.players.length,
           "number": res.number,
           "name": res.name
         });
@@ -114,6 +114,7 @@ angular.module('teams.controller', []).controller('TeamsCtrl', function($rootSco
       }]
     });
     myPopup.then(function(res) {
+			
       if ($scope.selectedIndex === 1) {
         $rootScope.data.team1.name = res;
         $scope.selectedTeam = $rootScope.data.team1;
@@ -121,6 +122,7 @@ angular.module('teams.controller', []).controller('TeamsCtrl', function($rootSco
         $rootScope.data.team2.name = res;
         $scope.selectedTeam = $rootScope.data.team2;
       }
+
       localStorage.team1 = JSON.stringify($rootScope.data.team1);
       localStorage.team2 = JSON.stringify($rootScope.data.team2);
     });

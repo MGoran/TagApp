@@ -54,10 +54,10 @@
 			</div>
 			<div class="panel panel-left-bottom " style="opacity:{{data.vc_transparency/100}}">
 				<div style="bottom:0; width:100%">
-					<ion-item class="gm-btn-green" ng-click="changeTeamName(1)" style="text-align:center">
+					<ion-item class="gm-btn-green" disabled style="text-align:center">
 						{{data.team1.name}}
 					</ion-item>
-					<ion-item ng-repeat="event in data.event_types" ng-click="addEvent(event, data.team1)" style="text-align:center" class="gm-btn-white">
+					<ion-item ng-repeat="event in data.event_types" ng-click="addEvent(event, data.team1, 1)" style="text-align:center" class="gm-btn-white">
 						{{event.name}}
 					</ion-item>
 				</div>
@@ -91,10 +91,10 @@
 			</div>
 			<div class="panel panel-right-bottom " style="opacity:{{data.vc_transparency/100}}">
 				<div style="bottom:0; width:100%">
-					<ion-item class="gm-btn-green" ng-click="" style="text-align:center">
+					<ion-item class="gm-btn-green" disabled style="text-align:center">
 						{{data.team2.name}}
 					</ion-item>
-					<ion-item ng-repeat="event in data.event_types" ng-click="addEvent(event, data.team2)" style="text-align:center" class="gm-btn-white">
+					<ion-item ng-repeat="event in data.event_types" ng-click="addEvent(event, data.team2, 2)" style="text-align:center" class="gm-btn-white">
 						{{event.name}}
 					</ion-item>
 				</div>

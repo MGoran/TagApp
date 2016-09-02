@@ -100,5 +100,43 @@ angular.module('recorderControll.service', []).service('recorderControll', funct
     }
     return $http(settings)
   }
+
+  service.addEvent = function(annotation, camera) {
+    var data = {
+      "event_type_name": annotation.event.name,
+      "team_id": annotation.team.team_id
+    }
+    if (annotation.player !== "undefined" && annotation.player !== null)
+      data.player_name = annotation.player.name;
+    var settings = {
+      "async": true,
+      "crossDomain": true,
+      "url": "http://" + camera.recorderIP + "/api/event",
+      "method": "POST",
+      "data": data,
+      "headers": {
+        'Authorization': 'Basic ' + btoa(camera.username + ':' + camera.password)
+      }
+    }
+    return $http(settings);
+  }
+
+  service.setTeamName = function(team, camera) {
+    var settings = {
+      "async": true,
+      "crossDomain": true,
+      "url": "http://" + camera.recorderIP + "/api/team",
+      "method": "PUT",
+      "data": {
+        team_id: team.id,
+        name: team.name
+      },
+      "headers": {
+        'Authorization': 'Basic ' + btoa(camera.username + ':' + camera.password)
+      }
+    }
+    return $http(settings);
+  }
+
   return service;
 });
