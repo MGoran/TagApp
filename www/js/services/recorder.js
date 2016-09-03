@@ -114,17 +114,18 @@ angular.module('recorder.service', []).service('recorder', function($http) {
     //   }](optional)
     // }
   this.queueExport = function(ip, data) {
-      var settings = {
-        "async": true,
-        "crossDomain": true,
-        "url": ip + "/api/export",
-        "method": "POST",
-        "data": data
-      }
-			console.log(settings);
-      return $http(settings)
+    var settings = {
+      "async": true,
+      "crossDomain": true,
+      "url": ip + "/api/export",
+      "method": "POST",
+      "data": data
     }
-    //Delete Queued video export
+    console.log(settings);
+    return $http(settings)
+  }
+
+  //Delete Queued video export
   this.deleteQueuedVideoExport = function(ip, export_id) {
       var settings = {
         "async": true,
@@ -159,7 +160,7 @@ angular.module('recorder.service', []).service('recorder', function($http) {
         "crossDomain": true,
         "url": ip + "/api/event",
         "method": "POST",
-				"data": data
+        "data": data
       }
       return $http(settings)
     }
@@ -290,14 +291,14 @@ angular.module('recorder.service', []).service('recorder', function($http) {
     // Movement can be stopped immediately with parameter "move": "Stop".
     // Paramere speed represents speed of movements. Standard speed is 0, use lower
     // values for slower movement, and higher values for faster movement.
-    this.setPTZState = function(ip, data) {
-        var settings = {
-          "async": true,
-          "crossDomain": true,
-          "url": ip + "/api/ptz",
-          "method": "PUT",
-          "data": data
-        }
-        return $http(settings)
-      }
+  this.setPTZState = function(ip, data) {
+    var settings = {
+      "async": true,
+      "crossDomain": true,
+      "url": ip + "/api/ptz",
+      "method": "PUT",
+      "data": data
+    }
+    return $http(settings)
+  }
 });

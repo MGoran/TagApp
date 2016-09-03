@@ -138,5 +138,48 @@ angular.module('recorderControll.service', []).service('recorderControll', funct
     return $http(settings);
   }
 
+  //Get export queue
+  service.getExportQueue = function(camera) {
+    var settings = {
+      "async": true,
+      "crossDomain": true,
+      "url": "http://" + camera.recorderIP + "/api/export",
+      "method": "GET",
+      "headers": {
+        'Authorization': 'Basic ' + btoa(camera.username + ':' + camera.password)
+      }
+    }
+    return $http(settings)
+  }
+
+  service.queueExport = function(camera, data) {
+    var settings = {
+      "async": true,
+      "crossDomain": true,
+      "url": "http://" + camera.recorderIP + "/api/export",
+      "method": "POST",
+      "data": data,
+      "headers": {
+        'Authorization': 'Basic ' + btoa(camera.username + ':' + camera.password)
+      }
+    }
+    console.log(settings);
+    return $http(settings)
+  }
+
+  //Get details of recording
+  service.getDetailsOfRecording = function(camera, recording_id) {
+    var settings = {
+      "async": true,
+      "crossDomain": true,
+      "url": "http://" + camera.recorderIP + "/api/recording/" + recording_id,
+      "method": "GET",
+      "headers": {
+        'Authorization': 'Basic ' + btoa(camera.username + ':' + camera.password)
+      }
+    }
+    return $http(settings)
+  }
+
   return service;
 });

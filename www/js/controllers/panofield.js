@@ -84,20 +84,7 @@ angular.module('panofield.controller', []).controller('PanofieldCtrl', function(
     console.log($scope.data.videos.length);
     for (i = 0; i < $scope.data.videos.length; i++) {
       var video = $scope.data.videos[i];
-      // if(ionic.Platform.isAndroid()){
-      // 	var targetPath = cordova.file.externalDataDirectory + video.file_name.replace(/\s+/g, '');
-      // }else{
-      // 	var targetPath = cordova.file.	documentsDirectory + video.file_name.replace(/\s+/g, '');
-      // }
-			//alert("Check Target Path");
-			// alert("Check 1");
-			// alert(JSON.stringify(cordova));
-			// alert("Check 2");
-			// alert(JSON.stringify(cordova.file));
-			// alert("Check 3");
-			// alert(JSON.stringify(cordova.file.dataDirectory));
       var targetPath = cordova.file.dataDirectory + video.file_name.replace(/\s+/g, '');
-			//alert(targetPath);
       window.resolveLocalFileSystemURL(targetPath, function() {
         $timeout(function() {
           console.log("File Found");
@@ -116,20 +103,11 @@ angular.module('panofield.controller', []).controller('PanofieldCtrl', function(
   }
   $scope.showPlaybackVideoModal = false;
   $scope.showPlaybackVideo = function(video) {
-    // $timeout(function() {
-    //   $scope.data.videos = $scope.data.videos;
-    // })
-
     console.log(video);
     var video_src = $rootScope.selectedCam.recorder_ip + "/download/" + $scope.data.recordingDetails.directory + "/Export/" + video.file_name;
     video_src = encodeURI(video_src);
     console.log(video_src);
     var url = video_src;
-    // if(ionic.Platform.isAndroid()){
-    // 	var targetPath = cordova.file.externalDataDirectory + video.file_name.replace(/\s+/g, '');
-    // }else{
-    // 	var targetPath = cordova.file.	documentsDirectory + video.file_name.replace(/\s+/g, '');
-    // }
     var targetPath = cordova.file.dataDirectory + video.file_name.replace(/\s+/g, '');
     var trustHosts = true;
     var options = {};
@@ -158,28 +136,11 @@ angular.module('panofield.controller', []).controller('PanofieldCtrl', function(
         });
     });
   }
-  $scope.video_src = "file:///storage/emulated/0/Android/data/com.ionicframework.panofieldcontroller439292/files/FreeKick-Evt-11-Rec-Team2-Team-2016-07-13-17-46-14-646.mp4";
   $scope.startPlayback = function(targetPath) {
     $scope.showPlaybackVideoModal = true;
     //video_src = "videos/example2.mp4"
     targetPath = decodeURI(targetPath);
     console.log(targetPath);
-    // $timeout(function() {
-    //   $scope.video_src = "file:///storage/emulated/0/Android/data/com.ionicframework.panofieldcontroller439292/files/FreeKick-Evt-11-Rec-Team2-Team-2016-07-13-17-46-14-646.mp4";
-    // });
-    // flowplayer("#playbackVideoHolderPanofield", {
-    //   splash: true,
-    //   embed: false,
-    //   ratio: 9 / 16,
-    //   clip: {
-    //     live: false,
-    //     sources: [{
-    //       type: "video/mp4",
-    //       src: targetPath
-    //     }]
-    //   }
-    //
-    // });
     $scope.config = {
       preload: "auto",
       autoPlay: false,
@@ -204,7 +165,6 @@ angular.module('panofield.controller', []).controller('PanofieldCtrl', function(
   }
   $scope.showPlaybackListModal = false;
   $scope.showPlaybackList = function() {
-
     $scope.getRecordingDetails();
     $scope.getExportQueue();
     $scope.showPlaybackListModal = true;
@@ -427,38 +387,38 @@ angular.module('panofield.controller', []).controller('PanofieldCtrl', function(
           //},
           file_name: "" + event_name + "-Evt-" + recording_id + "-Rec-" + team_name + "-Team-" + response.data.time
         }
-				var event_time = response.data.time;
+        var event_time = response.data.time;
         var exp_promise = recorder.queueExport($rootScope.selectedCam.recorder_ip, data);
         exp_promise.then(
           function(response) {
             console.log("exported");
-						console.log(event_name);
-						console.log(team_name);
+            console.log(event_name);
+            console.log(team_name);
             console.log(response.data.time);
-						$cordovaEmailComposer.isAvailable().then(function() {
-							var xml = '<?xml version="1.0"?>';
-							xml += '<video>';
-							xml += '  <event id="'+event_id+'" name="'+event_name+'">';
-							xml += '      <Team id="'+team_id+'">'+team_name+'</Team>';
-							xml += '      <Time>'+event_time+'</Time>';
-							xml += '  </event>';
-							xml += '</video>';
-							var email = {
-						    to: $rootScope.data.email_to,
-						    cc: '',
-						    bcc: [],
-						    attachments: [],
-						    subject: $rootScope.data.email_subject,
-						    body: xml,
-						    isHtml: false
-						  };
+            $cordovaEmailComposer.isAvailable().then(function() {
+              var xml = '<?xml version="1.0"?>';
+              xml += '<video>';
+              xml += '  <event id="' + event_id + '" name="' + event_name + '">';
+              xml += '      <Team id="' + team_id + '">' + team_name + '</Team>';
+              xml += '      <Time>' + event_time + '</Time>';
+              xml += '  </event>';
+              xml += '</video>';
+              var email = {
+                to: $rootScope.data.email_to,
+                cc: '',
+                bcc: [],
+                attachments: [],
+                subject: $rootScope.data.email_subject,
+                body: xml,
+                isHtml: false
+              };
 
-						 $cordovaEmailComposer.open(email).then(null, function () {
-						   //alert("Email client closed");
-						 });
-						}, function () {
-						 	alert("Email service not available")
-						});
+              $cordovaEmailComposer.open(email).then(null, function() {
+                //alert("Email client closed");
+              });
+            }, function() {
+              alert("Email service not available")
+            });
             $scope.getEventList();
             $scope.getRecordingDetails();
             $scope.getExportQueue();

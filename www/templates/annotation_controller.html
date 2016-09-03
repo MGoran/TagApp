@@ -88,6 +88,7 @@
 						</tr>
 					</table>
 				</div>
+				<a ng-if="selectedCam.recorderType==='Panofield'" class="button button-positive btn-full-width button-icon icon ion-chevron-up" style="height: auto;" on-swipe-up="showPlaybackList()" ng-click="showPlaybackList()"></a>
 			</div>
 			<div class="panel panel-right-bottom " style="opacity:{{data.vc_transparency/100}}">
 				<div style="bottom:0; width:100%">
@@ -99,6 +100,39 @@
 					</ion-item>
 				</div>
 			</div>
+		</div>
+		<div class="panel panel-modal" ng-class="(showPlaybackListModal) ? 'slide-up' : 'slide-down'" id="playback-list-modal" ng-show="showPlaybackListModal" style="opacity:{{data.vc_transparency/100}}">
+			<div ng-if="!data.downloadingPlayback">
+				<ion-list class="limit-child-height">
+					<a class="item item-icon-left" ng-click="showPlaybackVideo(video)" ng-repeat="video in data.videos | orderBy: '-id'">
+						<i class="icon" ng-if="video.state !== 'Finished'"><ion-spinner></ion-spinner></i>
+						<span ng-if="video.state === 'Finished'">
+							<i class="icon ion-play" ng-if="fileExists[$index]"></i>
+							<i class="icon ion-ios-download" ng-if="!fileExists[$index]"></i>
+						</span> {{video.file_name}}
+						<span class="item-note">
+							 <span>{{video.state}}</span>
+						</span>
+					</a>
+				</ion-list>
+				<ion-item style="text-align: center;background: none;border: none;">
+					<button class="button button-block gm-btn-white" ng-click="hidePlaybackList()">Close</button>
+				</ion-item>
+			</div>
+			<div ng-if="data.downloadingPlayback" class="item item-icon-left" style="color:white;background:none">
+				<i class="icon" ng-if="video.state !== 'Finished'"><ion-spinner></ion-spinner></i>Downloading.... {{downloadProgress}}%
+			</div>
+		</div>
+		<div class="panel panel-modal playback-modal" ng-class="(showPlaybackVideoModal) ? 'slide-up' : 'slide-down'" id="playback-video-modal" ng-show="showPlaybackVideoModal" style="width: 80%;left: 10%;height: 75%;">
+			<ion-header-bar class="bar bar-header bar-positive">
+				<button class="button button-clear button-primary" ng-click="hidePlaybackVideo()">Close</button>
+			</ion-header-bar>
+			<ion-content padding="false">
+				<videogular vg-update-time="onUpdateTime($currentTime, $duration)" vg-theme="config.theme.url" vg-native-fullscreen="false" vg-plays-inline="'true'" vg-native-controls="true">
+					<vg-media vg-src="config.sources">
+					</vg-media>
+				</videogular>
+			</ion-content>
 		</div>
 	</ion-content>
 </ion-view>

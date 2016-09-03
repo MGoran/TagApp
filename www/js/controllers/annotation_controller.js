@@ -1,4 +1,4 @@
-angular.module('annotationController.controller', []).controller('AnnotationControllerCtrl', function($rootScope, $scope, $ionicPopup, $timeout, $state, cameraMovement, recorderControll, $interval, $cordovaEmailComposer, $filter) {
+angular.module('annotationController.controller', []).controller('AnnotationControllerCtrl', function($rootScope, $scope, $ionicPopup, $timeout, $state, cameraMovement, recorderControll, $interval, $cordovaEmailComposer, $filter, $cordovaFileTransfer) {
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     if (!$rootScope.isUser()) {
       $state.go('login')
@@ -10,6 +10,9 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     } else if ($rootScope.selectedCam.cameraType === "Dahua") {
       $scope.videoSource = "http://" + $rootScope.selectedCam.cameraIP + "/axis-cgi/mjpg/video.cgi?camera=5&subtype=1";
     }
+  }
+  $scope.hidePlaybackVideo = function() {
+    $scope.showPlaybackVideoModal = false;
   }
   $scope.$on("$ionicView.enter", function(event, data) {
     console.log($rootScope.selectedCam);
@@ -23,8 +26,17 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
       else
         $scope.blinkingColor = "red";
     }, 600);
+    $scope.showPlaybackListModal = false;
   });
 
+  $scope.showPlaybackList = function() {
+    $scope.getExportQueue();
+    $scope.getRecorderState();
+    $scope.showPlaybackListModal = true;
+  }
+  $scope.hidePlaybackList = function() {
+    $scope.showPlaybackListModal = false;
+  }
   $scope.ptzMove = function(direction, command) {
     var promise = cameraMovement.move(direction, command, $rootScope.selectedCam);
     promise.then(function(response) {
@@ -82,7 +94,8 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
           console.log(response);
         }, function(error) {
           console.log(error);
-        })
+        });
+        $scope.getRecordingDetails();
       }
       console.log($scope.recorder);
     }, function(error) {
@@ -193,6 +206,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
       $rootScope.data.recordings[localStorage.lastRecordedVideo].annotations.push(annotation);
       localStorage.recordings = JSON.stringify($rootScope.data.recordings);
     } else if ($rootScope.selectedCam.recorderType === "Panofield") {
+      $scope.showLoading();
       var annotation = {
         team: team,
         player: player,
@@ -206,9 +220,25 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
       promise.then(function(response) {
         console.log(response);
         annotation.id = response.data.id
-        $rootScope.data.recordings[localStorage.lastRecordedVideo].annotations.push(annotation);
-        console.log($rootScope.data.recordings[localStorage.lastRecordedVideo])
-        localStorage.recordings = JSON.stringify($rootScope.data.recordings);
+        var event_id = response.data.id;
+        $scope.data.lastEvent = event_id;
+        var recording_id = response.data.recording_id;
+        var data = {
+          recording_id: recording_id,
+          event_id: event_id,
+          file_name: "" + event.name + "-Evt-" + recording_id + "-Rec-" + team.name + "-Team-" + response.data.time
+        }
+        var event_time = response.data.time;
+        var exp_promise = recorderControll.queueExport($rootScope.selectedCam, data);
+        exp_promise.then(function(response) {
+          annotation.file_name = data.file_name;
+          $rootScope.data.recordings[localStorage.lastRecordedVideo].annotations.push(annotation);
+          console.log($rootScope.data.recordings[localStorage.lastRecordedVideo])
+          localStorage.recordings = JSON.stringify($rootScope.data.recordings);
+          $scope.hideLoading();
+        }, function(error) {
+
+        })
       }, function(error) {
         console.log(error)
       });
@@ -262,5 +292,138 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
   $scope.stringToBool = function(value) {
     if (value.toLowerCase() === "true") return true;
     return false
+  }
+
+  $scope.getExportQueue = function() {
+    $scope.showLoading();
+    var promise = recorderControll.getExportQueue($rootScope.selectedCam);
+    promise.then(
+      function(response) {
+        console.log(response);
+        //$scope.data.videos = response.data.export;
+        var videos = []
+        angular.forEach(response.data.export, function(video) {
+          var evtSplit = video.file_name.split("Evt-");
+          if (evtSplit[1] !== undefined) {
+            var recID = evtSplit[1].split("-Rec")[0];
+            if (recID !== undefined && recID !== null) {
+              if (parseInt(recID) === $scope.recorder.recording_id) {
+                videos.push(video);
+              }
+            }
+          }
+        });
+        $scope.data.videos = videos;
+        $scope.hideLoading();
+        $scope.isDownloaded();
+      },
+      function(error) {
+        console.log(error);
+        $scope.hideLoading();
+      }
+    )
+  }
+
+  $scope.isDownloaded = function() {
+
+    $scope.fileExists = [];
+    console.log($scope.data.videos.length);
+    for (i = 0; i < $scope.data.videos.length; i++) {
+      var video = $scope.data.videos[i];
+      var targetPath = cordova.file.dataDirectory + video.file_name.replace(/\s+/g, '');
+      window.resolveLocalFileSystemURL(targetPath, function() {
+        $timeout(function() {
+          console.log("File Found");
+          $scope.fileExists.unshift(true);
+          console.log($scope.fileExists);
+        })
+      }, function() {
+        $timeout(function() {
+          $scope.fileExists.unshift(false);
+          console.log("File Not Found");
+          console.log($scope.fileExists);
+        })
+      });
+    }
+    return false;
+  }
+  $scope.startPlayback = function(targetPath) {
+    $scope.showPlaybackVideoModal = true;
+    //video_src = "videos/example2.mp4"
+    targetPath = decodeURI(targetPath);
+    console.log(targetPath);
+    $scope.config = {
+      preload: "auto",
+      autoPlay: false,
+      sources: [{
+        // src: $sce.trustAsResourceUrl(targetPath),
+        src: targetPath,
+        type: "video/mp4"
+      }],
+      theme: {
+        url: "http://www.videogular.com/styles/themes/default/latest/videogular.css"
+      },
+      plugins: {
+        controls: {
+          autoHide: false,
+          autoHideTime: 3000
+        }
+      }
+    };
+  }
+
+  $scope.showPlaybackVideo = function(video) {
+    console.log(video);
+    var video_src = "http://" + $rootScope.selectedCam.recorderIP + "/download/" + $scope.recorder.recordingDetails.directory + "/Export/" + video.file_name;
+    video_src = encodeURI(video_src);
+    console.log(video_src);
+    var url = video_src;
+    var targetPath = cordova.file.dataDirectory + video.file_name.replace(/\s+/g, '');
+    var trustHosts = true;
+    var options = {
+      "headers": {
+        'Authorization': 'Basic ' + btoa($rootScope.selectedCam.username + ':' + $rootScope.selectedCam.password)
+      }
+    };
+    window.resolveLocalFileSystemURL(targetPath, function() {
+      console.log("file found");
+      $scope.startPlayback(targetPath);
+    }, function() {
+      console.log("file not found");
+      $scope.data.downloadingPlayback = true;
+      $cordovaFileTransfer.download(url, targetPath, options, trustHosts)
+        .then(function(result) {
+          console.log(result);
+          $scope.startPlayback(targetPath);
+          $scope.data.downloadingPlayback = false;
+          $scope.isDownloaded();
+        }, function(err) {
+          console.log(err);
+          alert(JSON.stringify(err));
+          $scope.data.downloadingPlayback = false;
+          $scope.isDownloaded();
+        }, function(progress) {
+          $timeout(function() {
+            $scope.downloadProgress = (progress.loaded / progress.total) * 100;
+            console.log($scope.downloadProgress);
+          });
+        });
+    });
+  }
+
+  $scope.getRecordingDetails = function() {
+    $scope.showLoading();
+    var promise = recorderControll.getDetailsOfRecording($rootScope.selectedCam, $scope.recorder.recording_id);
+    promise.then(
+      function(response) {
+        $scope.data.playbackList = response.data.export;
+        $scope.recorder.recordingDetails = response.data;
+        $scope.hideLoading();
+      },
+      function(error) {
+        console.log(error);
+        $scope.hideLoading();
+      }
+    )
   }
 });

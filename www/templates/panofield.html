@@ -164,33 +164,9 @@
 					<button class="button button-clear button-primary" ng-click="hidePlaybackVideo()">Close</button>
 				</ion-header-bar>
 				<ion-content padding="false">
-					<!-- <video style="width:100%;height:100%" controls>
-						<source src="{{video_src}}" type="video/mp4">
-						Your browser does not support HTML5 video.
-					</video> -->
-					<!-- <div id="playbackVideoHolderPanofield" class="is-closeable playbackVideoInline"></div> -->
-					<!-- <div id="playbackVideoHolder" class="is-closeable"></div> -->
 					<videogular vg-update-time="onUpdateTime($currentTime, $duration)" vg-theme="config.theme.url" vg-native-fullscreen="false" vg-plays-inline="'true'" vg-native-controls="true">
 						<vg-media vg-src="config.sources">
 						</vg-media>
-						<!-- <vg-controls vg-autohide="config.plugins.controls.autoHide" vg-autohide-time="config.plugins.controls.autoHideTime"> -->
-						<!-- <vg-controls>
-							<vg-play-pause-button></vg-play-pause-button>
-							<vg-time-display>{{ currentTime | date:'mm:ss':'+0000' }}</vg-time-display>
-							<vg-scrub-bar>
-								<vg-scrub-bar-current-time></vg-scrub-bar-current-time>
-							</vg-scrub-bar>
-							<vg-time-display>{{ timeLeft | date:'mm:ss':'+0000' }}</vg-time-display>
-							<vg-time-display>{{ totalTime | date:'mm:ss':'+0000' }}</vg-time-display>
-							<<vg-volume>
-								<vg-mute-button></vg-mute-button>
-								<vg-volume-bar></vg-volume-bar>
-							</vg-volume>
-							<vg-playback-button></vg-playback-button>
-							<vg-fullscreen-button></vg-fullscreen-button>
-						</vg-controls> -->
-						<!-- <vg-buffering></vg-buffering> -->
-						<!-- <vg-overlay-play></vg-overlay-play> -->
 					</videogular>
 				</ion-content>
 			</div>
