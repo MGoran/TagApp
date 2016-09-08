@@ -1,6 +1,6 @@
 angular.module('login.controller', []).controller('LoginCtrl', function($rootScope, $scope, $ionicModal, $timeout, $state) {
 	console.log(localStorage.user)
-  if (localStorage.user == undefined) {
+  if (localStorage.user === undefined || localStorage.user === "" ) {
     $scope.data = {
       username: "user1",
       password: "password1",

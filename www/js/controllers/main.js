@@ -69,6 +69,7 @@ angular.module('main.controller', []).controller('MainCtrl', function($rootScope
   }
   $scope.logout = function() {
     $rootScope.user = {};
+		localStorage.user = "";
     $state.go('login');
   }
   $scope.showLoading = function() {
@@ -83,4 +84,7 @@ angular.module('main.controller', []).controller('MainCtrl', function($rootScope
       console.log("The loading indicator is now hidden");
     });
   };
+	$scope.exitApp = function(){
+		ionic.Platform.exitApp();
+	}
 });
