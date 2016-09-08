@@ -8,7 +8,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     } else {
       $scope.directory = cordova.file.dataDirectory;
     }
-    console.log($scope.data);
+    console.log($scope.directory);
   });
   $scope.getCameraView = function() {
     if ($rootScope.selectedCam.cameraType === "Axis") {
