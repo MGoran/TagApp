@@ -6,7 +6,7 @@ angular.module('main.controller', []).controller('MainCtrl', function($rootScope
   if (localStorage.vc_transparency == undefined || localStorage.vc_transparency == null || localStorage.vc_transparency == "") {
     console.log(true);
     $rootScope.data = {};
-		$rootScope.data.recordings = {};
+    $rootScope.data.recordings = {};
     $rootScope.data.vc_transparency = "50";
     $rootScope.data.player_picker = false;
     $rootScope.data.dahua_speed = "1";
@@ -15,23 +15,35 @@ angular.module('main.controller', []).controller('MainCtrl', function($rootScope
     $rootScope.data.event_after = 10;
     $rootScope.data.event_before = 5;
     $rootScope.data.team1 = {
-			"id": 1,
+      "id": 1,
       "name": "Team1",
+			"color": "red",
       "players": []
     };
     $rootScope.data.team2 = {
-			"id": 2,
+      "id": 2,
       "name": "Team2",
+			"color": "blue",
       "players": []
     };
     $rootScope.data.event_types = [{
-      "name": "Goal"
+      "name": "Goal",
+      "time_before": 10,
+      "time_after": 10,
+      "icon": "ion-ios-football",
+      "start_counter": false,
+      "generate_playback_video": true
     }, {
-      "name": "Corner"
+      "name": "Possession",
+      "time_before": 10,
+      "time_after": 10,
+      "icon": "ion-shuffle",
+      "start_counter": true,
+			"generate_playback_video": false
     }];
 
     localStorage.team1 = JSON.stringify($rootScope.data.team1);
-		localStorage.recordings = JSON.stringify($rootScope.data.recordings);
+    localStorage.recordings = JSON.stringify($rootScope.data.recordings);
     localStorage.team2 = JSON.stringify($rootScope.data.team2);
     localStorage.event_types = JSON.stringify($rootScope.data.event_types);
     localStorage.vc_transparency = $rootScope.data.vc_transparency;
@@ -53,7 +65,7 @@ angular.module('main.controller', []).controller('MainCtrl', function($rootScope
     $rootScope.data.team2 = JSON.parse(localStorage.team2);
     $rootScope.data.event_types = JSON.parse(localStorage.event_types);
     $rootScope.data.player_picker = JSON.parse(localStorage.player_picker);
-		$rootScope.data.recordings = JSON.parse(localStorage.recordings);
+    $rootScope.data.recordings = JSON.parse(localStorage.recordings);
   }
   $scope.logout = function() {
     $rootScope.user = {};

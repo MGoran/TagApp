@@ -1,4 +1,4 @@
-angular.module('recorderControll.service', []).service('recorderControll', function($http) {
+angular.module('recorderControll.service', []).service('recorderControll', function($http, $filter) {
   var service = {};
   service.getRecorderState = function(camera) {
     switch (camera.recorderType) {
@@ -104,7 +104,9 @@ angular.module('recorderControll.service', []).service('recorderControll', funct
   service.addEvent = function(annotation, camera) {
     var data = {
       "event_type_name": annotation.event.name,
-      "team_id": annotation.team.team_id
+      "team_id": annotation.team.team_id,
+			"begin": $filter('date')(new Date(annotation.start), "yyyy-MM-dd-HH-mm-ss-sss"),
+			"end": $filter('date')(new Date(annotation.end), "yyyy-MM-dd-HH-mm-ss-sss")
     }
     if (annotation.player !== "undefined" && annotation.player !== null)
       data.player_name = annotation.player.name;

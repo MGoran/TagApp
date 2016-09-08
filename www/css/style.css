@@ -205,10 +205,10 @@ div.panel-top {
   position: absolute;
   display: block;
   z-index: 50;
-  top: 60px;
-  left: 30%;
+  top: 75px;
+  left: 35%;
   /*height: 15%;*/
-  width: 40%;
+  width: 30%;
   background-color: rgba(25, 25, 25, 0.5);
   /*padding-top:50px;*/
 }
@@ -562,11 +562,20 @@ videogular .video_controlls {
   z-index: 9000001;
 }
 .header {
-     -webkit-flex: 1.5 !important;
-     -webkit-align-items: center;
-     background-color: #1abc9c;
+  -webkit-flex: 1.5 !important;
+  -webkit-align-items: center;
+  background-color: #1abc9c;
 }
-
 .icon-row {
-     -webkit-align-items: center;
+  -webkit-align-items: center;
+}
+.limit-height {
+  max-height: 380px;
+  width: 100%;
+  display: block !important;
+  overflow: scroll !important;
+}
+.event-list-item {
+  background: none;
+  color: white;
 }

@@ -4,10 +4,10 @@
 			<li class="item item-divider">
 				Defined Event Type
 			</li>
-			<li class="item item-button-right" ng-repeat="event_type in data.event_types">
-				{{event_type.name}}
+			<li class="item item-button-right item-icon-left" ng-repeat="event_type in data.event_types" ng-click="editEventType(event_type, $index)">
+				<i class="icon {{event_type.icon}}"></i> {{event_type.name}} ({{event_type.time_before}}s - {{event_type.time_after}}s)
 				<button class="button button-assertive" ng-click="remove(data.event_types, $index)">
-					<i class="icon ion-trash-a"></i>
+					<i style="left: 8px;" class="icon ion-trash-a"></i>
 				</button>
 			</li>
 

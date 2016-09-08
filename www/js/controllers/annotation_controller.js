@@ -3,6 +3,12 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     if (!$rootScope.isUser()) {
       $state.go('login')
     }
+    if (ionic.Platform.isIOS()) {
+      $scope.directory = cordova.file.documentsDirectory;
+    } else {
+      $scope.directory = cordova.file.dataDirectory;
+    }
+    console.log($scope.data);
   });
   $scope.getCameraView = function() {
     if ($rootScope.selectedCam.cameraType === "Axis") {
@@ -83,6 +89,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
         $scope.recorder.duration = response.data.duration;
         $scope.recorder.time = new Date().getTime() - ($scope.recorder.duration);
         $scope.recorder.recording_id = response.data.recording_id;
+        $scope.recorder.start = new Date(response.data.start);
         var promise = recorderControll.setTeamName($rootScope.data.team1, $rootScope.selectedCam);
         promise.then(function(response) {
           console.log(response);
@@ -96,6 +103,9 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
           console.log(error);
         });
         $scope.getRecordingDetails();
+      }
+      if ($scope.recorder.recording) {
+        $scope.data.currentProject = $rootScope.data.recordings[localStorage.lastRecordedVideo];
       }
       console.log($scope.recorder);
     }, function(error) {
@@ -111,14 +121,16 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
         var date = $filter("date")(new Date(), "dd MMMM yyyy - hh-mm a");
         var filename = "capture - " + date;
         if ($rootScope.data.recordings[filename] === undefined) {
+          console.log("NEW RECORDING");
           localStorage.lastRecordedVideo = filename;
           console.log(date);
           $rootScope.data.recordings["capture - " + date] = {
             annotations: [],
             recording_id: response.data.recording_id
           }
+          $scope.data.currentProject = $rootScope.data.recordings[localStorage.lastRecordedVideo];
+          console.log($rootScope.data.recordings)
           localStorage.recordings = JSON.stringify($rootScope.data.recordings);
-
         }
         console.log($rootScope.data.recordings);
         $scope.getRecorderState();
@@ -148,7 +160,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     console.log($scope.recorder);
     console.log($rootScope.data);
     $rootScope.data.recordings = JSON.parse(localStorage.recordings);
-
+		event.currentDate = new Date();
     if ($rootScope.data.player_picker) {
       $scope.selectPlayer(event, team);
     } else {
@@ -210,10 +222,10 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
       var annotation = {
         team: team,
         player: player,
-        start: parseInt($scope.recorder.duration) - parseInt($rootScope.data.event_before),
-        end: parseInt($scope.recorder.duration) + parseInt($rootScope.data.event_after),
+        start: new Date().getTime() - (parseInt(event.time_before) * 1000),
+        end: new Date().getTime() + (parseInt(event.time_after) * 1000),
         event: event,
-        camera: $rootScope.selectedCam
+        camera: $rootScope.selectedCam,
       }
       console.log(annotation);
       var promise = recorderControll.addEvent(annotation, $rootScope.selectedCam);
@@ -232,8 +244,10 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
         var exp_promise = recorderControll.queueExport($rootScope.selectedCam, data);
         exp_promise.then(function(response) {
           annotation.file_name = data.file_name;
+          $rootScope.data.recordings = JSON.parse(localStorage.recordings)
+          console.log($rootScope.data.recordings)
           $rootScope.data.recordings[localStorage.lastRecordedVideo].annotations.push(annotation);
-          console.log($rootScope.data.recordings[localStorage.lastRecordedVideo])
+          $scope.data.currentProject = $rootScope.data.recordings[localStorage.lastRecordedVideo];
           localStorage.recordings = JSON.stringify($rootScope.data.recordings);
           $scope.hideLoading();
         }, function(error) {
@@ -245,6 +259,14 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     }
   }
 
+  $scope.removeEvent = function(array, index) {
+    console.log(array.length);
+    console.log(index);
+    index++;
+    array.splice(array.length - index, 1);
+    $scope.data.currentProject.annotations = array;
+    localStorage.recordings = JSON.stringify($rootScope.data.recordings);
+  }
 
   $scope.sendRecordingXML = function() {
     var annotations = $rootScope.data.recordings[localStorage.lastRecordedVideo].annotations;
@@ -267,27 +289,53 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     xml += "	</annotations>";
     xml += '</recording>';
     console.log(xml);
-    /*
-     * DELETE NEXT RETURN FOR PRODUCTION
-     */
-    //return false;
-    $cordovaEmailComposer.isAvailable().then(function() {
-      var email = {
-        to: $rootScope.data.email_to,
-        cc: '',
-        bcc: [],
-        attachments: [],
-        subject: $rootScope.data.email_subject,
-        body: xml,
-        isHtml: false
-      };
 
-      $cordovaEmailComposer.open(email).then(null, function() {
-        console.log("email client closed");
-      });
-    }, function() {
-      alert("Email service not available")
-    });
+    var filename = localStorage.lastRecordedVideo + ".xml";
+
+    window.resolveLocalFileSystemURL($scope.directory, function(directoryEntry) {
+      directoryEntry.getFile(filename, {
+        create: true
+      }, function(fileEntry) {
+        fileEntry.createWriter(function(fileWriter) {
+          fileWriter.onwriteend = function(e) {
+            // for real-world usage, you might consider passing a success callback
+            console.log('Write of file "' + $scope.directory + filename + '"" completed.');
+            var filePath = fileEntry.nativeURL.replace('file://', '');
+            //var filePath = fileEntry.nativeURL;
+            //  var filePath = $scope.directory + filename;
+            $cordovaEmailComposer.isAvailable().then(function() {
+              var email = {
+                to: $rootScope.data.email_to,
+                cc: '',
+                bcc: [],
+                attachments: [filePath],
+                subject: $rootScope.data.email_subject,
+                body: xml,
+                isHtml: false
+              };
+              console.log(email)
+              $cordovaEmailComposer.open(email).then(null, function() {
+                console.log("email client closed");
+              });
+            }, function() {
+              alert("Email service not available")
+            });
+          };
+
+          fileWriter.onerror = function(e) {
+            // you could hook this up with our global error handler, or pass in an error callback
+            alert('Write failed: ' + e.toString());
+
+          };
+
+          var blob = new Blob([xml], {
+            type: 'text/xml'
+          });
+          fileWriter.write(blob);
+        }, errorHandler.bind(null, filename));
+      }, errorHandler.bind(null, filename));
+    }, errorHandler.bind(null, filename));
+
   }
   $scope.stringToBool = function(value) {
     if (value.toLowerCase() === "true") return true;
@@ -308,12 +356,17 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
             var recID = evtSplit[1].split("-Rec")[0];
             if (recID !== undefined && recID !== null) {
               if (parseInt(recID) === $scope.recorder.recording_id) {
+                var eventDetails = $filter("filter")($rootScope.data.recordings[localStorage.lastRecordedVideo].annotations, {
+                  file_name: video.file_name.split(".")[0]
+                })[0];
+								video.event_details = eventDetails;
                 videos.push(video);
               }
             }
           }
         });
         $scope.data.videos = videos;
+        console.log(videos);
         $scope.hideLoading();
         $scope.isDownloaded();
       },
@@ -330,7 +383,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     console.log($scope.data.videos.length);
     for (i = 0; i < $scope.data.videos.length; i++) {
       var video = $scope.data.videos[i];
-      var targetPath = cordova.file.dataDirectory + video.file_name.replace(/\s+/g, '');
+      var targetPath = $scope.directory + video.file_name.replace(/\s+/g, '');
       window.resolveLocalFileSystemURL(targetPath, function() {
         $timeout(function() {
           console.log("File Found");
@@ -378,7 +431,9 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     video_src = encodeURI(video_src);
     console.log(video_src);
     var url = video_src;
-    var targetPath = cordova.file.dataDirectory + video.file_name.replace(/\s+/g, '');
+
+    var targetPath = $scope.directory + video.file_name.replace(/\s+/g, '');
+
     var trustHosts = true;
     var options = {
       "headers": {
@@ -425,5 +480,32 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
         $scope.hideLoading();
       }
     )
+  }
+
+  var errorHandler = function(fileName, e) {
+    var msg = '';
+
+    switch (e.code) {
+      case FileError.QUOTA_EXCEEDED_ERR:
+        msg = 'Storage quota exceeded';
+        break;
+      case FileError.NOT_FOUND_ERR:
+        msg = 'File not found';
+        break;
+      case FileError.SECURITY_ERR:
+        msg = 'Security error';
+        break;
+      case FileError.INVALID_MODIFICATION_ERR:
+        msg = 'Invalid modification';
+        break;
+      case FileError.INVALID_STATE_ERR:
+        msg = 'Invalid state';
+        break;
+      default:
+        msg = 'Unknown error';
+        break;
+    };
+
+    console.log('Error (' + fileName + '): ' + msg);
   }
 });

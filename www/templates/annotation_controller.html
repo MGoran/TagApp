@@ -38,11 +38,6 @@
 					<button class="button icon ion-minus-round  gm-btn-white gm-btn-height" on-release="ptzZoom('-', 'stop')" on-touch="ptzZoom('-', 'start')"></button>
 				</div>
 			</div>
-			<div class="panel panel-left">
-				<div class="btn-stack">
-
-				</div>
-			</div>
 			<div class="panel panel-right" style="opacity:{{data.vc_transparency/100}}">
 				<div class="btn-stack">
 					<button class="button icon ion-arrow-right-c gm-btn-white gm-btn-height" on-release="ptzMove('right', 'stop')" on-touch="ptzMove('right', 'start')"></button>
@@ -51,15 +46,25 @@
 				</div>
 			</div>
 			<div class="panel panel-top" style="opacity:{{data.vc_transparency/100}}">
+				<div ng-if="data.recorder.recording">
+					<ion-item ng-repeat="annotation in data.currentProject.annotations | limitTo:-3" class="item-button-right item-icon-left event-list-item">
+						<i class="icon {{annotation.event.icon}}"></i>{{annotation.team.name}} - {{annotation.event.name}}
+						<button class="button" style="color: white;background: none;" ng-click="removeEvent(data.currentProject.annotations, $index)">
+							<i style="left: 8px;" class="icon ion-close-round"></i>
+						</button>
+					</ion-item>
+				</div>
 			</div>
 			<div class="panel panel-left-bottom " style="opacity:{{data.vc_transparency/100}}">
 				<div style="bottom:0; width:100%">
 					<ion-item class="gm-btn-green" disabled style="text-align:center">
 						{{data.team1.name}}
 					</ion-item>
-					<ion-item ng-repeat="event in data.event_types" ng-click="addEvent(event, data.team1, 1)" style="text-align:center" class="gm-btn-white">
-						{{event.name}}
-					</ion-item>
+					<div class="limit-height">
+						<ion-item ng-repeat="event in data.event_types" ng-click="addEvent(event, data.team1, 1)" style="text-align:center" class="gm-btn-white">
+							{{event.name}}
+						</ion-item>
+					</div>
 				</div>
 			</div>
 			<div class="panel panel-bottom " style="opacity:{{data.vc_transparency/100}}">
@@ -95,32 +100,32 @@
 					<ion-item class="gm-btn-green" disabled style="text-align:center">
 						{{data.team2.name}}
 					</ion-item>
-					<ion-item ng-repeat="event in data.event_types" ng-click="addEvent(event, data.team2, 2)" style="text-align:center" class="gm-btn-white">
-						{{event.name}}
-					</ion-item>
+					<div class="limit-height">
+						<ion-item ng-repeat="event in data.event_types" ng-click="addEvent(event, data.team2, 2)" style="text-align:center" class="gm-btn-white">
+							{{event.name}}
+						</ion-item>
+					</div>
 				</div>
 			</div>
 		</div>
 		<div class="panel panel-modal" ng-class="(showPlaybackListModal) ? 'slide-up' : 'slide-down'" id="playback-list-modal" ng-show="showPlaybackListModal" style="opacity:{{data.vc_transparency/100}}">
 			<div ng-if="!data.downloadingPlayback">
 				<ion-list class="limit-child-height">
-					<a class="item item-icon-left" ng-click="showPlaybackVideo(video)" ng-repeat="video in data.videos | orderBy: '-id'">
+					<a class="item item-icon-left item-icon-right" ng-click="showPlaybackVideo(video)" ng-repeat="video in data.videos | orderBy: '-id'">
 						<i class="icon" ng-if="video.state !== 'Finished'"><ion-spinner></ion-spinner></i>
-						<span ng-if="video.state === 'Finished'">
-							<i class="icon ion-play" ng-if="fileExists[$index]"></i>
-							<i class="icon ion-ios-download" ng-if="!fileExists[$index]"></i>
-						</span> {{video.file_name}}
-						<span class="item-note">
-							 <span>{{video.state}}</span>
-						</span>
+						<i class="icon {{video.event_details.event.icon}}"></i> {{video.event_details.team.name}} - {{video.event_details.event.name}} <i>{{video.event_details.start | date: "mm:ss"}}</i>
+						<small>[{{video.state}}]</small>
+						<i class="icon ion-ios-download" ng-if="!fileExists[$index] && video.state === 'Finished'"></i>
+						<i class="icon ion-play" ng-if="fileExists[$index] && video.state === 'Finished'"></i>
 					</a>
 				</ion-list>
 				<ion-item style="text-align: center;background: none;border: none;">
 					<button class="button button-block gm-btn-white" ng-click="hidePlaybackList()">Close</button>
 				</ion-item>
 			</div>
-			<div ng-if="data.downloadingPlayback" class="item item-icon-left" style="color:white;background:none">
-				<i class="icon" ng-if="video.state !== 'Finished'"><ion-spinner></ion-spinner></i>Downloading.... {{downloadProgress}}%
+			<div ng-if="data.downloadingPlayback" class="item item-icon-left" style="color:white;background:linear-gradient(90deg, #0c60ee {{downloadProgress}}%, transparent 50%) !important;">
+				<i class="icon" style="color:black" ng-if="video.state !== 'Finished'"><ion-spinner></ion-spinner></i>
+				<span style="color:black">Downloading.... {{downloadProgress}}%</span>
 			</div>
 		</div>
 		<div class="panel panel-modal playback-modal" ng-class="(showPlaybackVideoModal) ? 'slide-up' : 'slide-down'" id="playback-video-modal" ng-show="showPlaybackVideoModal" style="width: 80%;left: 10%;height: 75%;">
