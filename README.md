@@ -1,4 +1,13 @@
 "# TagApp"
+0.1.3
+-Event type duration
+-Saving logged in user
+-Logout
+-Changes in playback functionality
+-Event before and event after for export (Recorder)
+-Latest events (last 3)
+
+"# TagApp"
 0.1.1
 -Putting together panofield recorder functionality
 

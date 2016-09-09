@@ -46,7 +46,7 @@
 				</div>
 			</div>
 			<div class="panel panel-top" style="opacity:{{data.vc_transparency/100}}">
-				<div ng-if="data.recorder.recording">
+				<div ng-if="recorder.recording">
 					<ion-item ng-repeat="annotation in data.currentProject.annotations | limitTo:-3" class="item-button-right item-icon-left event-list-item">
 						<i class="icon {{annotation.event.icon}}"></i>{{annotation.team.name}} - {{annotation.event.name}}
 						<button class="button" style="color: white;background: none;" ng-click="removeEvent(data.currentProject.annotations, $index)">
