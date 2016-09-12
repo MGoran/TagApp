@@ -334,7 +334,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
             }, function() {
               alert("Email service not available")
             });
-          };
+        //  };
 		//
     //       fileWriter.onerror = function(e) {
     //         // you could hook this up with our global error handler, or pass in an error callback
