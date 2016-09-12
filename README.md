@@ -1,4 +1,8 @@
 "# TagApp"
+0.1.5
+-Removed xml file creation
+
+"# TagApp"
 0.1.4
 -No Live view feature
 -Show begin/end date for playback video list

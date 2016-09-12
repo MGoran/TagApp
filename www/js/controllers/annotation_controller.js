@@ -306,15 +306,15 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
 
     var filename = localStorage.lastRecordedVideo + ".xml";
 
-    window.resolveLocalFileSystemURL($scope.directory, function(directoryEntry) {
-      directoryEntry.getFile(filename, {
-        create: true
-      }, function(fileEntry) {
-        fileEntry.createWriter(function(fileWriter) {
-          fileWriter.onwriteend = function(e) {
+    // window.resolveLocalFileSystemURL($scope.directory, function(directoryEntry) {
+    //   directoryEntry.getFile(filename, {
+    //     create: true
+    //   }, function(fileEntry) {
+    //     fileEntry.createWriter(function(fileWriter) {
+    //       fileWriter.onwriteend = function(e) {
             // for real-world usage, you might consider passing a success callback
-            console.log('Write of file "' + $scope.directory + filename + '"" completed.');
-            var filePath = $scope.directory + filename;
+            //console.log('Write of file "' + $scope.directory + filename + '"" completed.');
+            //var filePath = $scope.directory + filename;
             //var filePath = fileEntry.nativeURL;
             //  var filePath = $scope.directory + filename;
             $cordovaEmailComposer.isAvailable().then(function() {
@@ -322,7 +322,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
                 to: $rootScope.data.email_to,
                 cc: '',
                 bcc: [],
-                attachments: [filePath],
+                attachments: [],
                 subject: $rootScope.data.email_subject,
                 body: xml,
                 isHtml: false
@@ -335,20 +335,20 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
               alert("Email service not available")
             });
           };
-
-          fileWriter.onerror = function(e) {
-            // you could hook this up with our global error handler, or pass in an error callback
-            alert('Write failed: ' + e.toString());
-
-          };
-
-          var blob = new Blob([xml], {
-            type: 'text/xml'
-          });
-          fileWriter.write(blob);
-        }, errorHandler.bind(null, filename));
-      }, errorHandler.bind(null, filename));
-    }, errorHandler.bind(null, filename));
+		//
+    //       fileWriter.onerror = function(e) {
+    //         // you could hook this up with our global error handler, or pass in an error callback
+    //         alert('Write failed: ' + e.toString());
+		//
+    //       };
+		//
+    //       var blob = new Blob([xml], {
+    //         type: 'text/xml'
+    //       });
+    //       fileWriter.write(blob);
+    //     }, errorHandler.bind(null, filename));
+    //   }, errorHandler.bind(null, filename));
+    // }, errorHandler.bind(null, filename));
 
   }
   $scope.stringToBool = function(value) {
