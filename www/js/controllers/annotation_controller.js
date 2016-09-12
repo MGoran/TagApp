@@ -114,6 +114,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
   }
 
   $scope.startRecorder = function() {
+    $scope.showLoading();
     var promise = recorderControll.startRecorder($rootScope.selectedCam);
     promise.then(function(response) {
       console.log(response);
@@ -134,9 +135,15 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
         }
         console.log($rootScope.data.recordings);
         $scope.getRecorderState();
+        $scope.hideLoading();
       }, 1000);
+
     }, function(error) {
+      $scope.hideLoading();
       console.log(error);
+      if (error.status === -1) {
+        alert("Connection with recorder not possible!");
+      }
     })
   }
 
@@ -153,6 +160,11 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     })
   }
 
+  $scope.$on('timer-tick', function(event, args) {
+
+    $scope.timerCurrentTime = args.millis;
+  });
+
   $scope.addEvent = function(event, team, team_id) {
     team.team_id = team_id;
     if (!$scope.recorder.recording) return false;
@@ -160,7 +172,9 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     console.log($scope.recorder);
     console.log($rootScope.data);
     $rootScope.data.recordings = JSON.parse(localStorage.recordings);
-		event.currentDate = new Date();
+    event.currentDate = new Date();
+    event.duration_before = $scope.timerCurrentTime - (event.time_after * 1000);
+    event.duration_after = $scope.timerCurrentTime + (event.time_after * 1000);
     if ($rootScope.data.player_picker) {
       $scope.selectPlayer(event, team);
     } else {
@@ -300,7 +314,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
           fileWriter.onwriteend = function(e) {
             // for real-world usage, you might consider passing a success callback
             console.log('Write of file "' + $scope.directory + filename + '"" completed.');
-            var filePath = fileEntry.nativeURL.replace('file://', '');
+            var filePath = $scope.directory + filename;
             //var filePath = fileEntry.nativeURL;
             //  var filePath = $scope.directory + filename;
             $cordovaEmailComposer.isAvailable().then(function() {
@@ -359,7 +373,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
                 var eventDetails = $filter("filter")($rootScope.data.recordings[localStorage.lastRecordedVideo].annotations, {
                   file_name: video.file_name.split(".")[0]
                 })[0];
-								video.event_details = eventDetails;
+                video.event_details = eventDetails;
                 videos.push(video);
               }
             }

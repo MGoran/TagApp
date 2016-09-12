@@ -1,6 +1,6 @@
 <ion-view view-title="{{selectedCam.name}}" hide-nav-bar="true">
 	<ion-content padding="false" style="height:100%" class="video-page">
-		<img ng-src="{{videoSource}}" class="annotation_video" />
+		<img ng-if="selectedCam.cameraType !== 'disabled'" ng-src="{{videoSource}}" class="annotation_video" />
 		<div class="annotation_controlls" style="opacity:{{data.vc_transparency/100}}">
 			<div class="panel panel-top-controlls" style="opacity:{{data.vc_transparency/100}}">
 				<div class="row" style="text-align:center;margin-left:0;padding: 0;">
@@ -31,14 +31,14 @@
 					</div>
 				</div>
 			</div>
-			<div class="panel panel-left" style="opacity:{{data.vc_transparency/100}}">
+			<div class="panel panel-left" style="opacity:{{data.vc_transparency/100}}" ng-if="selectedCam.cameraType !== 'disabled'">
 				<div class="btn-stack">
 					<button class="button icon ion-arrow-left-c gm-btn-white gm-btn-height" on-release="ptzMove('left', 'stop')" on-touch="ptzMove('left', 'start')"></button>
 					<button class="button icon ion-arrow-up-c  gm-btn-white gm-btn-height" on-release="ptzMove('up', 'stop')" on-touch="ptzMove('up', 'start')"></button>
 					<button class="button icon ion-minus-round  gm-btn-white gm-btn-height" on-release="ptzZoom('-', 'stop')" on-touch="ptzZoom('-', 'start')"></button>
 				</div>
 			</div>
-			<div class="panel panel-right" style="opacity:{{data.vc_transparency/100}}">
+			<div class="panel panel-right" style="opacity:{{data.vc_transparency/100}}" ng-if="selectedCam.cameraType !== 'disabled'">
 				<div class="btn-stack">
 					<button class="button icon ion-arrow-right-c gm-btn-white gm-btn-height" on-release="ptzMove('right', 'stop')" on-touch="ptzMove('right', 'start')"></button>
 					<button class="button icon ion-arrow-down-c  gm-btn-white gm-btn-height" on-release="ptzMove('down', 'stop')" on-touch="ptzMove('down', 'start')"></button>
@@ -68,7 +68,7 @@
 				</div>
 			</div>
 			<div class="panel panel-bottom " style="opacity:{{data.vc_transparency/100}}">
-				<div class="zone-buttons">
+				<div class="zone-buttons" ng-if="selectedCam.cameraType !== 'disabled'">
 					<table style="height: 200px;width: 100%;">
 						<tr>
 							<th class="border" style="border-right:0;width: 15%;" ng-click="gotoPreset(2)">&nbsp;</th>
@@ -113,7 +113,7 @@
 				<ion-list class="limit-child-height">
 					<a class="item item-icon-left item-icon-right" ng-click="showPlaybackVideo(video)" ng-repeat="video in data.videos | orderBy: '-id'">
 						<i class="icon" ng-if="video.state !== 'Finished'"><ion-spinner></ion-spinner></i>
-						<i class="icon {{video.event_details.event.icon}}"></i> {{video.event_details.team.name}} - {{video.event_details.event.name}} <i>{{video.event_details.start | date: "mm:ss"}}</i>
+						<i class="icon {{video.event_details.event.icon}}"></i> {{video.event_details.team.name}} - {{video.event_details.event.name}} <i>{{video.event_details.event.duration_before | date: "mm:ss"}} - {{video.event_details.event.duration_after | date: "mm:ss"}}</i>
 						<small>[{{video.state}}]</small>
 						<i class="icon ion-ios-download" ng-if="!fileExists[$index] && video.state === 'Finished'"></i>
 						<i class="icon ion-play" ng-if="fileExists[$index] && video.state === 'Finished'"></i>
@@ -125,7 +125,7 @@
 			</div>
 			<div ng-if="data.downloadingPlayback" class="item item-icon-left" style="color:white;background:linear-gradient(90deg, #0c60ee {{downloadProgress}}%, transparent 50%) !important;">
 				<i class="icon" style="color:black" ng-if="video.state !== 'Finished'"><ion-spinner></ion-spinner></i>
-				<span style="color:black">Downloading.... {{downloadProgress}}%</span>
+				<span style="color:black">Downloading...</span>
 			</div>
 		</div>
 		<div class="panel panel-modal playback-modal" ng-class="(showPlaybackVideoModal) ? 'slide-up' : 'slide-down'" id="playback-video-modal" ng-show="showPlaybackVideoModal" style="width: 80%;left: 10%;height: 75%;">

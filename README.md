@@ -1,5 +1,14 @@
 "# TagApp"
 0.1.3
+-No Live view feature
+-Show begin/end date for playback video list
+-Playback video list and preview size (so annotations are still available)
+-Removed percentage from downloading progress
+-Changed live view to -> New project
+-Changed how list of setups are shown on home page
+
+"# TagApp"
+0.1.3
 -Event type duration
 -Saving logged in user
 -Logout
