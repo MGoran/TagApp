@@ -1,5 +1,5 @@
 "# TagApp"
-0.1.3
+0.1.4
 -No Live view feature
 -Show begin/end date for playback video list
 -Playback video list and preview size (so annotations are still available)
@@ -17,7 +17,7 @@
 -Latest events (last 3)
 
 "# TagApp"
-0.1.1
+0.1.2
 -Putting together panofield recorder functionality
 
 "# TagApp"
