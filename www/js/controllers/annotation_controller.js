@@ -17,6 +17,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
       $scope.videoSource = "http://" + $rootScope.selectedCam.cameraIP + "/axis-cgi/mjpg/video.cgi?camera=5&subtype=1";
     }
   }
+  $scope.data.periodCmdLabel = "Start match";
   $scope.hidePlaybackVideo = function() {
     $scope.showPlaybackVideoModal = false;
   }
@@ -40,9 +41,41 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     $scope.getRecorderState();
     $scope.showPlaybackListModal = true;
   }
+
   $scope.hidePlaybackList = function() {
     $scope.showPlaybackListModal = false;
   }
+
+  $scope.showShareList = function() {
+    $scope.getExportQueue();
+    $scope.getRecorderState();
+    $scope.showShareListModal = true;
+  }
+
+  $scope.hideShareList = function() {
+    $scope.showShareListModal = false;
+  }
+
+  $scope.shareVideo = function(video) {
+    console.log(video);
+    console.log($scope.recorder);
+    var data = {
+      recording_id: $scope.recorder.recording_id,
+      event_id: video.event_details.id,
+      service: "Facebook",
+      privacy: $rootScope.data.facebook_share,
+      upload: true
+    }
+    $scope.showLoading();
+    var exp_promise = recorderControll.queueExport($rootScope.selectedCam, data);
+    exp_promise.then(function(response) {
+      console.log(response)
+      $scope.hideLoading();
+    }, function(error) {
+      alert(error);
+    })
+  }
+
   $scope.ptzMove = function(direction, command) {
     var promise = cameraMovement.move(direction, command, $rootScope.selectedCam);
     promise.then(function(response) {
@@ -90,6 +123,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
         $scope.recorder.time = new Date().getTime() - ($scope.recorder.duration);
         $scope.recorder.recording_id = response.data.recording_id;
         $scope.recorder.start = new Date(response.data.start);
+
         var promise = recorderControll.setTeamName($rootScope.data.team1, $rootScope.selectedCam);
         promise.then(function(response) {
           console.log(response);
@@ -103,13 +137,51 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
           console.log(error);
         });
         $scope.getRecordingDetails();
+
       }
+      $scope.getPeriodCmdLabel();
       if ($scope.recorder.recording) {
         $scope.data.currentProject = $rootScope.data.recordings[localStorage.lastRecordedVideo];
       }
       console.log($scope.recorder);
     }, function(error) {
       console.log(error);
+    })
+  }
+
+  /**
+   * [toggleRecorder description]
+   * @return {[type]} [description]
+   */
+  $scope.toggleRecorder = function() {
+    if ($rootScope.data.recordings[localStorage.lastRecordedVideo] === undefined) {
+      $scope.stopRecorder();
+			$scope.startRecorder();
+    } else if ($scope.recorder.recording) {
+      console.log($rootScope.data.recordings[localStorage.lastRecordedVideo].period);
+      if ($rootScope.data.recordings[localStorage.lastRecordedVideo].period === 1) {
+        $rootScope.data.recordings[localStorage.lastRecordedVideo].period = 2
+      } else {
+        $scope.stopRecorder();
+      }
+    } else {
+      $scope.startRecorder();
+    }
+    $scope.getPeriodCmdLabel();
+  }
+
+  $scope.getPeriodCmdLabel = function() {
+    $timeout(function() {
+      if ($scope.recorder !== undefined && $scope.recorder.recording && $rootScope.data.recordings[localStorage.lastRecordedVideo] !== undefined) {
+        if ($rootScope.data.recordings[localStorage.lastRecordedVideo].period === 1) {
+          $scope.data.periodCmdLabel = "End First Half";
+        } else {
+          $scope.data.periodCmdLabel = "End match";
+        }
+      } else {
+        $scope.data.periodCmdLabel = "Start match";
+      }
+      console.log($scope.data.periodCmdLabel);
     })
   }
 
@@ -123,15 +195,19 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
         var filename = "capture - " + date;
         if ($rootScope.data.recordings[filename] === undefined) {
           console.log("NEW RECORDING");
+
           localStorage.lastRecordedVideo = filename;
           console.log(date);
-          $rootScope.data.recordings["capture - " + date] = {
+          $rootScope.data.recordings[filename] = {
             annotations: [],
-            recording_id: response.data.recording_id
+            recording_id: response.data.recording_id,
+            period: 1
           }
+
           $scope.data.currentProject = $rootScope.data.recordings[localStorage.lastRecordedVideo];
           console.log($rootScope.data.recordings)
           localStorage.recordings = JSON.stringify($rootScope.data.recordings);
+
         }
         console.log($rootScope.data.recordings);
         $scope.getRecorderState();
@@ -148,12 +224,14 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
   }
 
   $scope.stopRecorder = function() {
+    $scope.showLoading();
     var promise = recorderControll.stopRecorder($rootScope.selectedCam);
     promise.then(function(response) {
       console.log(response);
       $timeout(function() {
         $scope.getRecorderState();
         $scope.sendRecordingXML();
+        $scope.hideLoading();
       }, 1000);
     }, function(error) {
       console.log(error);
@@ -161,7 +239,6 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
   }
 
   $scope.$on('timer-tick', function(event, args) {
-
     $scope.timerCurrentTime = args.millis;
   });
 
@@ -312,36 +389,36 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     //   }, function(fileEntry) {
     //     fileEntry.createWriter(function(fileWriter) {
     //       fileWriter.onwriteend = function(e) {
-            // for real-world usage, you might consider passing a success callback
-            //console.log('Write of file "' + $scope.directory + filename + '"" completed.');
-            //var filePath = $scope.directory + filename;
-            //var filePath = fileEntry.nativeURL;
-            //  var filePath = $scope.directory + filename;
-            $cordovaEmailComposer.isAvailable().then(function() {
-              var email = {
-                to: $rootScope.data.email_to,
-                cc: '',
-                bcc: [],
-                attachments: [],
-                subject: $rootScope.data.email_subject,
-                body: xml,
-                isHtml: false
-              };
-              console.log(email)
-              $cordovaEmailComposer.open(email).then(null, function() {
-                console.log("email client closed");
-              });
-            }, function() {
-              alert("Email service not available")
-            });
-        //  };
-		//
+    // for real-world usage, you might consider passing a success callback
+    //console.log('Write of file "' + $scope.directory + filename + '"" completed.');
+    //var filePath = $scope.directory + filename;
+    //var filePath = fileEntry.nativeURL;
+    //  var filePath = $scope.directory + filename;
+    $cordovaEmailComposer.isAvailable().then(function() {
+      var email = {
+        to: $rootScope.data.email_to,
+        cc: '',
+        bcc: [],
+        attachments: [],
+        subject: $rootScope.data.email_subject,
+        body: xml,
+        isHtml: false
+      };
+      console.log(email)
+      $cordovaEmailComposer.open(email).then(null, function() {
+        console.log("email client closed");
+      });
+    }, function() {
+      alert("Email service not available")
+    });
+    //  };
+    //
     //       fileWriter.onerror = function(e) {
     //         // you could hook this up with our global error handler, or pass in an error callback
     //         alert('Write failed: ' + e.toString());
-		//
+    //
     //       };
-		//
+    //
     //       var blob = new Blob([xml], {
     //         type: 'text/xml'
     //       });
@@ -488,6 +565,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
         $scope.data.playbackList = response.data.export;
         $scope.recorder.recordingDetails = response.data;
         $scope.hideLoading();
+
       },
       function(error) {
         console.log(error);

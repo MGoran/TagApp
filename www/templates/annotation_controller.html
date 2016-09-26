@@ -11,23 +11,21 @@
 					<div class="col col-25">
 					</div>
 					<div class="col col-10">
-
 					</div>
 					<div class="col col-25" style="text-align:center">
-						<h2 style="color:white;text-align:center;margin:0;margin-top: 7px;display: inline-block;width:60%">
-								<timer ng-if="recorder.recording" start-time="recorder.time" max-time-unit="'minute'">{{mminutes}}:{{sseconds}}</timer>
-								<span ng-if="!recorder.recording">00:00</span>
-							</h2>
-						<a ng-click="startRecorder()" ng-if="!recorder.recording" class="button gm-btn-white button-icon icon ion-record" style="height: auto;display: inline-block;border:0">
-						</a>
-						<a ng-click="stopRecorder()" ng-if="recorder.recording" class="button button-icon icon ion-record gm-btn-white" style="height: auto;color:{{blinkingColor}}; border-color:white;display: inline-block;border:0">
-						</a>
+						<h2 ng-click="toggleRecorder()" style="color:white;text-align:center;margin:0;margin-top: 7px;display: inline-block;width:60%">
+							<timer ng-if="recorder.recording" start-time="recorder.time" max-time-unit="'minute'">{{mminutes}}:{{sseconds}}</timer>
+							<span ng-if="!recorder.recording">00:00</span>
+						</h2>
 					</div>
 					<div class="col col-10">
+						<a  class="button gm-btn-white" ng-click="showShareList()"  style="height: auto;display: inline-block;border:0; float: left;">Share</a>
 					</div>
 					<div class="col col-10">
 					</div>
 					<div class="col col-20">
+						<a ng-click="toggleRecorder()" class="button gm-btn-white" style="height: auto;display: inline-block;border:0; float: left;">{{data.periodCmdLabel}}
+						</a>
 					</div>
 				</div>
 			</div>
@@ -126,6 +124,19 @@
 			<div ng-if="data.downloadingPlayback" class="item item-icon-left" style="color:white;background:linear-gradient(90deg, #0c60ee {{downloadProgress}}%, transparent 50%) !important;">
 				<i class="icon" style="color:black" ng-if="video.state !== 'Finished'"><ion-spinner></ion-spinner></i>
 				<span style="color:black">Downloading...</span>
+			</div>
+		</div>
+		<div class="panel panel-modal" ng-class="(showShareListModal) ? 'slide-up' : 'slide-down'" id="share-list-modal" ng-show="showShareListModal" style="opacity:{{data.vc_transparency/100}}">
+			<div>
+				<ion-list class="limit-child-height">
+					<a class="item item-icon-left item-icon-right" ng-click="shareVideo(video)" ng-repeat="video in data.videos | orderBy: '-id'">
+						<i class="icon {{video.event_details.event.icon}}"></i> {{video.event_details.team.name}} - {{video.event_details.event.name}} <i>{{video.event_details.event.duration_before | date: "mm:ss"}} - {{video.event_details.event.duration_after | date: "mm:ss"}}</i>
+						<i class="icon ion-social-facebook"></i>
+					</a>
+				</ion-list>
+				<ion-item style="text-align: center;background: none;border: none;">
+					<button class="button button-block gm-btn-white" ng-click="hideShareList()">Close</button>
+				</ion-item>
 			</div>
 		</div>
 		<div class="panel panel-modal playback-modal" ng-class="(showPlaybackVideoModal) ? 'slide-up' : 'slide-down'" id="playback-video-modal" ng-show="showPlaybackVideoModal" style="width: 80%;left: 10%;height: 75%;">

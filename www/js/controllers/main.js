@@ -14,16 +14,17 @@ angular.module('main.controller', []).controller('MainCtrl', function($rootScope
     $rootScope.data.email_subject = "TagApp Event";
     $rootScope.data.event_after = 10;
     $rootScope.data.event_before = 5;
+    $rootScope.data.facebook_share = "EVERYONE";
     $rootScope.data.team1 = {
       "id": 1,
       "name": "Team1",
-			"color": "red",
+      "color": "red",
       "players": []
     };
     $rootScope.data.team2 = {
       "id": 2,
       "name": "Team2",
-			"color": "blue",
+      "color": "blue",
       "players": []
     };
     $rootScope.data.event_types = [{
@@ -39,7 +40,7 @@ angular.module('main.controller', []).controller('MainCtrl', function($rootScope
       "time_after": 10,
       "icon": "ion-shuffle",
       "start_counter": true,
-			"generate_playback_video": false
+      "generate_playback_video": false
     }];
 
     localStorage.team1 = JSON.stringify($rootScope.data.team1);
@@ -53,6 +54,7 @@ angular.module('main.controller', []).controller('MainCtrl', function($rootScope
     localStorage.event_after = $rootScope.data.event_after;
     localStorage.event_before = $rootScope.data.event_before;
     localStorage.player_picker = $rootScope.data.player_picker;
+    localStorage.facebook_share = $rootScope.data.facebook_share;
   } else {
     $rootScope.data = {};
     $rootScope.data.vc_transparency = localStorage.vc_transparency;
@@ -61,6 +63,7 @@ angular.module('main.controller', []).controller('MainCtrl', function($rootScope
     $rootScope.data.email_subject = localStorage.email_subject;
     $rootScope.data.event_after = localStorage.event_after;
     $rootScope.data.event_before = localStorage.event_before;
+    $rootScope.data.facebook_share = localStorage.facebook_share;
     $rootScope.data.team1 = JSON.parse(localStorage.team1);
     $rootScope.data.team2 = JSON.parse(localStorage.team2);
     $rootScope.data.event_types = JSON.parse(localStorage.event_types);
@@ -69,7 +72,7 @@ angular.module('main.controller', []).controller('MainCtrl', function($rootScope
   }
   $scope.logout = function() {
     $rootScope.user = {};
-		localStorage.user = "";
+    localStorage.user = "";
     $state.go('login');
   }
   $scope.showLoading = function() {
@@ -84,7 +87,7 @@ angular.module('main.controller', []).controller('MainCtrl', function($rootScope
       console.log("The loading indicator is now hidden");
     });
   };
-	$scope.exitApp = function(){
-		ionic.Platform.exitApp();
-	}
+  $scope.exitApp = function() {
+    ionic.Platform.exitApp();
+  }
 });

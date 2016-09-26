@@ -40,6 +40,18 @@
 				<span class="input-label">Subject:</span>
 				<input type="text" name="email_subject" ng-model="data.email_subject" >
 			</label>
+			<div class="item item-divider">
+        Privacy
+      </div>
+			<label class="item item-input">
+				<span class="input-label">Facebook Share:</span>
+				<select ng-model="data.facebook_share">
+					<option value="EVERYONE" selected>EVERYONE</option>
+					<option value="ALL_FRIENDS">ALL_FRIENDS</option>
+					<option value="FRIENDS_OF_FRIENDS">FRIENDS_OF_FRIENDS</option>
+					<option value="SELF">SELF</option>
+				</select>
+			</label>
       <button class="item button button-block gm-btn-green" ng-click="saveSettings()">
         Save
       </button>

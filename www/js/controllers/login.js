@@ -8,7 +8,7 @@ angular.module('login.controller', []).controller('LoginCtrl', function($rootSco
       cameraIP: "62.238.246.143:9191",
       recorderType: "Panofield",
       //recorderIP: "62.238.246.143:5050" -> vMix
-      recorderIP: "62.238.246.143:9292"
+      recorderIP: "84.104.56.233:9090"
     };
     $scope.login = function() {
       console.log($scope.data);
