@@ -1,0 +1,9 @@
+@media (max-width: 670px) {
+  .home-left {
+    background-size: 80% 80%;
+  }
+  .btn-home-width {
+    line-height: 20px !important;
+    min-height: 35px;
+  }
+}

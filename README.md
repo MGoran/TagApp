@@ -1,4 +1,9 @@
 "# TagApp"
+0.1.7
+-New HOME UI
+-Adaptive UI - suitable for smaller devices
+
+"# TagApp"
 0.1.6
 -First/Second Half
 -Facebook share
@@ -102,8 +107,6 @@ Adding event types is working
 -Control speed of Dahua camera trough settings page
 -Play Dahua video from substream
 
--Dahua commands: move while button is pressed
--UI Changes
 "# TagApp"
 0.0.9
 -Dahua commands: move while button is pressed

@@ -579,3 +579,28 @@ videogular .video_controlls {
   background: none;
   color: white;
 }
+.home-left {
+  float: left;
+  position: relative;
+  width: 50%;
+  height: 100%;
+  background-image: url(../img/home-logo.png);
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.home-right {
+  float: left;
+  position: relative;
+  width: 50%;
+  height: 100%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+.home-right> .list {
+  align-self: center;
+}
+.btn-home-width {
+  width: 80%;
+  margin-bottom: 10px;
+}

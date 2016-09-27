@@ -15,6 +15,7 @@ angular.module('main.controller', []).controller('MainCtrl', function($rootScope
     $rootScope.data.event_after = 10;
     $rootScope.data.event_before = 5;
     $rootScope.data.facebook_share = "EVERYONE";
+		$rootScope.data.live_view = true;
     $rootScope.data.team1 = {
       "id": 1,
       "name": "Team1",
@@ -54,6 +55,7 @@ angular.module('main.controller', []).controller('MainCtrl', function($rootScope
     localStorage.event_after = $rootScope.data.event_after;
     localStorage.event_before = $rootScope.data.event_before;
     localStorage.player_picker = $rootScope.data.player_picker;
+		localStorage.live_view = $rootScope.data.live_view;
     localStorage.facebook_share = $rootScope.data.facebook_share;
   } else {
     $rootScope.data = {};
@@ -68,6 +70,7 @@ angular.module('main.controller', []).controller('MainCtrl', function($rootScope
     $rootScope.data.team2 = JSON.parse(localStorage.team2);
     $rootScope.data.event_types = JSON.parse(localStorage.event_types);
     $rootScope.data.player_picker = JSON.parse(localStorage.player_picker);
+		$rootScope.data.live_view = JSON.parse(localStorage.live_view);
     $rootScope.data.recordings = JSON.parse(localStorage.recordings);
   }
   $scope.logout = function() {
