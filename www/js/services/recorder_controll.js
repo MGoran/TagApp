@@ -123,6 +123,24 @@ angular.module('recorderControll.service', []).service('recorderControll', funct
     return $http(settings);
   }
 
+  service.deleteEvent = function(annotation, camera) {
+    var data = {
+      "event_id": annotation.id
+    }
+    var settings = {
+      "async": true,
+      "crossDomain": true,
+      "url": "http://" + camera.recorderIP + "/api/event",
+      "method": "DELETE",
+      "data": data,
+      "headers": {
+        'Authorization': 'Basic ' + btoa(camera.username + ':' + camera.password)
+      }
+    }
+    return $http(settings);
+  }
+
+
   service.setTeamName = function(team, camera) {
     var settings = {
       "async": true,

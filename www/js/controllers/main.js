@@ -29,6 +29,27 @@ angular.module('main.controller', []).controller('MainCtrl', function($rootScope
       "players": []
     };
     $rootScope.data.event_types = [{
+      "name": "Change",
+      "time_before": 5,
+      "time_after": 10,
+      "icon": "ion-android-people",
+      "start_counter": false,
+      "generate_playback_video": true
+    },{
+      "name": "Freekick",
+      "time_before": 10,
+      "time_after": 30,
+      "icon": "ion-speakerphone",
+      "start_counter": false,
+      "generate_playback_video": true
+    },{
+      "name": "Corner",
+      "time_before": 10,
+      "time_after": 30,
+      "icon": "ion-flag",
+      "start_counter": false,
+      "generate_playback_video": true
+    },{
       "name": "Goal",
       "time_before": 10,
       "time_after": 10,

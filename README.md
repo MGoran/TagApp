@@ -1,4 +1,14 @@
 "# TagApp"
+0.1.8
+-Deletion of events from recorder
+-UI adaptations
+-Enable/Disable live view in settings
+-Facebook share button in event list (next to download button)
+-Team scores
+-Add event button now in color of the team
+-UI addaptation for smaller screens (iPhone)
+
+"# TagApp"
 0.1.7
 -New HOME UI
 -Adaptive UI - suitable for smaller devices

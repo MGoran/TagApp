@@ -56,6 +56,22 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     $scope.showShareListModal = false;
   }
 
+  $scope.getTeamScores = function() {
+    console.log($rootScope.data.recordings[localStorage.lastRecordedVideo]);
+    if ($rootScope.data.recordings[localStorage.lastRecordedVideo] !== undefined) {
+      $scope.data.score1 = $filter('filter')($rootScope.data.recordings[localStorage.lastRecordedVideo].annotations, function(value) {
+        return value.team.id === 1 && value.event.name === 'Goal';
+      }).length;
+      $scope.data.score2 = $filter('filter')($rootScope.data.recordings[localStorage.lastRecordedVideo].annotations, function(value) {
+        return value.team.id === 2 && value.event.name === 'Goal';
+      }).length;
+    }else{
+			$scope.data.score1 = 0;
+			$scope.data.score2 = 0;
+		}
+  }
+  $scope.getTeamScores();
+
   $scope.shareVideo = function(video) {
     console.log(video);
     console.log($scope.recorder);
@@ -68,11 +84,21 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     }
     $scope.showLoading();
     var exp_promise = recorderControll.queueExport($rootScope.selectedCam, data);
+
     exp_promise.then(function(response) {
       console.log(response)
       $scope.hideLoading();
+      var alertPopup = $ionicPopup.alert({
+        title: 'Success!',
+        template: 'Video shared successfuly'
+      });
+
+      alertPopup.then(function(res) {
+        console.log('Thank you for not eating my delicious ice cream cone');
+      });
     }, function(error) {
-      alert(error);
+      alert(error.error);
+      $scope.hideLoading();
     })
   }
 
@@ -156,7 +182,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
   $scope.toggleRecorder = function() {
     if ($rootScope.data.recordings[localStorage.lastRecordedVideo] === undefined) {
       $scope.stopRecorder();
-			$scope.startRecorder();
+      $scope.startRecorder();
     } else if ($scope.recorder.recording) {
       console.log($rootScope.data.recordings[localStorage.lastRecordedVideo].period);
       if ($rootScope.data.recordings[localStorage.lastRecordedVideo].period === 1) {
@@ -212,6 +238,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
         console.log($rootScope.data.recordings);
         $scope.getRecorderState();
         $scope.hideLoading();
+        $scope.getTeamScores();
       }, 1000);
 
     }, function(error) {
@@ -232,6 +259,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
         $scope.getRecorderState();
         $scope.sendRecordingXML();
         $scope.hideLoading();
+        $scope.getTeamScores();
       }, 1000);
     }, function(error) {
       console.log(error);
@@ -341,8 +369,11 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
           $scope.data.currentProject = $rootScope.data.recordings[localStorage.lastRecordedVideo];
           localStorage.recordings = JSON.stringify($rootScope.data.recordings);
           $scope.hideLoading();
+          $scope.getTeamScores();
         }, function(error) {
-
+					console.log(error);
+          alert(error.error);
+          $scope.hideLoading();
         })
       }, function(error) {
         console.log(error)
@@ -354,9 +385,17 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     console.log(array.length);
     console.log(index);
     index++;
-    array.splice(array.length - index, 1);
+    var deleted_event = array.splice(array.length - index, 1)[0];
     $scope.data.currentProject.annotations = array;
     localStorage.recordings = JSON.stringify($rootScope.data.recordings);
+    $scope.getTeamScores();
+    console.log(deleted_event);
+    var promise = recorderControll.deleteEvent(deleted_event, $rootScope.selectedCam);
+    promise.then(function(result) {
+      console.log("event deleted", result)
+    }, function(error) {
+      console.log(error);
+    })
   }
 
   $scope.sendRecordingXML = function() {
