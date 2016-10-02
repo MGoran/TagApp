@@ -1,0 +1,34 @@
+.gm-controls {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9000001;
+}
+/*.line-background {
+  background: linear-gradient(0deg, transparent 49%, #e74a43 50%, transparent 51%);
+}
+.line-background .col {
+  background: white
+}*/
+#annotate{
+	/*margin-top:50px;*/
+}
+li.gm-leatest-events-list {
+    list-style-type: disc;
+		font-size: 12px;
+		line-height: 20px !important;
+}
+
+li.gm-leatest-events-list span {
+    color: black;
+}
+li.gm-leatest-events-list span.time{
+	color:#a4a4a4
+}
+.other_events{
+	height:36vh;
+	overflow:auto;
+	margin-top: -5px;
+}

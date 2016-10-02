@@ -1,4 +1,6 @@
-angular.module('annotationController.controller', []).controller('AnnotationControllerCtrl', function($rootScope, $scope, $ionicPopup, $timeout, $state, cameraMovement, recorderControll, $interval, $cordovaEmailComposer, $filter, $cordovaFileTransfer) {
+angular.module('annotationController.controller', []).controller('AnnotationControllerCtrl', function($rootScope, $scope, $ionicPopup, $timeout, $state, cameraMovement, recorderControll, $interval, $cordovaEmailComposer, $filter, $cordovaFileTransfer, $ionicSideMenuDelegate, $ionicNavBarDelegate) {
+  $ionicSideMenuDelegate.canDragContent(true);
+
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     if (!$rootScope.isUser()) {
       $state.go('login')
@@ -65,10 +67,10 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
       $scope.data.score2 = $filter('filter')($rootScope.data.recordings[localStorage.lastRecordedVideo].annotations, function(value) {
         return value.team.id === 2 && value.event.name === 'Goal';
       }).length;
-    }else{
-			$scope.data.score1 = 0;
-			$scope.data.score2 = 0;
-		}
+    } else {
+      $scope.data.score1 = 0;
+      $scope.data.score2 = 0;
+    }
   }
   $scope.getTeamScores();
 
@@ -97,7 +99,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
         console.log('Thank you for not eating my delicious ice cream cone');
       });
     }, function(error) {
-      alert(error.error);
+      alert(error.data.error);
       $scope.hideLoading();
     })
   }
@@ -201,11 +203,14 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
       if ($scope.recorder !== undefined && $scope.recorder.recording && $rootScope.data.recordings[localStorage.lastRecordedVideo] !== undefined) {
         if ($rootScope.data.recordings[localStorage.lastRecordedVideo].period === 1) {
           $scope.data.periodCmdLabel = "End First Half";
+					$scope.data.periodLabel = "1st Half";
         } else {
           $scope.data.periodCmdLabel = "End match";
+					$scope.data.periodLabel = "2nd Half";
         }
       } else {
         $scope.data.periodCmdLabel = "Start match";
+				$scope.data.periodLabel = "Waiting";
       }
       console.log($scope.data.periodCmdLabel);
     })
@@ -371,8 +376,8 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
           $scope.hideLoading();
           $scope.getTeamScores();
         }, function(error) {
-					console.log(error);
-          alert(error.error);
+          console.log(error);
+          alert(error.data.error);
           $scope.hideLoading();
         })
       }, function(error) {
@@ -380,7 +385,22 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
       });
     }
   }
-
+	$scope.event_type_rows = function(){
+		return new Array(Math.round(($scope.data.event_types.length-3)/2))
+	}
+	$scope.undoLast = function(array, index) {
+		var deleted_event = array.splice(index, 1)[0];
+		$scope.data.currentProject.annotations = array;
+		localStorage.recordings = JSON.stringify($rootScope.data.recordings);
+		$scope.getTeamScores();
+		console.log(deleted_event);
+		var promise = recorderControll.deleteEvent(deleted_event, $rootScope.selectedCam);
+		promise.then(function(result) {
+			console.log("event deleted", result)
+		}, function(error) {
+			console.log(error);
+		})
+	}
   $scope.removeEvent = function(array, index) {
     console.log(array.length);
     console.log(index);

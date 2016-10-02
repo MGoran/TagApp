@@ -1,4 +1,10 @@
 "# TagApp"
+0.1.9
+-Swipe to open menu
+-Adaptation to new PSD design
+-Editing team name in recorder
+
+"# TagApp"
 0.1.8
 -Deletion of events from recorder
 -UI adaptations

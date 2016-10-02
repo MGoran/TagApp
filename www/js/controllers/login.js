@@ -1,6 +1,6 @@
 angular.module('login.controller', []).controller('LoginCtrl', function($rootScope, $scope, $ionicModal, $timeout, $state) {
-	console.log(localStorage.user);
-  if (localStorage.user === undefined || localStorage.user === "" ) {
+  console.log(localStorage.user);
+  if (localStorage.user === undefined || localStorage.user === "") {
     $scope.data = {
       username: "user1",
       password: "password1",
@@ -25,12 +25,13 @@ angular.module('login.controller', []).controller('LoginCtrl', function($rootSco
           password: $scope.data.password
         }]
       }
-			$rootScope.selectedCam = $rootScope.user.cameras[0];
-      localStorage.user = JSON.stringify($rootScope.user)
+
+      localStorage.user = JSON.stringify($rootScope.user);
+      $rootScope.selectedCam = $rootScope.user.cameras[0];
       $state.go("app.home");
     }
-  }else{
-		$rootScope.user = JSON.parse(localStorage.user);
-		$state.go("app.home");
-	}
+  } else {
+    $rootScope.user = JSON.parse(localStorage.user);
+    $state.go("app.home");
+  }
 });

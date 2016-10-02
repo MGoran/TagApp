@@ -6,14 +6,14 @@
     line-height: 20px !important;
     min-height: 35px;
   }
-  .gm-btn {
+  .gm-btn, .gm-button {
     font-size: 12px;
     border-width: 1px
   }
   .event-list-item {
     font-size: 10px;
     left: 0;
-		padding-left: 30px;
+    padding-left: 30px;
     padding-right: 0px;
     text-align: left;
   }
@@ -25,20 +25,43 @@
     float: right;
     right: 0;
   }
-  .gm-list > .list > .item {
+  .gm-list> .list> .item {
     padding: 0;
   }
   .limit-child-height> div.list {
     max-height: 185px;
     overflow: scroll;
   }
-	.event-list span.item{
-		font-size: 12px;
-		left: 0;
-		padding-left: 30px;
-	}
-	.event-list .icon {
-		font-size:14px;
-		left:0
+  .event-list span.item {
+    font-size: 12px;
+    left: 0;
+    padding-left: 30px;
+  }
+  .event-list .icon {
+    font-size: 14px;
+    left: 0
+  }
+  #annotate {
+    margin-top: 0px;
+  }
+  .gm-md-font {
+    font-size: 9px
+  }
+  .gm-large-font {
+    font-size: 15px;
+  }
+  .gm-huge-font {
+    font-size: 15px;
+  }
+  .gm-button {
+    line-height: 4vh !important;
+  }
+  .gm-big-button {
+    line-height: 9vh !important;
+  }
+	li.gm-leatest-events-list {
+	    list-style-type: disc;
+			font-size: 8px;
+			line-height: 10px !important;;
 	}
 }

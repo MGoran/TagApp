@@ -7,7 +7,7 @@ angular.module('main.controller', []).controller('MainCtrl', function($rootScope
     console.log(true);
     $rootScope.data = {};
     $rootScope.data.recordings = {};
-    $rootScope.data.vc_transparency = "50";
+    $rootScope.data.vc_transparency = "99";
     $rootScope.data.player_picker = false;
     $rootScope.data.dahua_speed = "1";
     $rootScope.data.email_to = "goranmaslic92@gmail.com";
@@ -19,7 +19,7 @@ angular.module('main.controller', []).controller('MainCtrl', function($rootScope
     $rootScope.data.team1 = {
       "id": 1,
       "name": "Team1",
-      "color": "red",
+      "color": "yellow",
       "players": []
     };
     $rootScope.data.team2 = {
@@ -29,6 +29,27 @@ angular.module('main.controller', []).controller('MainCtrl', function($rootScope
       "players": []
     };
     $rootScope.data.event_types = [{
+      "name": "Goal",
+      "time_before": 10,
+      "time_after": 10,
+      "icon": "ion-ios-football",
+      "start_counter": false,
+      "generate_playback_video": true
+    }, {
+      "name": "Possession",
+      "time_before": 10,
+      "time_after": 10,
+      "icon": "ion-shuffle",
+      "start_counter": true,
+      "generate_playback_video": false
+    },{
+      "name": "Shot",
+      "time_before": 10,
+      "time_after": 10,
+      "icon": "ion-ios-football",
+      "start_counter": false,
+      "generate_playback_video": true
+    },{
       "name": "Change",
       "time_before": 5,
       "time_after": 10,
@@ -49,20 +70,6 @@ angular.module('main.controller', []).controller('MainCtrl', function($rootScope
       "icon": "ion-flag",
       "start_counter": false,
       "generate_playback_video": true
-    },{
-      "name": "Goal",
-      "time_before": 10,
-      "time_after": 10,
-      "icon": "ion-ios-football",
-      "start_counter": false,
-      "generate_playback_video": true
-    }, {
-      "name": "Possession",
-      "time_before": 10,
-      "time_after": 10,
-      "icon": "ion-shuffle",
-      "start_counter": true,
-      "generate_playback_video": false
     }];
 
     localStorage.team1 = JSON.stringify($rootScope.data.team1);

@@ -8,6 +8,8 @@ angular.module('teams.controller', []).controller('TeamsCtrl', function($rootSco
     if (!$rootScope.isUser()) {
       $state.go('login')
     }
+    localStorage.user = JSON.stringify($rootScope.user);
+    $rootScope.selectedCam = $rootScope.user.cameras[0];
   });
 
   $scope.selectTeam = function(index) {
@@ -114,7 +116,7 @@ angular.module('teams.controller', []).controller('TeamsCtrl', function($rootSco
       }]
     });
     myPopup.then(function(res) {
-			
+
       if ($scope.selectedIndex === 1) {
         $rootScope.data.team1.name = res;
         $scope.selectedTeam = $rootScope.data.team1;
@@ -122,6 +124,17 @@ angular.module('teams.controller', []).controller('TeamsCtrl', function($rootSco
         $rootScope.data.team2.name = res;
         $scope.selectedTeam = $rootScope.data.team2;
       }
+      var data = {
+        name: res,
+        id: $scope.selectedIndex
+      }
+      console.log(data);
+      var promise = recorderControll.setTeamName(data, $rootScope.selectedCam);
+      promise.then(function(result) {
+        console.log(result);
+      }, function(error) {
+        console.log(error);
+      })
 
       localStorage.team1 = JSON.stringify($rootScope.data.team1);
       localStorage.team2 = JSON.stringify($rootScope.data.team2);

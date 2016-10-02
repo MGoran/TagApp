@@ -141,7 +141,7 @@ angular.module('recorderControll.service', []).service('recorderControll', funct
   }
 
 
-  service.setTeamName = function(team, camera) {
+  service.setTeamName = function(team, camera) { 
     var settings = {
       "async": true,
       "crossDomain": true,
