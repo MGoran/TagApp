@@ -70,6 +70,13 @@ angular.module('main.controller', []).controller('MainCtrl', function($rootScope
       "icon": "ion-flag",
       "start_counter": false,
       "generate_playback_video": true
+    },{
+      "name": "Penalty",
+      "time_before": 10,
+      "time_after": 30,
+      "icon": "ion-flag",
+      "start_counter": false,
+      "generate_playback_video": true
     }];
 
     localStorage.team1 = JSON.stringify($rootScope.data.team1);

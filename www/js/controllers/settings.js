@@ -26,6 +26,7 @@ angular.module('settings.controller', []).controller('SettingsCtrl', function($s
     });
     alertPopup.then(function(res) {
       console.log('Ok');
+			$state.go("app.home")
     });
   }
 });

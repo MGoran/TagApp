@@ -59,9 +59,12 @@
   .gm-big-button {
     line-height: 9vh !important;
   }
-	li.gm-leatest-events-list {
-	    list-style-type: disc;
-			font-size: 8px;
-			line-height: 10px !important;;
-	}
+  li.gm-leatest-events-list {
+    list-style-type: disc;
+    font-size: 8px;
+    line-height: 10px !important;
+  }
+  .other_events {
+    height: 44vh;
+  }
 }

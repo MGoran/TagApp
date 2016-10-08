@@ -94,11 +94,18 @@ angular.module('eventTypes.controller', []).controller('EventTypesCtrl', functio
       }]
     });
     myPopup.then(function(event) {
-      $rootScope.data.event_types.splice(index, 1);
-      $rootScope.data.event_types.push(event);
+      $rootScope.data.event_types[index] = event;
+      //$rootScope.data.event_types.push(event);
       console.log($rootScope.data.event_types)
       localStorage.event_types = JSON.stringify($rootScope.data.event_types);
       $scope.event = {};
     });
   }
+
+	$scope.reorderItem = function(item, fromIndex, toIndex) {
+    //Move the item in the array
+    $rootScope.data.event_types.splice(fromIndex, 1);
+    $rootScope.data.event_types.splice(toIndex, 0, item);
+		localStorage.event_types = JSON.stringify($rootScope.data.event_types);
+  };
 });

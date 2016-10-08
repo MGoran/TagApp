@@ -2,7 +2,7 @@
 	<ion-content padding="false" style="height:100%" class="video-page" scroll="false">
 		<img ng-if="selectedCam.cameraType !== 'disabled'  && data.live_view" ng-src="{{videoSource}}" class="annotation_video" />
 		<!-- <div ng-if="!data.live_view" style="background:grey" class="annotation_video" /> -->
-		<div ng-if="!data.live_view" style="background:white" class="annotation_video"> </div>
+		<div ng-if="!data.live_view || selectedCam.cameraType == 'disabled'" style="background:white" class="annotation_video"> </div>
 		<div class="gm-controls" style="opacity:{{data.vc_transparency/100}}">
 			<div class="panel panel-top-controlls">
 				<div class="row line-background">
@@ -26,45 +26,46 @@
 					</div>
 				</div>
 				<div id="annotate">
-					<div class="row"  ng-if="data.live_view">
-						<div class="col col-30 btn-stack">
-							<button class="button button-80 icon ion-arrow-left-c gm-btn-white gm-btn-height" on-release="ptzMove('left', 'stop')" on-touch="ptzMove('left', 'start')"></button>
-							<button class="button button-80 icon ion-arrow-up-c  gm-btn-white gm-btn-height" on-release="ptzMove('up', 'stop')" on-touch="ptzMove('up', 'start')"></button>
-							<button class="button button-80 icon ion-minus-round  gm-btn-white gm-btn-height" on-release="ptzZoom('-', 'stop')" on-touch="ptzZoom('-', 'start')"></button>
-						</div>
-						<div class="col col-40">
-							<div class="zone-buttons" ng-if="selectedCam.cameraType !== 'disabled' && data.live_view">
-								<table style="height: 180px;width: 100%;">
-									<tr>
-										<th class="border" style="border-right:0;width: 15%;" ng-click="gotoPreset(2)">&nbsp;</th>
-										<th class="border" style="border-left:0;border-bottom:0" ng-click="gotoPreset(2)">&nbsp;</th>
-										<th class="border" style="border-bottom:0;width: 30%;" ng-click="gotoPreset(3)">&nbsp;</th>
-										<th class="border" style="border-right:0;border-bottom:0" ng-click="gotoPreset(4)">&nbsp;</th>
-										<th class="border" style="border-left:0;width: 15%;" ng-click="gotoPreset(4)">&nbsp;</th>
-									</tr>
-									<tr style="height: 50%;">
-										<th class="border" ng-click="gotoPreset(1)">&nbsp;</th>
-										<th class="border" style="border-top:0;border-bottom:0" ng-click="gotoPreset(2)">&nbsp;</th>
-										<th class="border" style="border-top:0;border-bottom:0" ng-click="gotoPreset(3)">&nbsp;</th>
-										<th class="border" style="border-top:0;border-bottom:0;" ng-click="gotoPreset(4)">&nbsp;</th>
-										<th class="border" ng-click="gotoPreset(5)">&nbsp;</th>
-									</tr>
-									<tr>
-										<th class="border" style="border-right:0;" ng-click="gotoPreset(2)">&nbsp;</th>
-										<th class="border" style="border-left:0; border-top:0" ng-click="gotoPreset(2)">&nbsp;</th>
-										<th class="border" style="border-top:0;" ng-click="gotoPreset(3)">&nbsp;</th>
-										<th class="border" style="border-right:0;border-top:0" ng-click="gotoPreset(4)">&nbsp;</th>
-										<th class="border" style="border-left:0;" ng-click="gotoPreset(4)">&nbsp;</th>
-									</tr>
-								</table>
+					<div  ng-if="selectedCam.cameraType !== 'disabled'  && data.live_view">
+						<div class="row">
+							<div class="col col-30 btn-stack">
+								<button class="button button-80 icon ion-arrow-left-c gm-btn-white gm-btn-height" on-release="ptzMove('left', 'stop')" on-touch="ptzMove('left', 'start')"></button>
+								<button class="button button-80 icon ion-arrow-up-c  gm-btn-white gm-btn-height" on-release="ptzMove('up', 'stop')" on-touch="ptzMove('up', 'start')"></button>
+								<button class="button button-80 icon ion-minus-round  gm-btn-white gm-btn-height" on-release="ptzZoom('-', 'stop')" on-touch="ptzZoom('-', 'start')"></button>
+							</div>
+							<div class="col col-40">
+								<div class="zone-buttons">
+									<table style="height: 180px;width: 100%;">
+										<tr>
+											<th class="border" style="border-right:0;width: 15%;" ng-click="gotoPreset(2)">&nbsp;</th>
+											<th class="border" style="border-left:0;border-bottom:0" ng-click="gotoPreset(2)">&nbsp;</th>
+											<th class="border" style="border-bottom:0;width: 30%;" ng-click="gotoPreset(3)">&nbsp;</th>
+											<th class="border" style="border-right:0;border-bottom:0" ng-click="gotoPreset(4)">&nbsp;</th>
+											<th class="border" style="border-left:0;width: 15%;" ng-click="gotoPreset(4)">&nbsp;</th>
+										</tr>
+										<tr style="height: 50%;">
+											<th class="border" ng-click="gotoPreset(1)">&nbsp;</th>
+											<th class="border" style="border-top:0;border-bottom:0" ng-click="gotoPreset(2)">&nbsp;</th>
+											<th class="border" style="border-top:0;border-bottom:0" ng-click="gotoPreset(3)">&nbsp;</th>
+											<th class="border" style="border-top:0;border-bottom:0;" ng-click="gotoPreset(4)">&nbsp;</th>
+											<th class="border" ng-click="gotoPreset(5)">&nbsp;</th>
+										</tr>
+										<tr>
+											<th class="border" style="border-right:0;" ng-click="gotoPreset(2)">&nbsp;</th>
+											<th class="border" style="border-left:0; border-top:0" ng-click="gotoPreset(2)">&nbsp;</th>
+											<th class="border" style="border-top:0;" ng-click="gotoPreset(3)">&nbsp;</th>
+											<th class="border" style="border-right:0;border-top:0" ng-click="gotoPreset(4)">&nbsp;</th>
+											<th class="border" style="border-left:0;" ng-click="gotoPreset(4)">&nbsp;</th>
+										</tr>
+									</table>
+								</div>
+							</div>
+							<div class="col col-30 btn-stack" style="text-align:right">
+								<button class="button button-80 icon ion-arrow-right-c gm-btn-white gm-btn-height" on-release="ptzMove('right', 'stop')" on-touch="ptzMove('right', 'start')" style="margin-left: auto;"></button>
+								<button class="button button-80 icon ion-arrow-down-c  gm-btn-white gm-btn-height" on-release="ptzMove('down', 'stop')" on-touch="ptzMove('down', 'start')" style="margin-left: auto;"></button>
+								<button class="button button-80 icon ion-plus-round  gm-btn-white gm-btn-height" on-release="ptzZoom('+', 'stop')" on-touch="ptzZoom('+', 'start')" style="margin-left: auto;"></button>
 							</div>
 						</div>
-						<div class="col col-30 btn-stack" style="text-align:right">
-							<button class="button button-80 icon ion-arrow-right-c gm-btn-white gm-btn-height" on-release="ptzMove('right', 'stop')" on-touch="ptzMove('right', 'start')" style="margin-left: auto;"></button>
-							<button class="button button-80 icon ion-arrow-down-c  gm-btn-white gm-btn-height" on-release="ptzMove('down', 'stop')" on-touch="ptzMove('down', 'start')"  style="margin-left: auto;"></button>
-							<button class="button button-80 icon ion-plus-round  gm-btn-white gm-btn-height" on-release="ptzZoom('+', 'stop')" on-touch="ptzZoom('+', 'start')"  style="margin-left: auto;"></button>
-						</div>
-
 					</div>
 				</div>
 				<div class="row">
@@ -96,140 +97,36 @@
 					</div>
 					<div class="col col-20" style="text-align:center">
 						<ul ng-if="recorder.recording" class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular" style="width:auto;text-align: left;">
-							<li ng-repeat="annotation in data.currentProject.annotations | limitTo:-7" style="" class="gm-leatest-events-list color-{{annotation.team.color}}"><span class="time">{{annotation.event.duration_after - annotation.event.time_after  | date:"mm:ss"}}</span> <span class="event">{{annotation.event.name}}</span></li>
+							<li ng-repeat="annotation in data.currentProject.annotations | limitTo:-3" ng-if="annotation.team !== undefined" class="gm-leatest-events-list color-{{annotation.team.color}}"><span class="time">{{annotation.event.duration_after - annotation.event.time_after  | date:"mm:ss"}}</span> <span class="event">{{annotation.event.name}}</span></li>
 						</ul>
 					</div>
 					<div class="col col-20">
-						<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[1], data.team2, 2)">{{data.event_types[2].name}}</button>
+						<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[2], data.team2, 2)">{{data.event_types[2].name}}</button>
 					</div>
 					<div class="col col-20">
-						<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[2],data.team2, 2)">{{data.event_types[1].name}}</button>
+						<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[1],data.team2, 2)">{{data.event_types[1].name}}</button>
 					</div>
 				</div>
 				<div class="other_events">
-					<div class="row" ng-repeat="a in event_type_rows() track by $index">
+					<div class="row" ng-repeat="a in event_type_rows() track by $index" ng-init="btn_pos = 4+$index">
 						<div class="col col-25">
-							<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[3+$index],data.team1, 1)">{{data.event_types[3+$index].name}}</button>
+							<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[btn_pos-1+$index],data.team1, 1)">{{data.event_types[btn_pos-1+$index].name}}</button>
 						</div>
 						<div class="col col-25">
-							<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[4+$index],data.team1, 1)">{{data.event_types[4+$index].name}}</button>
+							<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-if="data.event_types[btn_pos+$index] !== undefined" ng-click="addEvent(data.event_types[btn_pos+$index],data.team1, 1)">{{data.event_types[btn_pos+$index].name}}</button>
 						</div>
 						<div class="col col-25">
-							<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[4+$index],data.team2, 2)">{{data.event_types[4+$index].name}}</button>
+							<button class="button gm-button gm-big-button gm-button-blue text-white" ng-if="data.event_types[btn_pos+$index] !== undefined" ng-click="addEvent(data.event_types[btn_pos+$index],data.team2, 2)">{{data.event_types[btn_pos+$index].name}}</button>
 						</div>
 						<div class="col col-25">
-							<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[3+$index],data.team2, 2)">{{data.event_types[3+$index].name}}</button>
+							<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[btn_pos-1+$index],data.team2, 2)">{{data.event_types[btn_pos-1+$index].name}}</button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		</div>
-		<!--
-		<div class="annotation_controlls" style="opacity:{{data.vc_transparency/100}}">
-			<div class="panel panel-top-controlls" style="opacity:{{data.vc_transparency/100}}">
-				<div class="row" style="text-align:center;margin-left:0;padding: 0;">
-					<div class="col col-5">
-						<a class="button gm-btn-white button-icon icon ion-ios-arrow-back" style="color:white;border:0" href="#/app/home">
-						</a>
-					</div>
-					<div class="col col-15">
-					</div>
-					<div class="col col-20">
-						<span class="button gm-btn-white" style="height: auto;display: inline-block;border:0; float: right;">{{data.score1}} - {{data.team1.name}}</span>
-					</div>
-					<div class="col col-25" style="text-align:center">
-						<h2 ng-click="toggleRecorder()" style="color:white;text-align:center;margin:0;margin-top: 7px;display: inline-block;width:60%">
-							<timer ng-if="recorder.recording" start-time="recorder.time" max-time-unit="'minute'">{{mminutes}}:{{sseconds}}</timer>
-							<span ng-if="!recorder.recording">00:00</span>
-						</h2>
-					</div>
-					<div class="col col-20">
-						<span class="button gm-btn-white" style="height: auto;display: inline-block;border:0; float: left;">{{data.team2.name}} - {{data.score2}}</span>
-					</div>
-					<div class="col col-15">
-
-					</div>
-					<div class="col col-10">
-						<a ng-click="startRecorder()" ng-if="!recorder.recording" class="button gm-btn-white button-icon icon ion-record" style="height: auto;display: inline-block;border:0"></a>
-						<a ng-click="stopRecorder()" ng-if="recorder.recording" class="button button-icon icon ion-record gm-btn-white" style="height: auto;color:{{blinkingColor}}; border-color:white;display: inline-block;border:0"></a>
-					</div>
-				</div>
-			</div>
-			<div class="panel panel-left" style="opacity:{{data.vc_transparency/100}}" ng-if="selectedCam.cameraType !== 'disabled' && data.live_view">
-				<div class="btn-stack">
-					<button class="button icon ion-arrow-left-c gm-btn-white gm-btn-height" on-release="ptzMove('left', 'stop')" on-touch="ptzMove('left', 'start')"></button>
-					<button class="button icon ion-arrow-up-c  gm-btn-white gm-btn-height" on-release="ptzMove('up', 'stop')" on-touch="ptzMove('up', 'start')"></button>
-					<button class="button icon ion-minus-round  gm-btn-white gm-btn-height" on-release="ptzZoom('-', 'stop')" on-touch="ptzZoom('-', 'start')"></button>
-				</div>
-			</div>
-			<div class="panel panel-right" style="opacity:{{data.vc_transparency/100}}" ng-if="selectedCam.cameraType !== 'disabled' && data.live_view">
-				<div class="btn-stack">
-					<button class="button icon ion-arrow-right-c gm-btn-white gm-btn-height" on-release="ptzMove('right', 'stop')" on-touch="ptzMove('right', 'start')"></button>
-					<button class="button icon ion-arrow-down-c  gm-btn-white gm-btn-height" on-release="ptzMove('down', 'stop')" on-touch="ptzMove('down', 'start')"></button>
-					<button class="button icon ion-plus-round  gm-btn-white gm-btn-height" on-release="ptzZoom('+', 'stop')" on-touch="ptzZoom('+', 'start')"></button>
-				</div>
-			</div>
-			<div class="panel panel-top" style="opacity:{{data.vc_transparency/100}}">
-				<a ng-click="toggleRecorder()" class="button gm-btn-white" style="height: auto;display: inline-block;border:0; font-size:13px;">{{data.periodCmdLabel}}
-				</a>
-				<div ng-if="recorder.recording">
-					<ion-item ng-repeat="annotation in data.currentProject.annotations | limitTo:-3" class="item-button-right item-icon-left event-list-item gm-item-small">
-						<i class="icon {{annotation.event.icon}}" style="color:{{annotation.team.color}}"></i>{{annotation.team.name}} - {{annotation.event.name}}
-						<button class="button" style="color: white;background: none; top: 0;" ng-click="removeEvent(data.currentProject.annotations, $index)">
-							<i style="left: 8px;" class="icon ion-close-round"></i>
-						</button>
-					</ion-item>
-				</div>
-			</div>
-			<div class="panel panel-left-bottom " style="opacity:{{data.vc_transparency/100}}">
-				<div style="bottom:0; width:100%">
-					<div class="limit-height">
-						<ion-item ng-repeat="event in data.event_types" ng-click="addEvent(event, data.team1, 1)" style="text-align:center" class="button gm-btn gm-btn-{{data.team1.color}}  btn-full-width">
-							{{event.name}}
-						</ion-item>
-					</div>
-				</div>
-			</div>
-			<div class="panel panel-bottom " style="opacity:{{data.vc_transparency/100}}">
-				<div class="zone-buttons" ng-if="selectedCam.cameraType !== 'disabled' && data.live_view">
-					<table style="height: 200px;width: 100%;">
-						<tr>
-							<th class="border" style="border-right:0;width: 15%;" ng-click="gotoPreset(2)">&nbsp;</th>
-							<th class="border" style="border-left:0;border-bottom:0" ng-click="gotoPreset(2)">&nbsp;</th>
-							<th class="border" style="border-bottom:0;width: 30%;" ng-click="gotoPreset(3)">&nbsp;</th>
-							<th class="border" style="border-right:0;border-bottom:0" ng-click="gotoPreset(4)">&nbsp;</th>
-							<th class="border" style="border-left:0;width: 15%;" ng-click="gotoPreset(4)">&nbsp;</th>
-						</tr>
-						<tr style="height: 50%;">
-							<th class="border" ng-click="gotoPreset(1)">&nbsp;</th>
-							<th class="border" style="border-top:0;border-bottom:0" ng-click="gotoPreset(2)">&nbsp;</th>
-							<th class="border" style="border-top:0;border-bottom:0" ng-click="gotoPreset(3)">&nbsp;</th>
-							<th class="border" style="border-top:0;border-bottom:0;" ng-click="gotoPreset(4)">&nbsp;</th>
-							<th class="border" ng-click="gotoPreset(5)">&nbsp;</th>
-						</tr>
-						<tr>
-							<th class="border" style="border-right:0;" ng-click="gotoPreset(2)">&nbsp;</th>
-							<th class="border" style="border-left:0; border-top:0" ng-click="gotoPreset(2)">&nbsp;</th>
-							<th class="border" style="border-top:0;" ng-click="gotoPreset(3)">&nbsp;</th>
-							<th class="border" style="border-right:0;border-top:0" ng-click="gotoPreset(4)">&nbsp;</th>
-							<th class="border" style="border-left:0;" ng-click="gotoPreset(4)">&nbsp;</th>
-						</tr>
-					</table>
-				</div>
-				<a ng-if="selectedCam.recorderType==='Panofield'" class="button button-positive btn-full-width button-icon icon ion-chevron-up" style="height: auto;" on-swipe-up="showPlaybackList()" ng-click="showPlaybackList()"></a>
-			</div>
-			<div class="panel panel-right-bottom " style="opacity:{{data.vc_transparency/100}}">
-				<div style="bottom:0; width:100%">
-					<div class="limit-height">
-						<ion-item ng-repeat="event in data.event_types" ng-click="addEvent(event, data.team2, 2)" style="text-align:center" class="button gm-btn gm-btn-{{data.team2.color}} btn-full-width">
-							{{event.name}}
-						</ion-item>
-					</div>
-				</div>
-			</div>
-		</div>-->
-		<div class="panel panel-modal" ng-class="(showPlaybackListModal) ? 'slide-up' : 'slide-down'" id="playback-list-modal" ng-show="showPlaybackListModal" style="opacity:{{data.vc_transparency/100}}">
+		<div class="panel panel-modal" ng-class="(showPlaybackListModal) ? 'slide-up' : 'slide-down'" id="playback-list-modal" ng-hide="!showPlaybackListModal" style="opacity:{{data.vc_transparency/100}}">
 			<div ng-if="!data.downloadingPlayback">
 				<ion-list class="limit-child-height gm-list">
 					<span class="item event-list" ng-repeat="video in data.videos | orderBy: '-id'" ng-if="video.event_details.id !== undefined">
@@ -271,7 +168,7 @@
 				</ion-item>
 			</div>
 		</div>
-		<div class="panel panel-modal playback-modal" ng-class="(showPlaybackVideoModal) ? 'slide-up' : 'slide-down'" id="playback-video-modal" ng-show="showPlaybackVideoModal" style="width: 80%;left: 10%;height: 75%;">
+		<div class="panel panel-modal playback-modal" ng-class="(showPlaybackVideoModal) ? 'slide-up' : 'slide-down'" id="playback-video-modal" ng-hide="!showPlaybackVideoModal" style="width: 80%;left: 10%;height: 75%;">
 			<ion-header-bar class="bar bar-header bar-positive">
 				<button class="button button-clear button-primary" ng-click="hidePlaybackVideo()">Close</button>
 			</ion-header-bar>

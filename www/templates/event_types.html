@@ -1,17 +1,40 @@
 <ion-view view-title="Settings">
+
 	<ion-content padding="true">
-		<ul class="list">
+		<ion-header-bar class="bar-stable">
+			<div class="buttons">
+				<button class="button button-icon icon ion-trash-a" ng-click="data.showDelete = !data.showDelete; data.showReorder = false"></button>
+			</div>
+			<h1 class="title">Defined Event Type</h1>
+			<div class="buttons">
+				<button class="button" ng-click="data.showDelete = false; data.showReorder = !data.showReorder">
+					Reorder
+				</button>
+			</div>
+		</ion-header-bar>
+		<!-- <ul class="list">
 			<li class="item item-divider">
 				Defined Event Type
 			</li>
-			<li class="item item-button-right item-icon-left" ng-repeat="event_type in data.event_types" ng-click="editEventType(event_type, $index)">
+
+		<ion-item show-reorder="true" class="item item-button-right item-icon-left" ng-repeat="event_type in data.event_types" ng-click="editEventType(event_type, $index)">
 				<i class="icon {{event_type.icon}}"></i> {{event_type.name}} ({{event_type.time_before}}s - {{event_type.time_after}}s)
 				<button class="button button-assertive" ng-click="remove(data.event_types, $index)">
 					<i style="left: 8px;" class="icon ion-trash-a"></i>
 				</button>
-			</li>
+			</ion-item>"
 
-		</ul>
+		</ul> -->
+		<ion-list show-delete="data.showDelete" show-reorder="data.showReorder" can-swipe="true" class="add-top-margin">
+			<ion-item ng-repeat="event_type in data.event_types track by $index" class="item-icon-left item-button-right" ng-click="editEventType(event_type, $index)">
+				<i class="icon {{event_type.icon}}"></i>
+				<h2> {{event_type.name}} ({{event_type.time_before}}s - {{event_type.time_after}}s)</h2>
+				<ion-delete-button class="ion-trash-a" ng-click="remove(data.event_types, $index)">
+				</ion-delete-button>
+				<ion-reorder-button class="ion-navicon" on-reorder="reorderItem(event_type, $fromIndex, $toIndex)">
+				</ion-reorder-button>
+			</ion-item>
+		</ion-list>
 	</ion-content>
 	<ion-footer-bar class="bar-positive" ng-click="addNewEventTypeModal()">
 		<p class="title">

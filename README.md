@@ -1,4 +1,17 @@
 "# TagApp"
+0.1.10
+-Exit - go to home screens
+-Go to home screen after settings are saved
+-Fix for connect to server
+-First/Second half tracking with events
+-Checking video export state while Playlist modal is shown
+-Save which teams are in project
+-Event Types = Analysis Dashboard (on home screen)
+-Fixed event types edit/delete/add
+-Event types reordering
+-Changes in UI
+
+"# TagApp"
 0.1.9
 -Swipe to open menu
 -Adaptation to new PSD design

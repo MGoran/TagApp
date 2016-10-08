@@ -104,12 +104,22 @@ angular.module('recorderControll.service', []).service('recorderControll', funct
   service.addEvent = function(annotation, camera) {
     var data = {
       "event_type_name": annotation.event.name,
-      "team_id": annotation.team.team_id,
-      "begin": $filter('date')(new Date(annotation.start), "yyyy-MM-dd-HH-mm-ss-sss"),
-      "end": $filter('date')(new Date(annotation.end), "yyyy-MM-dd-HH-mm-ss-sss")
     }
-    if (annotation.player !== "undefined" && annotation.player !== null)
+    if(annotation.team !== undefined){
+      data.team_id = annotation.team.team_id;
+		}else{
+			data.team_id = 1;
+		}
+    if (annotation.start !== undefined){
+      data.begin = $filter('date')(new Date(annotation.start), "yyyy-MM-dd-HH-mm-ss-sss");
+		}
+    if (annotation.end !== undefined){
+      data.end = $filter('date')(new Date(annotation.end), "yyyy-MM-dd-HH-mm-ss-sss");
+		}
+    if (annotation.player !== undefined && annotation.player !== null){
       data.player_name = annotation.player.name;
+		}
+
     var settings = {
       "async": true,
       "crossDomain": true,
@@ -141,7 +151,7 @@ angular.module('recorderControll.service', []).service('recorderControll', funct
   }
 
 
-  service.setTeamName = function(team, camera) { 
+  service.setTeamName = function(team, camera) {
     var settings = {
       "async": true,
       "crossDomain": true,
