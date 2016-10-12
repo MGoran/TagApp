@@ -203,6 +203,22 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     if (!$scope.recorder.recording) {
       $scope.startRecorder();
     } else {
+      if ($rootScope.data.recordings[localStorage.lastRecordedVideo] === undefined) {
+        var date = $filter("date")(new Date($scope.recorder.time), "dd MMMM yyyy - hh-mm a");
+        var filename = "capture - " + date;
+        localStorage.lastRecordedVideo = filename;
+        $rootScope.data.recordings[filename] = {
+          annotations: [],
+          recording_id: $scope.recorder.recording_id,
+          period: 1,
+          team1: localStorage.team1,
+          team2: localStorage.team2
+        }
+        $scope.data.currentProject = $rootScope.data.recordings[localStorage.lastRecordedVideo];
+        console.log($rootScope.data.recordings)
+        localStorage.recordings = JSON.stringify($rootScope.data.recordings);
+      }
+
       var firstHalfEnd = $filter('filter')($rootScope.data.recordings[localStorage.lastRecordedVideo].annotations, {
         event: {
           name: "End 1st Half"
@@ -282,7 +298,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
 
   $scope.getPeriodCmdLabel = function() {
     $timeout(function() {
-			$rootScope.data.recordings = JSON.parse(localStorage.recordings)
+      $rootScope.data.recordings = JSON.parse(localStorage.recordings)
       var firstHalfEnd = $filter('filter')($rootScope.data.recordings[localStorage.lastRecordedVideo].annotations, {
         event: {
           name: "End 1st Half"
@@ -312,7 +328,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
         $scope.data.periodLabel = "Waiting";
       }
       console.log($scope.data.periodCmdLabel);
-    },100)
+    }, 100)
   }
 
   $scope.startRecorder = function() {
@@ -320,11 +336,11 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     var promise = recorderControll.startRecorder($rootScope.selectedCam);
     promise.then(function(response) {
       console.log(response);
-			if(response.data.result === false){
-				alert(response.data.error);
-				$scope.hideLoading();
-				return false;
-			}
+      if (response.data.result === false) {
+        alert(response.data.error);
+        $scope.hideLoading();
+        return false;
+      }
       $timeout(function() {
         var date = $filter("date")(new Date(), "dd MMMM yyyy - hh-mm a");
         var filename = "capture - " + date;
@@ -358,9 +374,9 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
       console.log(error);
       if (error.status === -1) {
         alert("Connection with recorder not possible!");
-      }else{
-				alert(error.data.error)
-			}
+      } else {
+        alert(error.data.error)
+      }
     })
   }
 
@@ -502,7 +518,8 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
           $scope.getTeamScores();
         }, function(error) {
           console.log(error);
-          alert(error.data.error);
+					if(error.data)
+          	alert(error.data.error);
           $scope.hideLoading();
         })
       }, function(error) {
@@ -684,24 +701,39 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     //video_src = "videos/example2.mp4"
     targetPath = decodeURI(targetPath);
     console.log(targetPath);
-    $scope.config = {
-      preload: "auto",
-      autoPlay: false,
-      sources: [{
-        // src: $sce.trustAsResourceUrl(targetPath),
-        src: targetPath,
-        type: "video/mp4"
-      }],
-      theme: {
-        url: "http://www.videogular.com/styles/themes/default/latest/videogular.css"
-      },
-      plugins: {
-        controls: {
-          autoHide: false,
-          autoHideTime: 3000
-        }
-      }
-    };
+		$scope.targetPath = targetPath;
+		document.getElementById("playbackVideoPlayer").innerHTML = "<video width='auto' height='auto' controls autoplay src=" + targetPath + ">Your browser does not support video</video>";
+    // flowplayer("#flowplayer", {
+    //   splash: true,
+    //   embed: false,
+    //   ratio: 9 / 16,
+    //   clip: {
+    //     live: true,
+    //     sources: [{
+    //       type: "video/mp4",
+    //       src: targetPath
+    //     }]
+    //   }
+		//
+    // });
+    // $scope.config = {
+    //   preload: "auto",
+    //   autoPlay: false,
+    //   sources: [{
+    //     // src: $sce.trustAsResourceUrl(targetPath),
+    //     src: targetPath,
+    //     type: "video/mp4"
+    //   }],
+    //   theme: {
+    //     url: "http://www.videogular.com/styles/themes/default/latest/videogular.css"
+    //   },
+    //   plugins: {
+    //     controls: {
+    //       autoHide: false,
+    //       autoHideTime: 3000
+    //     }
+    //   }
+    // };
   }
 
   $scope.showPlaybackVideo = function(video) {

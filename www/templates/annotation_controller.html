@@ -26,7 +26,7 @@
 					</div>
 				</div>
 				<div id="annotate">
-					<div  ng-if="selectedCam.cameraType !== 'disabled'  && data.live_view">
+					<div ng-if="selectedCam.cameraType !== 'disabled'  && data.live_view">
 						<div class="row">
 							<div class="col col-30 btn-stack">
 								<button class="button button-80 icon ion-arrow-left-c gm-btn-white gm-btn-height" on-release="ptzMove('left', 'stop')" on-touch="ptzMove('left', 'start')"></button>
@@ -150,7 +150,7 @@
 					<button class="button button-block gm-btn-white" ng-click="hidePlaybackList()">Close</button>
 				</ion-item>
 			</div>
-			<div ng-if="data.downloadingPlayback" class="item item-icon-left" style="color:white;background:linear-gradient(90deg, #0c60ee {{downloadProgress}}%, transparent 50%) !important;">
+			<div ng-if="data.downloadingPlayback" class="item item-icon-left" style="color:white;background:linear-gradient(90deg, #0c60ee {{downloadProgress}}%, transparent {{downloadProgress}}%) !important;">
 				<i class="icon" style="color:black" ng-if="video.state !== 'Finished'"><ion-spinner></ion-spinner></i>
 				<span style="color:black">Downloading...</span>
 			</div>
@@ -173,10 +173,16 @@
 				<button class="button button-clear button-primary" ng-click="hidePlaybackVideo()">Close</button>
 			</ion-header-bar>
 			<ion-content padding="false">
-				<videogular vg-update-time="onUpdateTime($currentTime, $duration)" vg-theme="config.theme.url" vg-native-fullscreen="false" vg-plays-inline="'true'" vg-native-controls="true">
+
+				<!-- <video width="400" controls>
+					<source ng-src="{{targetPath | trustAsResourceUrl}}" type="video/mp4">
+					Your browser does not support HTML5 video
+				</video> -->
+				<div id="playbackVideoPlayer"></div>
+				<!-- <videogular vg-update-time="onUpdateTime($currentTime, $duration)" vg-theme="config.theme.url" vg-native-fullscreen="false" vg-plays-inline="'true'" vg-native-controls="true">
 					<vg-media vg-src="config.sources">
 					</vg-media>
-				</videogular>
+				</videogular> -->
 			</ion-content>
 		</div>
 	</ion-content>
