@@ -211,8 +211,8 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
           annotations: [],
           recording_id: $scope.recorder.recording_id,
           period: 1,
-          team1: localStorage.team1,
-          team2: localStorage.team2
+          team1: JSON.parse(localStorage.team1),
+          team2: JSON.parse(localStorage.team2)
         }
         $scope.data.currentProject = $rootScope.data.recordings[localStorage.lastRecordedVideo];
         console.log($rootScope.data.recordings)
@@ -353,8 +353,8 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
             annotations: [],
             recording_id: response.data.recording_id,
             period: 1,
-            team1: localStorage.team1,
-            team2: localStorage.team2
+            team1: JSON.parse(localStorage.team1),
+            team2: JSON.parse(localStorage.team2)
           }
 
           $scope.data.currentProject = $rootScope.data.recordings[localStorage.lastRecordedVideo];
@@ -464,8 +464,8 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
         annotations: [],
         recording_id: $scope.recorder.recording_id,
         period: 1,
-        team1: localStorage.team1,
-        team2: localStorage.team2
+        team1: JSON.parse(localStorage.team1),
+        team2: JSON.parse(localStorage.team2)
       }
       $scope.data.currentProject = $rootScope.data.recordings[localStorage.lastRecordedVideo];
       console.log($rootScope.data.recordings)
@@ -518,8 +518,8 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
           $scope.getTeamScores();
         }, function(error) {
           console.log(error);
-					if(error.data)
-          	alert(error.data.error);
+          if (error.data)
+            alert(error.data.error);
           $scope.hideLoading();
         })
       }, function(error) {
@@ -574,8 +574,9 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     xml += "	<annotations>";
     angular.forEach(annotations, function(a) {
       xml += "	<annotation>";
-      xml += "		<team>" + a.team.name + "</team>";
-      if (a.player !== null) {
+      if (a.team !== undefined)
+        xml += "		<team>" + a.team.name + "</team>";
+      if (a.player !== null && a.player !== undefined) {
         xml += "  <player number='" + a.player.number + "'>" + a.player.name + "</player>";
       }
       xml += "		<event start='" + a.start + "' end='" + a.end + "'>" + a.event.name + "</event>";
@@ -585,7 +586,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     xml += '</recording>';
     console.log(xml);
 
-    var filename = localStorage.lastRecordedVideo + ".xml";
+    var filename = localStorage.lastRecordedVideo.replace(/\s+/g, '') + ".xml";
 
     // window.resolveLocalFileSystemURL($scope.directory, function(directoryEntry) {
     //   directoryEntry.getFile(filename, {
@@ -593,36 +594,37 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     //   }, function(fileEntry) {
     //     fileEntry.createWriter(function(fileWriter) {
     //       fileWriter.onwriteend = function(e) {
-    // for real-world usage, you might consider passing a success callback
-    //console.log('Write of file "' + $scope.directory + filename + '"" completed.');
-    //var filePath = $scope.directory + filename;
-    //var filePath = fileEntry.nativeURL;
-    //  var filePath = $scope.directory + filename;
-    $cordovaEmailComposer.isAvailable().then(function() {
-      var email = {
-        to: $rootScope.data.email_to,
-        cc: '',
-        bcc: [],
-        attachments: [],
-        subject: $rootScope.data.email_subject,
-        body: xml,
-        isHtml: false
-      };
-      console.log(email)
-      $cordovaEmailComposer.open(email).then(null, function() {
-        console.log("email client closed");
-      });
-    }, function() {
-      alert("Email service not available")
-    });
-    //  };
-    //
+    //         //for real - world usage, you might consider passing a success callback
+    //         console.log('Write of file "' + $scope.directory + filename + '"" completed.');
+		// 				console.log(fileEntry);
+    //         var filePath = $scope.directory + filename;
+    //         //var filePath = fileEntry.nativeURL;
+    //       	//  var filePath = $scope.directory + filename;
+            $cordovaEmailComposer.isAvailable().then(function() {
+              var email = {
+                to: $rootScope.data.email_to,
+                cc: '',
+                bcc: [],
+                attachments: "base64:"+filename+"//"+btoa(xml),
+                subject: $rootScope.data.email_subject,
+                body: xml,
+                isHtml: false
+              };
+              console.log(email)
+              $cordovaEmailComposer.open(email).then(null, function() {
+                console.log("email client closed");
+              });
+            }, function() {
+              alert("Email service not available")
+            });
+    //       };
+		//
     //       fileWriter.onerror = function(e) {
     //         // you could hook this up with our global error handler, or pass in an error callback
     //         alert('Write failed: ' + e.toString());
-    //
+		//
     //       };
-    //
+		//
     //       var blob = new Blob([xml], {
     //         type: 'text/xml'
     //       });
@@ -701,8 +703,8 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     //video_src = "videos/example2.mp4"
     targetPath = decodeURI(targetPath);
     console.log(targetPath);
-		$scope.targetPath = targetPath;
-		document.getElementById("playbackVideoPlayer").innerHTML = "<video width='auto' height='auto' controls autoplay src=" + targetPath + ">Your browser does not support video</video>";
+    $scope.targetPath = targetPath;
+    document.getElementById("playbackVideoPlayer").innerHTML = "<video width='100%' height='auto' controls autoplay src=" + targetPath + ">Your browser does not support video</video>";
     // flowplayer("#flowplayer", {
     //   splash: true,
     //   embed: false,
@@ -714,7 +716,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     //       src: targetPath
     //     }]
     //   }
-		//
+    //
     // });
     // $scope.config = {
     //   preload: "auto",

@@ -1,4 +1,10 @@
 "# TagApp"
+0.1.11
+-Upgrading dev environment to iOS10
+-Adapting playback player to work on iOS10
+-Sending XML file in email atachment
+
+"# TagApp"
 0.1.10
 -Exit - go to home screens
 -Go to home screen after settings are saved
