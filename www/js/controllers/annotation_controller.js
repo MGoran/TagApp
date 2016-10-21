@@ -181,7 +181,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
           console.log(error);
         });
         $scope.getRecordingDetails();
-
+        $rootScope.recorder = $scope.recorder;
       }
       $scope.getPeriodCmdLabel();
       if ($scope.recorder.recording) {
@@ -484,15 +484,17 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
       localStorage.recordings = JSON.stringify($rootScope.data.recordings);
     } else if ($rootScope.selectedCam.recorderType === "Panofield") {
       $scope.showLoading();
+      console.log($scope.recorder);
       var annotation = {
         team: team,
         player: player,
         start: new Date().getTime() - (parseInt(event.time_before) * 1000),
         end: new Date().getTime() + (parseInt(event.time_after) * 1000),
+        timer_time: $scope.timerCurrentTime,
         event: event,
         camera: $rootScope.selectedCam,
       }
-      console.log(annotation);
+      console.log("Annotation: ", annotation);
       var promise = recorderControll.addEvent(annotation, $rootScope.selectedCam);
       promise.then(function(response) {
         console.log(response);
@@ -524,6 +526,8 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
         })
       }, function(error) {
         console.log(error)
+        $scope.hideLoading();
+        alert(error.data.error)
       });
     }
   }
@@ -569,23 +573,41 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     var camera = annotations[0].camera;
     var xml = '<?xml version="1.0"?>';
     xml += '<recording>';
+    xml += "	<id>" + $scope.recorder.recording_id + "</id>";
     xml += "	<camera type='" + camera.cameraType + "' ip='" + camera.cameraIP + "'></camera>";
     xml += "	<recorder type='" + camera.recorderType + "' ip='" + camera.recorderIP + "'></recorder>";
     xml += "	<annotations>";
-    angular.forEach(annotations, function(a) {
-      xml += "	<annotation>";
+    angular.forEach(annotations, function(a, index) {
+      xml += "<annotation>";
+      xml += "	<id>" + a.id + "</id>"
+      xml += "	<name>" + a.event.name + "</name>";
       if (a.team !== undefined)
-        xml += "		<team>" + a.team.name + "</team>";
+        xml += "	<team>" + a.team.name + "</team>";
+      if (isNaN(parseInt(a.event.duration_before / 1000))) {
+        console.log("timer time: " + a.timer_time);
+        xml += "	<start>" + parseInt(a.timer_time / 1000) + "</start>";
+        xml += "	<end>" + parseInt(a.timer_time / 1000) + "</end>"
+      } else {
+        xml += "	<start>" + parseInt(a.event.duration_before / 1000) + "</start>";
+        xml += "	<end>" + parseInt(a.event.duration_after / 1000) + "</end>";
+      }
       if (a.player !== null && a.player !== undefined) {
         xml += "  <player number='" + a.player.number + "'>" + a.player.name + "</player>";
       }
-      xml += "		<event start='" + a.start + "' end='" + a.end + "'>" + a.event.name + "</event>";
-      xml += "  </annotation>";
+      xml += "</annotation>";
+      // xml += "	<annotation>";
+      // if (a.team !== undefined)
+      //   xml += "		<team>" + a.team.name + "</team>";
+      // if (a.player !== null && a.player !== undefined) {
+      //   xml += "  <player number='" + a.player.number + "'>" + a.player.name + "</player>";
+      // }
+      // xml += "		<event start='" + a.start + "' end='" + a.end + "'>" + a.event.name + "</event>";
+      // xml += "  </annotation>";
     });
     xml += "	</annotations>";
     xml += '</recording>';
     console.log(xml);
-
+    return false;
     var filename = localStorage.lastRecordedVideo.replace(/\s+/g, '') + ".xml";
 
     // window.resolveLocalFileSystemURL($scope.directory, function(directoryEntry) {
@@ -596,35 +618,35 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     //       fileWriter.onwriteend = function(e) {
     //         //for real - world usage, you might consider passing a success callback
     //         console.log('Write of file "' + $scope.directory + filename + '"" completed.');
-		// 				console.log(fileEntry);
+    // 				console.log(fileEntry);
     //         var filePath = $scope.directory + filename;
     //         //var filePath = fileEntry.nativeURL;
     //       	//  var filePath = $scope.directory + filename;
-            $cordovaEmailComposer.isAvailable().then(function() {
-              var email = {
-                to: $rootScope.data.email_to,
-                cc: '',
-                bcc: [],
-                attachments: "base64:"+filename+"//"+btoa(xml),
-                subject: $rootScope.data.email_subject,
-                body: xml,
-                isHtml: false
-              };
-              console.log(email)
-              $cordovaEmailComposer.open(email).then(null, function() {
-                console.log("email client closed");
-              });
-            }, function() {
-              alert("Email service not available")
-            });
+    $cordovaEmailComposer.isAvailable().then(function() {
+      var email = {
+        to: $rootScope.data.email_to,
+        cc: '',
+        bcc: [],
+        attachments: "base64:" + filename + "//" + btoa(xml),
+        subject: $rootScope.data.email_subject,
+        body: xml,
+        isHtml: false
+      };
+      console.log(email)
+      $cordovaEmailComposer.open(email).then(null, function() {
+        console.log("email client closed");
+      });
+    }, function() {
+      alert("Email service not available")
+    });
     //       };
-		//
+    //
     //       fileWriter.onerror = function(e) {
     //         // you could hook this up with our global error handler, or pass in an error callback
     //         alert('Write failed: ' + e.toString());
-		//
+    //
     //       };
-		//
+    //
     //       var blob = new Blob([xml], {
     //         type: 'text/xml'
     //       });
@@ -822,4 +844,6 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
 
     console.log('Error (' + fileName + '): ' + msg);
   }
+
+
 });

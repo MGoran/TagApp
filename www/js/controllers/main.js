@@ -78,7 +78,7 @@ angular.module('main.controller', []).controller('MainCtrl', function($rootScope
       "start_counter": false,
       "generate_playback_video": true
     }];
-
+		$rootScope.defaultEvents = $rootScope.data.event_types;
     localStorage.team1 = JSON.stringify($rootScope.data.team1);
     localStorage.recordings = JSON.stringify($rootScope.data.recordings);
     localStorage.team2 = JSON.stringify($rootScope.data.team2);

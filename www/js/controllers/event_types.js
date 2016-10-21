@@ -1,4 +1,4 @@
-angular.module('eventTypes.controller', []).controller('EventTypesCtrl', function($rootScope, $scope, $ionicPopup, $timeout, $state) {
+angular.module('eventTypes.controller', []).controller('EventTypesCtrl', function($rootScope, $scope, $ionicPopup, $timeout, $state, recorderControll) {
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     if (!$rootScope.isUser()) {
       $state.go('login')
@@ -94,18 +94,56 @@ angular.module('eventTypes.controller', []).controller('EventTypesCtrl', functio
       }]
     });
     myPopup.then(function(event) {
-      $rootScope.data.event_types[index] = event;
-      //$rootScope.data.event_types.push(event);
-      console.log($rootScope.data.event_types)
-      localStorage.event_types = JSON.stringify($rootScope.data.event_types);
-      $scope.event = {};
+      if (event !== undefined && event !== null) {
+        $rootScope.data.event_types[index] = event;
+        //$rootScope.data.event_types.push(event);
+        console.log($rootScope.data.event_types)
+        localStorage.event_types = JSON.stringify($rootScope.data.event_types);
+        $scope.event = {};
+      }
     });
   }
 
-	$scope.reorderItem = function(item, fromIndex, toIndex) {
+  $scope.reorderItem = function(item, fromIndex, toIndex) {
     //Move the item in the array
     $rootScope.data.event_types.splice(fromIndex, 1);
     $rootScope.data.event_types.splice(toIndex, 0, item);
-		localStorage.event_types = JSON.stringify($rootScope.data.event_types);
+    localStorage.event_types = JSON.stringify($rootScope.data.event_types);
   };
+
+
+  $scope.getEventTypes = function() {
+    localStorage.user = JSON.stringify($rootScope.user);
+    $rootScope.selectedCam = $rootScope.user.cameras[0];
+    $scope.showLoading();
+    var promise = recorderControll.getEventTypes($rootScope.selectedCam);
+    promise.then(function(response) {
+      console.log(response);
+      var event_types = [];
+      angular.forEach(response.data.list, function(event) {
+        console.log(event)
+        event_types.push({
+          "name": event.name,
+          "time_before": 10,
+          "time_after": 10,
+          "icon": "ion-alert",
+          "start_counter": false,
+          "generate_playback_video": true
+        });
+      });
+      $rootScope.data.event_types = event_types;
+      localStorage.event_types = JSON.stringify($rootScope.data.event_types);
+      console.log($rootScope.data.event_types)
+      $scope.hideLoading();
+    }, function(err) {
+      console.log(err);
+      $scope.hideLoading();
+    })
+  }
+
+	$scope.loadDefaults = function(){
+		$rootScope.data.event_types = $rootScope.defaultEvents;
+		localStorage.event_types = JSON.stringify($rootScope.data.event_types);
+		console.log($rootScope.data.event_types)
+	}
 });

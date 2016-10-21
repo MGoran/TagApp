@@ -150,6 +150,18 @@ angular.module('recorderControll.service', []).service('recorderControll', funct
     return $http(settings);
   }
 
+	service.getEventTypes = function(camera){
+		var settings = {
+			"async": true,
+      "crossDomain": true,
+      "url": "http://" + camera.recorderIP + "/api/event_type",
+      "method": "GET",
+      "headers": {
+        'Authorization': 'Basic ' + btoa(camera.username + ':' + camera.password)
+      }
+		}
+		return $http(settings);
+	}
 
   service.setTeamName = function(team, camera) {
     var settings = {
@@ -167,6 +179,19 @@ angular.module('recorderControll.service', []).service('recorderControll', funct
     }
     return $http(settings);
   }
+
+	service.getTeamNames = function(camera){
+		var settings = {
+			"async": true,
+			"crossDomain": true,
+			"url": "http://" + camera.recorderIP + "/api/team",
+			"method": "GET",
+			"headers": {
+				'Authorization': 'Basic ' + btoa(camera.username + ':' + camera.password)
+			}
+		}
+		return $http(settings);
+	}
 
   //Get export queue
   service.getExportQueue = function(camera) {

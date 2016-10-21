@@ -36,9 +36,11 @@
 			</ion-item>
 		</ion-list>
 	</ion-content>
-	<ion-footer-bar class="bar-positive" ng-click="addNewEventTypeModal()">
-		<p class="title">
-			Add new Event Type
-		</p>
+	<ion-footer-bar class="bar-dark">
+		<div class="button-bar">
+			<a class="button button-positive"  ng-click="addNewEventTypeModal()">Add new Event Type</a>
+			<a class="button button-warning"  ng-click="loadDefaults()">Load default Events</a>
+			<a class="button button-balanced" ng-click="getEventTypes()">Get from recorder</a>
+		</div>
 	</ion-footer-bar>
 </ion-view>

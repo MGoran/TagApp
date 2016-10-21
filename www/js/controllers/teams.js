@@ -8,8 +8,8 @@ angular.module('teams.controller', []).controller('TeamsCtrl', function($rootSco
     if (!$rootScope.isUser()) {
       $state.go('login')
     }
-    localStorage.user = JSON.stringify($rootScope.user);
-    $rootScope.selectedCam = $rootScope.user.cameras[0];
+    // localStorage.user = JSON.stringify($rootScope.user);
+    // $rootScope.selectedCam = $rootScope.user.cameras[0];
   });
 
   $scope.selectTeam = function(index) {
@@ -140,4 +140,23 @@ angular.module('teams.controller', []).controller('TeamsCtrl', function($rootSco
       localStorage.team2 = JSON.stringify($rootScope.data.team2);
     });
   }
+
+	$scope.getTeamNames = function(){
+		localStorage.user = JSON.stringify($rootScope.user);
+		$rootScope.selectedCam = $rootScope.user.cameras[0];
+		$scope.showLoading();
+		var promise = recorderControll.getTeamNames($rootScope.selectedCam);
+		promise.then(function(response) {
+			console.log(response);
+			localStorage.team1 = JSON.stringify(response.data.team[0]);
+      localStorage.team2 = JSON.stringify(response.data.team[1]);
+			$rootScope.data.team1 = JSON.parse(localStorage.team1);
+			$rootScope.data.team2 = JSON.parse(localStorage.team2);
+			console.log($rootScope.data);
+			$scope.hideLoading();
+		}, function(err) {
+			console.log(err);
+			$scope.hideLoading();
+		})
+	}
 });

@@ -1,4 +1,13 @@
 "# TagApp"
+0.1.12
+-XML format Changes
+-Small bugfixes
+-Get event types from recorder
+-Load default event types
+-Load team names from recorder
+
+
+"# TagApp"
 0.1.11
 -Upgrading dev environment to iOS10
 -Adapting playback player to work on iOS10

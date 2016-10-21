@@ -14,7 +14,7 @@
 		</div>
 		<div class="home-right">
 			<div class="list">
-				<button class="gm-btn-white button btn-home-width" ng-click="startProject();">New Project</button>
+				<button class="gm-btn-white button btn-home-width" ng-click="startProject();">{{recorder.recording ? "Continue":"New Project"}}</button>
 				<button class="gm-btn-white button btn-home-width" disabled>Projects</button>
 				<button class="gm-btn-white button btn-home-width" ui-sref="app.event_types">Analysis Dashboard</button>
 				<button class="gm-btn-white button btn-home-width" ui-sref="app.teams">Teams</button>

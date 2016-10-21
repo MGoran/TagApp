@@ -1,5 +1,5 @@
 <ion-view view-title="Teams">
-	<ion-content padding="true" class="has-footer" scroll="true"  overflow-scroll="false">
+	<ion-content padding="true" class="has-footer" scroll="true" overflow-scroll="false">
 		<ul class="list">
 			<li class="item item item-button-right">
 				{{selectedTeam.name}}
@@ -21,13 +21,11 @@
 			Add new player
 		</button>
 	</ion-content>
-	<ion-footer-bar class="bar-stable">
-		<div class="buttons" ng-click="selectTeam(1)">
-			<button class="button  button-positive">Team 1 Setup</button>
-		</div>
-		<h1 class="title"></h1>
-		<div class="buttons" ng-click="selectTeam(2)">
-			<button class="button button-positive">Team 2 Setup</button>
+	<ion-footer-bar class="bar-dark">
+		<div class="button-bar">
+			<a class="button button-positive" ng-click="selectTeam(1)">Team 1 Setup</a>
+			<a class="button button-warning" ng-click="getTeamNames()">Get Teams from recorder</a>
+			<a class="button button-positive" ng-click="selectTeam(2)">Team 2 Setup</a>
 		</div>
 	</ion-footer-bar>
 </ion-view>
