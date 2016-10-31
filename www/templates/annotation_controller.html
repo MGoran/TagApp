@@ -5,7 +5,7 @@
 		<div ng-if="!data.live_view || selectedCam.cameraType == 'disabled'" style="background:white" class="annotation_video"> </div>
 		<div class="gm-controls" style="opacity:{{data.vc_transparency/100}}">
 			<div class="panel panel-top-controlls">
-				<div class="row line-background">
+				<div class="row line-background header-buttons">
 					<div class="col col-20">
 						<button class="button gm-button gm-button-black no-bg" ng-click="undoLast(data.currentProject.annotations, data.currentProject.annotations.length-1)">Undo</button>
 					</div>
@@ -25,106 +25,147 @@
 						<button ng-click="toggleRecorder()" class="button gm-button gm-button-red gm-no-border gm-md-font gm-button-regular no-bg">{{data.periodCmdLabel}}</button>
 					</div>
 				</div>
-				<div id="annotate">
-					<div ng-if="selectedCam.cameraType !== 'disabled'  && data.live_view">
-						<div class="row">
-							<div class="col col-30 btn-stack">
-								<button class="button button-80 icon ion-arrow-left-c gm-btn-white gm-btn-height" on-release="ptzMove('left', 'stop')" on-touch="ptzMove('left', 'start')"></button>
-								<button class="button button-80 icon ion-arrow-up-c  gm-btn-white gm-btn-height" on-release="ptzMove('up', 'stop')" on-touch="ptzMove('up', 'start')"></button>
-								<button class="button button-80 icon ion-minus-round  gm-btn-white gm-btn-height" on-release="ptzZoom('-', 'stop')" on-touch="ptzZoom('-', 'start')"></button>
-							</div>
-							<div class="col col-40">
-								<div class="zone-buttons">
-									<table style="height: 180px;width: 100%;">
-										<tr>
-											<th class="border" style="border-right:0;width: 15%;" ng-click="gotoPreset(2)">&nbsp;</th>
-											<th class="border" style="border-left:0;border-bottom:0" ng-click="gotoPreset(2)">&nbsp;</th>
-											<th class="border" style="border-bottom:0;width: 30%;" ng-click="gotoPreset(3)">&nbsp;</th>
-											<th class="border" style="border-right:0;border-bottom:0" ng-click="gotoPreset(4)">&nbsp;</th>
-											<th class="border" style="border-left:0;width: 15%;" ng-click="gotoPreset(4)">&nbsp;</th>
-										</tr>
-										<tr style="height: 50%;">
-											<th class="border" ng-click="gotoPreset(1)">&nbsp;</th>
-											<th class="border" style="border-top:0;border-bottom:0" ng-click="gotoPreset(2)">&nbsp;</th>
-											<th class="border" style="border-top:0;border-bottom:0" ng-click="gotoPreset(3)">&nbsp;</th>
-											<th class="border" style="border-top:0;border-bottom:0;" ng-click="gotoPreset(4)">&nbsp;</th>
-											<th class="border" ng-click="gotoPreset(5)">&nbsp;</th>
-										</tr>
-										<tr>
-											<th class="border" style="border-right:0;" ng-click="gotoPreset(2)">&nbsp;</th>
-											<th class="border" style="border-left:0; border-top:0" ng-click="gotoPreset(2)">&nbsp;</th>
-											<th class="border" style="border-top:0;" ng-click="gotoPreset(3)">&nbsp;</th>
-											<th class="border" style="border-right:0;border-top:0" ng-click="gotoPreset(4)">&nbsp;</th>
-											<th class="border" style="border-left:0;" ng-click="gotoPreset(4)">&nbsp;</th>
-										</tr>
-									</table>
+				<div class="scrollable_outside_content" style="height:{{calculateHeight()}}">
+					<div id="annotate">
+						<div ng-if="selectedCam.cameraType !== 'disabled'  && data.live_view">
+							<div class="row">
+								<div class="col col-30 btn-stack">
+									<button class="button button-80 icon ion-arrow-left-c gm-btn-white gm-btn-height" on-release="ptzMove('left', 'stop')" on-touch="ptzMove('left', 'start')"></button>
+									<button class="button button-80 icon ion-arrow-up-c  gm-btn-white gm-btn-height" on-release="ptzMove('up', 'stop')" on-touch="ptzMove('up', 'start')"></button>
+									<button class="button button-80 icon ion-minus-round  gm-btn-white gm-btn-height" on-release="ptzZoom('-', 'stop')" on-touch="ptzZoom('-', 'start')"></button>
+								</div>
+								<div class="col col-40">
+									<div class="zone-buttons">
+										<table style="height: 180px;width: 100%;">
+											<tr>
+												<th class="border" style="border-right:0;width: 15%;" ng-click="gotoPreset(2)">&nbsp;</th>
+												<th class="border" style="border-left:0;border-bottom:0" ng-click="gotoPreset(2)">&nbsp;</th>
+												<th class="border" style="border-bottom:0;width: 30%;" ng-click="gotoPreset(3)">&nbsp;</th>
+												<th class="border" style="border-right:0;border-bottom:0" ng-click="gotoPreset(4)">&nbsp;</th>
+												<th class="border" style="border-left:0;width: 15%;" ng-click="gotoPreset(4)">&nbsp;</th>
+											</tr>
+											<tr style="height: 50%;">
+												<th class="border" ng-click="gotoPreset(1)">&nbsp;</th>
+												<th class="border" style="border-top:0;border-bottom:0" ng-click="gotoPreset(2)">&nbsp;</th>
+												<th class="border" style="border-top:0;border-bottom:0" ng-click="gotoPreset(3)">&nbsp;</th>
+												<th class="border" style="border-top:0;border-bottom:0;" ng-click="gotoPreset(4)">&nbsp;</th>
+												<th class="border" ng-click="gotoPreset(5)">&nbsp;</th>
+											</tr>
+											<tr>
+												<th class="border" style="border-right:0;" ng-click="gotoPreset(2)">&nbsp;</th>
+												<th class="border" style="border-left:0; border-top:0" ng-click="gotoPreset(2)">&nbsp;</th>
+												<th class="border" style="border-top:0;" ng-click="gotoPreset(3)">&nbsp;</th>
+												<th class="border" style="border-right:0;border-top:0" ng-click="gotoPreset(4)">&nbsp;</th>
+												<th class="border" style="border-left:0;" ng-click="gotoPreset(4)">&nbsp;</th>
+											</tr>
+										</table>
+									</div>
+								</div>
+								<div class="col col-30 btn-stack" style="text-align:right">
+									<button class="button button-80 icon ion-arrow-right-c gm-btn-white gm-btn-height" on-release="ptzMove('right', 'stop')" on-touch="ptzMove('right', 'start')" style="margin-left: auto;"></button>
+									<button class="button button-80 icon ion-arrow-down-c  gm-btn-white gm-btn-height" on-release="ptzMove('down', 'stop')" on-touch="ptzMove('down', 'start')" style="margin-left: auto;"></button>
+									<button class="button button-80 icon ion-plus-round  gm-btn-white gm-btn-height" on-release="ptzZoom('+', 'stop')" on-touch="ptzZoom('+', 'start')" style="margin-left: auto;"></button>
 								</div>
 							</div>
-							<div class="col col-30 btn-stack" style="text-align:right">
-								<button class="button button-80 icon ion-arrow-right-c gm-btn-white gm-btn-height" on-release="ptzMove('right', 'stop')" on-touch="ptzMove('right', 'start')" style="margin-left: auto;"></button>
-								<button class="button button-80 icon ion-arrow-down-c  gm-btn-white gm-btn-height" on-release="ptzMove('down', 'stop')" on-touch="ptzMove('down', 'start')" style="margin-left: auto;"></button>
-								<button class="button button-80 icon ion-plus-round  gm-btn-white gm-btn-height" on-release="ptzZoom('+', 'stop')" on-touch="ptzZoom('+', 'start')" style="margin-left: auto;"></button>
+						</div>
+					</div>
+					<div class="annotation_panel" ng-if="!data.one_team_view">
+						<div class="row">
+							<div class="col col-20">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[0], data.team1, 1)">{{data.event_types[0].name}}</button>
+							</div>
+							<div class="col col-20">
+								<span class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular gm-large-font"><b>{{data.score1}}</b>&nbsp;&nbsp;&nbsp; <span>{{data.team1.name}}</span></span>
+							</div>
+							<div class="col col-20">
+								<span ng-click="toggleRecorder()" class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular gm-huge-font">
+								<timer ng-if="recorder.recording" start-time="recorder.time" max-time-unit="'minute'">{{mminutes}}:{{sseconds}}</timer>
+								<span ng-if="!recorder.recording">00:00</span>
+								</span>
+							</div>
+							<div class="col col-20">
+								<span class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular gm-large-font"><span >{{data.team2.name}}</span>&nbsp;&nbsp;&nbsp;<b>{{data.score2}}</b></span>
+							</div>
+							<div class="col col-20">
+								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[0], data.team2, 2)">{{data.event_types[0].name}}</button>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col col-20">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[1], data.team1, 1)">{{data.event_types[1].name}}</button>
+							</div>
+							<div class="col col-20">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[2], data.team1, 1)">{{data.event_types[2].name}}</button>
+							</div>
+							<div class="col col-20" style="text-align:center">
+								<ul ng-if="recorder.recording" class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular" style="width:auto;text-align: left;">
+									<li ng-repeat="annotation in data.currentProject.annotations | limitTo:-3" ng-if="annotation.team !== undefined" class="gm-leatest-events-list color-{{annotation.team.color}}"><span class="time">{{annotation.event.duration_after - annotation.event.time_after  | date:"mm:ss"}}</span> <span class="event">{{annotation.event.name}}</span></li>
+								</ul>
+							</div>
+							<div class="col col-20">
+								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[2], data.team2, 2)">{{data.event_types[2].name}}</button>
+							</div>
+							<div class="col col-20">
+								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[1],data.team2, 2)">{{data.event_types[1].name}}</button>
+							</div>
+						</div>
+						<div class="other_events">
+							<div class="row" ng-repeat="a in event_type_rows() track by $index" ng-init="btn_pos = 4+$index">
+								<div class="col col-25">
+									<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[btn_pos-1+$index],data.team1, 1)">{{data.event_types[btn_pos-1+$index].name}}</button>
+								</div>
+								<div class="col col-25">
+									<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-if="data.event_types[btn_pos+$index] !== undefined" ng-click="addEvent(data.event_types[btn_pos+$index],data.team1, 1)">{{data.event_types[btn_pos+$index].name}}</button>
+								</div>
+								<div class="col col-25">
+									<button class="button gm-button gm-big-button gm-button-blue text-white" ng-if="data.event_types[btn_pos+$index] !== undefined" ng-click="addEvent(data.event_types[btn_pos+$index],data.team2, 2)">{{data.event_types[btn_pos+$index].name}}</button>
+								</div>
+								<div class="col col-25">
+									<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[btn_pos-1+$index],data.team2, 2)">{{data.event_types[btn_pos-1+$index].name}}</button>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col col-20">
-						<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[0], data.team1, 1)">{{data.event_types[0].name}}</button>
-					</div>
-					<div class="col col-20">
-						<span class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular gm-large-font"><b>{{data.score1}}</b>&nbsp;&nbsp;&nbsp; <span>{{data.team1.name}}</span></span>
-					</div>
-					<div class="col col-20">
-						<span ng-click="toggleRecorder()" class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular gm-huge-font">
-							<timer ng-if="recorder.recording" start-time="recorder.time" max-time-unit="'minute'">{{mminutes}}:{{sseconds}}</timer>
-							<span ng-if="!recorder.recording">00:00</span>
-						</span>
-					</div>
-					<div class="col col-20">
-						<span class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular gm-large-font"><span >{{data.team2.name}}</span>&nbsp;&nbsp;&nbsp;<b>{{data.score2}}</b></span>
-					</div>
-					<div class="col col-20">
-						<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[0], data.team2, 2)">{{data.event_types[0].name}}</button>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col col-20">
-						<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[1], data.team1, 1)">{{data.event_types[1].name}}</button>
-					</div>
-					<div class="col col-20">
-						<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[2], data.team1, 1)">{{data.event_types[2].name}}</button>
-					</div>
-					<div class="col col-20" style="text-align:center">
-						<ul ng-if="recorder.recording" class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular" style="width:auto;text-align: left;">
-							<li ng-repeat="annotation in data.currentProject.annotations | limitTo:-3" ng-if="annotation.team !== undefined" class="gm-leatest-events-list color-{{annotation.team.color}}"><span class="time">{{annotation.event.duration_after - annotation.event.time_after  | date:"mm:ss"}}</span> <span class="event">{{annotation.event.name}}</span></li>
-						</ul>
-					</div>
-					<div class="col col-20">
-						<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[2], data.team2, 2)">{{data.event_types[2].name}}</button>
-					</div>
-					<div class="col col-20">
-						<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[1],data.team2, 2)">{{data.event_types[1].name}}</button>
-					</div>
-				</div>
-				<div class="other_events">
-					<div class="row" ng-repeat="a in event_type_rows() track by $index" ng-init="btn_pos = 4+$index">
-						<div class="col col-25">
-							<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[btn_pos-1+$index],data.team1, 1)">{{data.event_types[btn_pos-1+$index].name}}</button>
+					<div class="annotation_panel" ng-if="data.one_team_view">
+						<div class="row">
+							<div class="col col-20">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[0], data.team1, 1)">{{data.event_types[0].name}}</button>
+							</div>
+							<div class="col col-20">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[1], data.team1, 2)">{{data.event_types[1].name}}</button>
+							</div>
+							<div class="col col-20">
+								<span ng-click="toggleRecorder()" class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular gm-huge-font">
+								<timer ng-if="recorder.recording" start-time="recorder.time" max-time-unit="'minute'">{{mminutes}}:{{sseconds}}</timer>
+								<span ng-if="!recorder.recording">00:00</span>
+								</span>
+							</div>
+							<div class="col col-20">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[2], data.team1, 2)">{{data.event_types[2].name}}</button>
+							</div>
+							<div class="col col-20">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[3], data.team1, 2)">{{data.event_types[3].name}}</button>
+							</div>
 						</div>
-						<div class="col col-25">
-							<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-if="data.event_types[btn_pos+$index] !== undefined" ng-click="addEvent(data.event_types[btn_pos+$index],data.team1, 1)">{{data.event_types[btn_pos+$index].name}}</button>
-						</div>
-						<div class="col col-25">
-							<button class="button gm-button gm-big-button gm-button-blue text-white" ng-if="data.event_types[btn_pos+$index] !== undefined" ng-click="addEvent(data.event_types[btn_pos+$index],data.team2, 2)">{{data.event_types[btn_pos+$index].name}}</button>
-						</div>
-						<div class="col col-25">
-							<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[btn_pos-1+$index],data.team2, 2)">{{data.event_types[btn_pos-1+$index].name}}</button>
+						<div class="other_events">
+							<div ng-repeat="events in data.event_types track by $index" class="row" ng-if="$index % 4 == 0 && $index>3">
+								<div class="col col-25" ng-if="data.event_types.length > $index">
+									<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[$index],data.team1, 1)">{{data.event_types[$index].name}}</button>
+								</div>
+								<div class="col col-25" ng-if="data.event_types.length > ($index+1)">
+									<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[$index+1],data.team1, 1)">{{data.event_types[$index+1].name}}</button>
+								</div>
+								<div class="col col-25" ng-if="data.event_types.length > ($index+2)">
+									<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[$index+2],data.team1, 1)">{{data.event_types[$index+2].name}}</button>
+								</div>
+								<div class="col col-25" ng-if="data.event_types.length > ($index+3)">
+									<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[$index+3],data.team1, 1)">{{data.event_types[$index+3].name}}</button>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
 		</div>
 		<div class="panel panel-modal" ng-class="(showPlaybackListModal) ? 'slide-up' : 'slide-down'" id="playback-list-modal" ng-hide="!showPlaybackListModal" style="opacity:{{data.vc_transparency/100}}">
 			<div ng-if="!data.downloadingPlayback">

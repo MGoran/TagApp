@@ -36,3 +36,6 @@ li.gm-leatest-events-list span.time {
 .add-top-margin .list {
   margin-top: 50px;
 }
+.scrollable_outside_content{
+	overflow:auto;
+}

@@ -15,7 +15,7 @@ angular.module('main.controller', []).controller('MainCtrl', function($rootScope
     $rootScope.data.event_after = 10;
     $rootScope.data.event_before = 5;
     $rootScope.data.facebook_share = "EVERYONE";
-		$rootScope.data.live_view = true;
+    $rootScope.data.live_view = true;
     $rootScope.data.team1 = {
       "id": 1,
       "name": "Team1",
@@ -42,35 +42,35 @@ angular.module('main.controller', []).controller('MainCtrl', function($rootScope
       "icon": "ion-shuffle",
       "start_counter": true,
       "generate_playback_video": false
-    },{
+    }, {
       "name": "Shot",
       "time_before": 10,
       "time_after": 10,
       "icon": "ion-ios-football",
       "start_counter": false,
       "generate_playback_video": true
-    },{
+    }, {
       "name": "Change",
       "time_before": 5,
       "time_after": 10,
       "icon": "ion-android-people",
       "start_counter": false,
       "generate_playback_video": true
-    },{
+    }, {
       "name": "Freekick",
       "time_before": 10,
       "time_after": 30,
       "icon": "ion-speakerphone",
       "start_counter": false,
       "generate_playback_video": true
-    },{
+    }, {
       "name": "Corner",
       "time_before": 10,
       "time_after": 30,
       "icon": "ion-flag",
       "start_counter": false,
       "generate_playback_video": true
-    },{
+    }, {
       "name": "Penalty",
       "time_before": 10,
       "time_after": 30,
@@ -78,7 +78,7 @@ angular.module('main.controller', []).controller('MainCtrl', function($rootScope
       "start_counter": false,
       "generate_playback_video": true
     }];
-		$rootScope.defaultEvents = $rootScope.data.event_types;
+    $rootScope.defaultEvents = $rootScope.data.event_types;
     localStorage.team1 = JSON.stringify($rootScope.data.team1);
     localStorage.recordings = JSON.stringify($rootScope.data.recordings);
     localStorage.team2 = JSON.stringify($rootScope.data.team2);
@@ -90,7 +90,7 @@ angular.module('main.controller', []).controller('MainCtrl', function($rootScope
     localStorage.event_after = $rootScope.data.event_after;
     localStorage.event_before = $rootScope.data.event_before;
     localStorage.player_picker = $rootScope.data.player_picker;
-		localStorage.live_view = $rootScope.data.live_view;
+    localStorage.live_view = $rootScope.data.live_view;
     localStorage.facebook_share = $rootScope.data.facebook_share;
   } else {
     $rootScope.data = {};
@@ -105,9 +105,16 @@ angular.module('main.controller', []).controller('MainCtrl', function($rootScope
     $rootScope.data.team2 = JSON.parse(localStorage.team2);
     $rootScope.data.event_types = JSON.parse(localStorage.event_types);
     $rootScope.data.player_picker = JSON.parse(localStorage.player_picker);
-		$rootScope.data.live_view = JSON.parse(localStorage.live_view);
+    $rootScope.data.live_view = JSON.parse(localStorage.live_view);
     $rootScope.data.recordings = JSON.parse(localStorage.recordings);
   }
+
+	//Setting for One team view
+  if (localStorage.one_team_view == undefined || localStorage.one_team_view == null || localStorage.one_team_view == "") {
+    localStorage.one_team_view = false;
+  }
+  $rootScope.data.one_team_view = JSON.parse(localStorage.one_team_view);
+
   $scope.logout = function() {
     $rootScope.user = {};
     localStorage.user = "";

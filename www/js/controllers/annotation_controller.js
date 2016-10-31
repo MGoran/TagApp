@@ -531,11 +531,15 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
       });
     }
   }
+	$scope.calculateHeight = function(){
+	//	console.log($(".view-container")[0].height())
+		return $(".view-container").height() - $(".header-buttons").height() - 50 + "px";
+	}
   $scope.event_type_rows = function() {
     //console.log($scope.data.event_types);
     var n = Math.round(($scope.data.event_types.length - 3) / 2);
     //console.log(n)
-    return new Array(n)
+    return new Array(n*2)
   }
   $scope.undoLast = function(array, index) {
     var deleted_event = array.splice(index, 1)[0];

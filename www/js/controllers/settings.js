@@ -20,6 +20,7 @@ angular.module('settings.controller', []).controller('SettingsCtrl', function($s
 		localStorage.player_picker = $rootScope.data.player_picker;
 		localStorage.facebook_share = $rootScope.data.facebook_share;
 		localStorage.live_view = $rootScope.data.live_view;
+		localStorage.one_team_view = $rootScope.data.one_team_view;
     var alertPopup = $ionicPopup.alert({
       title: 'Success',
       template: "New Settings saved"
