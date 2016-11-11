@@ -1,5 +1,14 @@
 "# TagApp"
+0.1.14
+-Changes in single team tagging - include latest event list
+-Tagging without recorder feature
+-Fixing missing events for first/second time, and missing times for those events
+-Fixing Undo function where there is event for first/second half
+-Bugfixes and improvements
+
+"# TagApp"
 0.1.13
+-Single team tagging
 
 "# TagApp"
 0.1.12

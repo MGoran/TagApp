@@ -147,8 +147,27 @@
 								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[3], data.team1, 2)">{{data.event_types[3].name}}</button>
 							</div>
 						</div>
+						<div class="row">
+							<div class="col col-20">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[4], data.team1, 1)">{{data.event_types[4].name}}</button>
+							</div>
+							<div class="col col-20">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[5], data.team1, 2)">{{data.event_types[5].name}}</button>
+							</div>
+							<div class="col col-20">
+								<ul ng-if="recorder.recording" class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular" style="width:auto;text-align: left;">
+									<li ng-repeat="annotation in data.currentProject.annotations | limitTo:-3" class="gm-leatest-events-list color-{{annotation.team.color}}"><span class="time">{{annotation.event.duration_after - annotation.event.time_after  | date:"mm:ss"}}</span> <span class="event">{{annotation.event.name}}</span></li>
+								</ul>
+							</div>
+							<div class="col col-20">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[6], data.team1, 2)">{{data.event_types[6].name}}</button>
+							</div>
+							<div class="col col-20">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[7], data.team1, 2)">{{data.event_types[7].name}}</button>
+							</div>
+						</div>
 						<div class="other_events">
-							<div ng-repeat="events in data.event_types track by $index" class="row" ng-if="$index % 4 == 0 && $index>3">
+							<div ng-repeat="events in data.event_types track by $index" class="row" ng-if="$index % 4 == 0 && $index>7">
 								<div class="col col-25" ng-if="data.event_types.length > $index">
 									<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[$index],data.team1, 1)">{{data.event_types[$index].name}}</button>
 								</div>

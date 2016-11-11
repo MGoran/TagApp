@@ -33,8 +33,10 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
   }
   $scope.$on("$ionicView.enter", function(event, data) {
     console.log($rootScope.selectedCam);
-    $scope.getCameraView();
-    $scope.recorder = {};
+    if ($rootScope.selectedCam.recorderType !== "WithoutRecorder") {
+      $scope.getCameraView();
+      $scope.recorder = {};
+    }
     $scope.getRecorderState();
     $scope.blinkingColor = "white";
     $interval(function() {
@@ -150,6 +152,10 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
 
   $scope.getRecorderState = function() {
     $scope.getCameraView();
+    if ($rootScope.selectedCam.recorderType === "WithoutRecorder") {
+      $rootScope.recorder = $scope.recorder;
+      return false;
+    }
     var promise = recorderControll.getRecorderState($rootScope.selectedCam);
     promise.then(function(response) {
       if ($rootScope.selectedCam.recorderType === "vMix") {
@@ -198,8 +204,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
    * @return {[type]} [description]
    */
   $scope.toggleRecorder = function() {
-    // $scope.stopRecorder();
-    // return false();
+
     if (!$scope.recorder.recording) {
       $scope.startRecorder();
     } else {
@@ -218,7 +223,6 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
         console.log($rootScope.data.recordings)
         localStorage.recordings = JSON.stringify($rootScope.data.recordings);
       }
-
       var firstHalfEnd = $filter('filter')($rootScope.data.recordings[localStorage.lastRecordedVideo].annotations, {
         event: {
           name: "End 1st Half"
@@ -234,45 +238,67 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
           event: {
             name: "End 1st Half",
             start: $scope.timerCurrentTime,
-            end: $scope.timerCurrentTime
+            end: $scope.timerCurrentTime,
+						time_after:  $scope.timerCurrentTime,
+						duration_after:  $scope.timerCurrentTime * 2
           },
           camera: $rootScope.selectedCam,
         }
         console.log(annotation);
-        var promise = recorderControll.addEvent(annotation, $rootScope.selectedCam);
-        promise.then(function(response) {
-          console.log(response);
-          annotation.id = response.data.id
-          $rootScope.data.recordings = JSON.parse(localStorage.recordings)
+        if ($rootScope.selectedCam.recorderType === "WithoutRecorder") {
+          $rootScope.data.recordings = JSON.parse(localStorage.recordings);
+          annotation.id = $rootScope.data.recordings[localStorage.lastRecordedVideo].annotations.length + 1;
           console.log($rootScope.data.recordings)
           $rootScope.data.recordings[localStorage.lastRecordedVideo].annotations.push(annotation);
           $scope.data.currentProject = $rootScope.data.recordings[localStorage.lastRecordedVideo];
           localStorage.recordings = JSON.stringify($rootScope.data.recordings);
-        }, function(error) {
-          alert(error.data.error);
-        })
+        } else {
+          var promise = recorderControll.addEvent(annotation, $rootScope.selectedCam);
+          promise.then(function(response) {
+            console.log(response);
+            annotation.id = response.data.id
+            $rootScope.data.recordings = JSON.parse(localStorage.recordings)
+            console.log($rootScope.data.recordings)
+            $rootScope.data.recordings[localStorage.lastRecordedVideo].annotations.push(annotation);
+            $scope.data.currentProject = $rootScope.data.recordings[localStorage.lastRecordedVideo];
+            localStorage.recordings = JSON.stringify($rootScope.data.recordings);
+          }, function(error) {
+            alert(error.data.error);
+          })
+        }
       } else if (secondHalfStart.length <= 0) {
         var annotation = {
           event: {
             name: "Start 2nd Half",
             start: $scope.timerCurrentTime,
-            end: $scope.timerCurrentTime
+            end: $scope.timerCurrentTime,
+						time_after:  $scope.timerCurrentTime,
+						duration_after:  $scope.timerCurrentTime * 2
           },
           camera: $rootScope.selectedCam,
         }
         console.log(annotation);
-        var promise = recorderControll.addEvent(annotation, $rootScope.selectedCam);
-        promise.then(function(response) {
-          console.log(response);
-          annotation.id = response.data.id
-          $rootScope.data.recordings = JSON.parse(localStorage.recordings)
+        if ($rootScope.selectedCam.recorderType === "WithoutRecorder") {
+          $rootScope.data.recordings = JSON.parse(localStorage.recordings);
+          annotation.id = $rootScope.data.recordings[localStorage.lastRecordedVideo].annotations.length + 1;
           console.log($rootScope.data.recordings)
           $rootScope.data.recordings[localStorage.lastRecordedVideo].annotations.push(annotation);
           $scope.data.currentProject = $rootScope.data.recordings[localStorage.lastRecordedVideo];
           localStorage.recordings = JSON.stringify($rootScope.data.recordings);
-        }, function(error) {
-          alert(error.data.error);
-        })
+        } else {
+          var promise = recorderControll.addEvent(annotation, $rootScope.selectedCam);
+          promise.then(function(response) {
+            console.log(response);
+            annotation.id = response.data.id
+            $rootScope.data.recordings = JSON.parse(localStorage.recordings)
+            console.log($rootScope.data.recordings)
+            $rootScope.data.recordings[localStorage.lastRecordedVideo].annotations.push(annotation);
+            $scope.data.currentProject = $rootScope.data.recordings[localStorage.lastRecordedVideo];
+            localStorage.recordings = JSON.stringify($rootScope.data.recordings);
+          }, function(error) {
+            alert(error.data.error);
+          })
+        }
       } else {
         //END MATCH
         console.log("END MATCH")
@@ -332,6 +358,30 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
   }
 
   $scope.startRecorder = function() {
+    if ($rootScope.selectedCam.recorderType === "WithoutRecorder") {
+      var date = $filter("date")(new Date(), "dd MMMM yyyy - hh-mm a");
+      var filename = "capture - " + date;
+      if ($rootScope.data.recordings[filename] === undefined) {
+        console.log("NEW RECORDING");
+
+        localStorage.lastRecordedVideo = filename;
+        console.log(date);
+        $rootScope.data.recordings[filename] = {
+          annotations: [],
+          recording_id: "WithoutRecorder",
+          period: 1,
+          team1: JSON.parse(localStorage.team1),
+          team2: JSON.parse(localStorage.team2)
+        }
+
+        $scope.data.currentProject = $rootScope.data.recordings[localStorage.lastRecordedVideo];
+        console.log($rootScope.data.recordings)
+        localStorage.recordings = JSON.stringify($rootScope.data.recordings);
+      }
+      $scope.recorder.recording = true;
+      $scope.recorder.time = new Date().getTime();
+      return false;
+    }
     $scope.showLoading();
     var promise = recorderControll.startRecorder($rootScope.selectedCam);
     promise.then(function(response) {
@@ -381,6 +431,11 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
   }
 
   $scope.stopRecorder = function() {
+    if ($rootScope.selectedCam.recorderType === "WithoutRecorder") {
+      $scope.recorder.recording = false;
+      $scope.sendRecordingXML();
+      return false;
+    }
     $scope.showLoading();
     var promise = recorderControll.stopRecorder($rootScope.selectedCam);
     promise.then(function(response) {
@@ -482,8 +537,8 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
       }
       $rootScope.data.recordings[localStorage.lastRecordedVideo].annotations.push(annotation);
       localStorage.recordings = JSON.stringify($rootScope.data.recordings);
-    } else if ($rootScope.selectedCam.recorderType === "Panofield") {
-      $scope.showLoading();
+    } else if ($rootScope.selectedCam.recorderType === "Panofield" || $rootScope.selectedCam.recorderType === "WithoutRecorder") {
+
       console.log($scope.recorder);
       var annotation = {
         team: team,
@@ -495,51 +550,58 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
         camera: $rootScope.selectedCam,
       }
       console.log("Annotation: ", annotation);
-      var promise = recorderControll.addEvent(annotation, $rootScope.selectedCam);
-      promise.then(function(response) {
-        console.log(response);
-        annotation.id = response.data.id
-        var event_id = response.data.id;
-        $scope.data.lastEvent = event_id;
-        var recording_id = response.data.recording_id;
-        var data = {
-          recording_id: recording_id,
-          event_id: event_id,
-          file_name: "" + event.name + "-Evt-" + recording_id + "-Rec-" + team.name + "-Team-" + response.data.time
-        }
-        var event_time = response.data.time;
-        var exp_promise = recorderControll.queueExport($rootScope.selectedCam, data);
-        exp_promise.then(function(response) {
-          annotation.file_name = data.file_name;
-          $rootScope.data.recordings = JSON.parse(localStorage.recordings)
-          console.log($rootScope.data.recordings)
-          $rootScope.data.recordings[localStorage.lastRecordedVideo].annotations.push(annotation);
-          $scope.data.currentProject = $rootScope.data.recordings[localStorage.lastRecordedVideo];
-          localStorage.recordings = JSON.stringify($rootScope.data.recordings);
-          $scope.hideLoading();
-          $scope.getTeamScores();
+      if ($rootScope.selectedCam.recorderType === "WithoutRecorder") {
+        $rootScope.data.recordings = JSON.parse(localStorage.recordings);
+        $rootScope.data.recordings[localStorage.lastRecordedVideo].annotations.push(annotation);
+        $scope.data.currentProject = $rootScope.data.recordings[localStorage.lastRecordedVideo];
+        localStorage.recordings = JSON.stringify($rootScope.data.recordings);
+      } else {
+        $scope.showLoading();
+        var promise = recorderControll.addEvent(annotation, $rootScope.selectedCam);
+        promise.then(function(response) {
+          console.log(response);
+          annotation.id = response.data.id
+          var event_id = response.data.id;
+          $scope.data.lastEvent = event_id;
+          var recording_id = response.data.recording_id;
+          var data = {
+            recording_id: recording_id,
+            event_id: event_id,
+            file_name: "" + event.name + "-Evt-" + recording_id + "-Rec-" + team.name + "-Team-" + response.data.time
+          }
+          var event_time = response.data.time;
+          var exp_promise = recorderControll.queueExport($rootScope.selectedCam, data);
+          exp_promise.then(function(response) {
+            annotation.file_name = data.file_name;
+            $rootScope.data.recordings = JSON.parse(localStorage.recordings)
+            console.log($rootScope.data.recordings)
+            $rootScope.data.recordings[localStorage.lastRecordedVideo].annotations.push(annotation);
+            $scope.data.currentProject = $rootScope.data.recordings[localStorage.lastRecordedVideo];
+            localStorage.recordings = JSON.stringify($rootScope.data.recordings);
+            $scope.hideLoading();
+            $scope.getTeamScores();
+          }, function(error) {
+            console.log(error);
+            if (error.data)
+              alert(error.data.error);
+            $scope.hideLoading();
+          })
         }, function(error) {
-          console.log(error);
-          if (error.data)
-            alert(error.data.error);
+          console.log(error)
           $scope.hideLoading();
-        })
-      }, function(error) {
-        console.log(error)
-        $scope.hideLoading();
-        alert(error.data.error)
-      });
+          alert(error.data.error)
+        });
+      }
     }
   }
-	$scope.calculateHeight = function(){
-	//	console.log($(".view-container")[0].height())
-		return $(".view-container").height() - $(".header-buttons").height() - 50 + "px";
-	}
+  $scope.calculateHeight = function() {
+    return $(".view-container").height() - $(".header-buttons").height() - 50 + "px";
+  }
   $scope.event_type_rows = function() {
     //console.log($scope.data.event_types);
     var n = Math.round(($scope.data.event_types.length - 3) / 2);
     //console.log(n)
-    return new Array(n*2)
+    return new Array(n * 2)
   }
   $scope.undoLast = function(array, index) {
     var deleted_event = array.splice(index, 1)[0];
@@ -547,12 +609,14 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     localStorage.recordings = JSON.stringify($rootScope.data.recordings);
     $scope.getTeamScores();
     console.log(deleted_event);
-    var promise = recorderControll.deleteEvent(deleted_event, $rootScope.selectedCam);
-    promise.then(function(result) {
-      console.log("event deleted", result)
-    }, function(error) {
-      console.log(error);
-    })
+    if ($rootScope.selectedCam.recorderType !== "WithoutRecorder") {
+      var promise = recorderControll.deleteEvent(deleted_event, $rootScope.selectedCam);
+      promise.then(function(result) {
+        console.log("event deleted", result)
+      }, function(error) {
+        console.log(error);
+      })
+    }
   }
   $scope.removeEvent = function(array, index) {
     console.log(array.length);
@@ -563,12 +627,14 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     localStorage.recordings = JSON.stringify($rootScope.data.recordings);
     $scope.getTeamScores();
     console.log(deleted_event);
-    var promise = recorderControll.deleteEvent(deleted_event, $rootScope.selectedCam);
-    promise.then(function(result) {
-      console.log("event deleted", result)
-    }, function(error) {
-      console.log(error);
-    })
+    if ($rootScope.selectedCam.recorderType !== "WithoutRecorder") {
+      var promise = recorderControll.deleteEvent(deleted_event, $rootScope.selectedCam);
+      promise.then(function(result) {
+        console.log("event deleted", result)
+      }, function(error) {
+        console.log(error);
+      })
+    }
   }
 
   $scope.sendRecordingXML = function() {
