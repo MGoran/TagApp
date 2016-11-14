@@ -239,8 +239,8 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
             name: "End 1st Half",
             start: $scope.timerCurrentTime,
             end: $scope.timerCurrentTime,
-						time_after:  $scope.timerCurrentTime,
-						duration_after:  $scope.timerCurrentTime * 2
+            time_after: $scope.timerCurrentTime,
+            duration_after: $scope.timerCurrentTime * 2
           },
           camera: $rootScope.selectedCam,
         }
@@ -272,8 +272,8 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
             name: "Start 2nd Half",
             start: $scope.timerCurrentTime,
             end: $scope.timerCurrentTime,
-						time_after:  $scope.timerCurrentTime,
-						duration_after:  $scope.timerCurrentTime * 2
+            time_after: $scope.timerCurrentTime,
+            duration_after: $scope.timerCurrentTime * 2
           },
           camera: $rootScope.selectedCam,
         }
@@ -638,6 +638,10 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
   }
 
   $scope.sendRecordingXML = function() {
+    if (!$rootScope.data.send_xml) {
+      return false;
+    }
+		console.log("Send XML");
     var annotations = $rootScope.data.recordings[localStorage.lastRecordedVideo].annotations;
     if (annotations.length === 0) return false;
     var camera = annotations[0].camera;
@@ -677,7 +681,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     xml += "	</annotations>";
     xml += '</recording>';
     console.log(xml);
-    return false;
+    //return false;
     var filename = localStorage.lastRecordedVideo.replace(/\s+/g, '') + ".xml";
 
     // window.resolveLocalFileSystemURL($scope.directory, function(directoryEntry) {

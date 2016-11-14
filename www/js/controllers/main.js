@@ -115,6 +115,12 @@ angular.module('main.controller', []).controller('MainCtrl', function($rootScope
   }
   $rootScope.data.one_team_view = JSON.parse(localStorage.one_team_view);
 
+	//Setting for sending xml
+	if (localStorage.send_xml == undefined || localStorage.send_xml == null || localStorage.send_xml == "") {
+    localStorage.send_xml = true;
+  }
+  $rootScope.data.send_xml = JSON.parse(localStorage.one_team_view);
+
   $scope.logout = function() {
     $rootScope.user = {};
     localStorage.user = "";
