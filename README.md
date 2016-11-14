@@ -2,7 +2,7 @@
 0.1.15
 -Fixing bug with one team tagging when event is added for wrong team
 -Fixing sending XML when tagging without recorder
--Disable XML disabling trough settings
+-Disable XML sending trough settings
 
 "# TagApp"
 0.1.14
