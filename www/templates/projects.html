@@ -1,0 +1,9 @@
+<ion-view view-title="Projects">
+	<ion-content padding="true">
+		<ion-list>
+			<ion-item ng-repeat="(key, value) in projects" ui-sref="app.view_project({id: $index})">
+				{{value.team1.name}} - {{value.team2.name}} [{{key.replace("capture - ","")}}]
+			</ion-item>
+		</ion-list>
+	</ion-content>
+</ion-view>

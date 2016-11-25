@@ -5,6 +5,9 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     if (!$rootScope.isUser()) {
       $state.go('login')
     }
+
+    $scope.filterEventTypes();
+
     if (ionic.Platform.isIOS()) {
       $scope.directory = cordova.file.documentsDirectory;
     } else {
@@ -13,12 +16,23 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     console.log($scope.directory);
     $scope.showPlaybackVideoModal = false;
     $scope.showPlaybackListModal = false;
+    $scope.data.score1 = 0;
+    $scope.data.score2 = 0;
   });
   $interval(function() {
     if ($scope.showPlaybackListModal) $scope.getExportQueue(true);
   }, 5000);
 
-
+  /**
+   * [filterEventTypes - Filters unwanted event types from recorder]
+   * @return {[type]} [description]
+   */
+  $scope.filterEventTypes = function() {
+    $scope.data.event_types = $filter("filter")($scope.data.event_types, function(evt){
+			console.log(evt.name)
+			return evt.name !== "Goal" && evt.name !== "Begin" && evt.name !== "End"
+		})
+  }
 
   $scope.getCameraView = function() {
     if ($rootScope.selectedCam.cameraType === "Axis") {
@@ -70,7 +84,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
 
   $scope.getTeamScores = function() {
     console.log($rootScope.data.recordings[localStorage.lastRecordedVideo]);
-    if ($rootScope.data.recordings[localStorage.lastRecordedVideo] !== undefined) {
+    if ($rootScope.data.recordings[localStorage.lastRecordedVideo] !== undefined && $scope.recorder && $scope.recorder.recording) {
       $scope.data.score1 = $filter('filter')($rootScope.data.recordings[localStorage.lastRecordedVideo].annotations, function(value) {
         if (value.team !== undefined) {
           return value.team.id === 1 && value.event.name === 'Goal';
@@ -192,6 +206,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
       $scope.getPeriodCmdLabel();
       if ($scope.recorder.recording) {
         $scope.data.currentProject = $rootScope.data.recordings[localStorage.lastRecordedVideo];
+        $scope.data.currentProject.recording_id = response.data.recording_id;
       }
       console.log($scope.recorder);
     }, function(error) {
@@ -399,9 +414,10 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
 
           localStorage.lastRecordedVideo = filename;
           console.log(date);
+          console.log($scope.recorder);
           $rootScope.data.recordings[filename] = {
             annotations: [],
-            recording_id: response.data.recording_id,
+            recording_id: $scope.recorder.recording_id,
             period: 1,
             team1: JSON.parse(localStorage.team1),
             team2: JSON.parse(localStorage.team2)
@@ -455,7 +471,19 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     $scope.timerCurrentTime = args.millis;
   });
 
+	$scope.goal = function(team, team_id){
+		var event = {
+			generate_playback_video:true,
+			icon: "ion-ios-football",
+			name:"Goal",
+			start_counter:false,
+			time_after:10,
+			time_before:10
+		}
+		$scope.addEvent(event, team, team_id);
+	}
   $scope.addEvent = function(event, team, team_id) {
+		console.log(event);
     team.team_id = team_id;
     if (!$scope.recorder.recording) return false;
     $scope.selection = {};
@@ -474,13 +502,15 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
 
   $scope.selectPlayer = function(event, team) {
     var html = "";
+    $scope.selectedEvent = event;
+    $scope.teamSelected = team;
     html += '<ion-list>';
     console.log(team);
     angular.forEach(team.players, function(player) {
-      html += ' <ion-radio ng-model="selection.player" ng-value="' + player.id + '">#' + player.number + ' - ' + player.name + '</ion-radio>';
+      html += ' <ion-radio ng-model="selection.player" ng-click="playerSelected(selection, teamSelected, selectedEvent)" ng-value="' + player.id + '">#' + player.number + ' - ' + player.name + '</ion-radio>';
     })
     html += '</ion-list>'
-    var myPopup = $ionicPopup.show({
+    $scope.myPopup = $ionicPopup.show({
       template: html,
       title: 'Select player',
       subTitle: 'Not required',
@@ -493,9 +523,10 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
         }
       }]
     });
-    myPopup.then(function(res) {
+    $scope.myPopup.then(function(res) {
       console.log(res);
       var player = null;
+      if (res === undefined) return false;
       if (res.player !== undefined) {
         var player = $filter("filter")(team.players, {
           id: res.player
@@ -505,6 +536,18 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
 
     })
   };
+
+  $scope.playerSelected = function(res, team, event) {
+    var player = null;
+    if (res.player !== undefined) {
+      var player = $filter("filter")(team.players, {
+        id: res.player
+      })[0];
+    }
+    $scope.addEventToList(event, team, player);
+    var popup = $scope.myPopup;
+    popup.close();
+  }
 
   $scope.addEventToList = function(event, team, player) {
     $rootScope.data.recordings = JSON.parse(localStorage.recordings);
@@ -526,6 +569,9 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
       console.log($rootScope.data.recordings)
       localStorage.recordings = JSON.stringify($rootScope.data.recordings);
     }
+    $scope.data.currentProject.recording_id = $scope.recorder.recording_id;
+    $rootScope.data.recordings[localStorage.lastRecordedVideo].recording_id = $scope.recorder.recording_id;
+    localStorage.recordings = JSON.stringify($rootScope.data.recordings);
     if ($rootScope.selectedCam.recorderType === "vMix") {
       var annotation = {
         team: team,
@@ -641,7 +687,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     if (!$rootScope.data.send_xml) {
       return false;
     }
-		console.log("Send XML");
+    console.log("Send XML");
     var annotations = $rootScope.data.recordings[localStorage.lastRecordedVideo].annotations;
     if (annotations.length === 0) return false;
     var camera = annotations[0].camera;
@@ -669,14 +715,6 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
         xml += "  <player number='" + a.player.number + "'>" + a.player.name + "</player>";
       }
       xml += "</annotation>";
-      // xml += "	<annotation>";
-      // if (a.team !== undefined)
-      //   xml += "		<team>" + a.team.name + "</team>";
-      // if (a.player !== null && a.player !== undefined) {
-      //   xml += "  <player number='" + a.player.number + "'>" + a.player.name + "</player>";
-      // }
-      // xml += "		<event start='" + a.start + "' end='" + a.end + "'>" + a.event.name + "</event>";
-      // xml += "  </annotation>";
     });
     xml += "	</annotations>";
     xml += '</recording>';
@@ -684,18 +722,6 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     //return false;
     var filename = localStorage.lastRecordedVideo.replace(/\s+/g, '') + ".xml";
 
-    // window.resolveLocalFileSystemURL($scope.directory, function(directoryEntry) {
-    //   directoryEntry.getFile(filename, {
-    //     create: true
-    //   }, function(fileEntry) {
-    //     fileEntry.createWriter(function(fileWriter) {
-    //       fileWriter.onwriteend = function(e) {
-    //         //for real - world usage, you might consider passing a success callback
-    //         console.log('Write of file "' + $scope.directory + filename + '"" completed.');
-    // 				console.log(fileEntry);
-    //         var filePath = $scope.directory + filename;
-    //         //var filePath = fileEntry.nativeURL;
-    //       	//  var filePath = $scope.directory + filename;
     $cordovaEmailComposer.isAvailable().then(function() {
       var email = {
         to: $rootScope.data.email_to,
@@ -713,22 +739,6 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     }, function() {
       alert("Email service not available")
     });
-    //       };
-    //
-    //       fileWriter.onerror = function(e) {
-    //         // you could hook this up with our global error handler, or pass in an error callback
-    //         alert('Write failed: ' + e.toString());
-    //
-    //       };
-    //
-    //       var blob = new Blob([xml], {
-    //         type: 'text/xml'
-    //       });
-    //       fileWriter.write(blob);
-    //     }, errorHandler.bind(null, filename));
-    //   }, errorHandler.bind(null, filename));
-    // }, errorHandler.bind(null, filename));
-
   }
   $scope.stringToBool = function(value) {
     if (value.toLowerCase() === "true") return true;
@@ -794,44 +804,14 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     }
     return false;
   }
-  $scope.startPlayback = function(targetPath) {
+  $scope.startPlayback = function(targetPath, skipDecode) {
     $scope.showPlaybackVideoModal = true;
     //video_src = "videos/example2.mp4"
-    targetPath = decodeURI(targetPath);
+    if (!skipDecode)
+      targetPath = decodeURI(targetPath);
     console.log(targetPath);
     $scope.targetPath = targetPath;
     document.getElementById("playbackVideoPlayer").innerHTML = "<video width='100%' height='auto' controls autoplay src=" + targetPath + ">Your browser does not support video</video>";
-    // flowplayer("#flowplayer", {
-    //   splash: true,
-    //   embed: false,
-    //   ratio: 9 / 16,
-    //   clip: {
-    //     live: true,
-    //     sources: [{
-    //       type: "video/mp4",
-    //       src: targetPath
-    //     }]
-    //   }
-    //
-    // });
-    // $scope.config = {
-    //   preload: "auto",
-    //   autoPlay: false,
-    //   sources: [{
-    //     // src: $sce.trustAsResourceUrl(targetPath),
-    //     src: targetPath,
-    //     type: "video/mp4"
-    //   }],
-    //   theme: {
-    //     url: "http://www.videogular.com/styles/themes/default/latest/videogular.css"
-    //   },
-    //   plugins: {
-    //     controls: {
-    //       autoHide: false,
-    //       autoHideTime: 3000
-    //     }
-    //   }
-    // };
   }
 
   $scope.showPlaybackVideo = function(video) {
@@ -876,6 +856,12 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     });
   }
 
+  $scope.playPlaybackVideo = function(video) {
+    var video_src = encodeURI("http://" + $rootScope.selectedCam.recorderIP + "/download/" + $scope.recorder.recordingDetails.directory + "/Export/" + video.file_name);
+    console.log(video_src);
+    $scope.startPlayback(video_src, true);
+  }
+
   $scope.getRecordingDetails = function() {
     $scope.showLoading();
     var promise = recorderControll.getDetailsOfRecording($rootScope.selectedCam, $scope.recorder.recording_id);
@@ -884,6 +870,9 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
         $scope.data.playbackList = response.data.export;
         $scope.recorder.recordingDetails = response.data;
         $scope.hideLoading();
+				$scope.data.currentProject.recordingDetails = response.data;
+				$rootScope.data.recordings[localStorage.lastRecordedVideo].recordingDetails = response.data;
+				localStorage.recordings = JSON.stringify($rootScope.data.recordings);
       },
       function(error) {
         console.log(error);

@@ -1,0 +1,23 @@
+<ion-view view-title="{{title}}">
+	<ion-content padding="true">
+		<div class="list card">
+
+			<div class="item">
+				<!-- <img src="mcfly.jpg"> -->
+				<h2>{{project.team1.name}} ({{project.score1}}) - ({{project.score2}}) {{project.team2.name}}</h2>
+				<p>{{projectName.replace("capture - ","")}}</p>
+			</div>
+
+			<div class="item item-body">
+				<ion-list>
+					<ion-item ng-repeat="a in project.annotations">
+						{{a.event.duration_after - a.event.time_after | date: "mm:ss"}} - {{a.team.name}} - {{a.event.name}}
+					</ion-item>
+				</ion-list>
+			</div>
+			<button class="button button-full button-positive" ng-click="sendXml(project)">
+  			Send project on email (XML)
+			</button>
+			</div>
+	</ion-content>
+</ion-view>

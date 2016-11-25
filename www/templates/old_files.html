@@ -1,0 +1,25 @@
+<ion-view view-title="Downloaded Files">
+	<ion-content padding="true">
+		<ion-list>
+			<ion-item ng-repeat="f in files" class="item-button-right">
+				{{f.name}}
+				<div class="buttons">
+					<button class="button button-positive" ng-click="startPlayback(f)">
+            <i class="icon icon ion-play"></i>
+          </button>
+					<button class="button button-assertive" ng-click="deleteFile(f)">
+            <i class="icon icon ion-trash-a"></i>
+          </button>
+				</div>
+			</ion-item>
+		</ion-list>
+		<div class="panel panel-modal playback-modal" ng-class="(showPlaybackVideoModal) ? 'slide-up' : 'slide-down'" id="playback-video-modal" ng-hide="!showPlaybackVideoModal" style="width: 80%;left: 10%;height: 98%;top:0;">
+			<ion-header-bar class="bar bar-header bar-positive">
+				<button class="button button-clear button-primary" ng-click="hidePlaybackVideo()">Close</button>
+			</ion-header-bar>
+			<ion-content padding="false">
+				<div id="oldPlaybackVideoPlayer" style="width:100%;height:100%"></div>
+			</ion-content>
+		</div>
+	</ion-content>
+</ion-view>

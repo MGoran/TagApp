@@ -14,7 +14,9 @@ angular.module('TagApp', [
   'dahua.controller',
   'axis.controller',
   'settings.controller',
+  'projects.controller',
   'eventTypes.controller',
+  'oldFiles.controller',
   'teams.controller',
   'recorder.service',
   'cameraMovement.service',
@@ -96,13 +98,39 @@ angular.module('TagApp', [
           }
         }
 
-      })
-      .state('app.settings', {
+      }).state('app.settings', {
         url: '/settings',
         views: {
           'menuContent': {
             templateUrl: 'templates/settings.html',
             controller: 'SettingsCtrl'
+          }
+        }
+
+      }).state('app.old_files', {
+        url: '/old_files',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/old_files.html',
+            controller: 'OldFilesCtrl'
+          }
+        }
+
+      }).state('app.projects', {
+        url: '/projects',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/projects.html',
+            controller: 'ProjectsCtrl'
+          }
+        }
+
+      }).state('app.view_project', {
+        url: '/view_project/{id}',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/view_project.html',
+            controller: 'ProjectsCtrl'
           }
         }
 

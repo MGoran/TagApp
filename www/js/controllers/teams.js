@@ -55,6 +55,7 @@ angular.module('teams.controller', []).controller('TeamsCtrl', function($rootSco
       $rootScope.data.team2 = JSON.parse(localStorage.team2);
       console.log($rootScope.data)
       if ($scope.selectedIndex === 1) {
+				if($rootScope.data.team1.players === undefined) $rootScope.data.team1.players = [];
         $rootScope.data.team1.players.push({
           "id": $rootScope.data.team1.players.length,
           "number": res.number,
@@ -62,6 +63,7 @@ angular.module('teams.controller', []).controller('TeamsCtrl', function($rootSco
         });
         $scope.selectedTeam = $rootScope.data.team1;
       } else {
+				if($rootScope.data.team2.players === undefined) $rootScope.data.team2.players = [];
         $rootScope.data.team2.players.push({
           "id": $rootScope.data.team1.players.length,
           "number": res.number,

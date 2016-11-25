@@ -1,4 +1,17 @@
 "# TagApp"
+0.1.16
+-Fixing adding player function
+-Player picker please just with one click and no continue button, because now you need to click two times
+-Project overview
+-Sending XML in project overview
+-Fixed scoreboard at top
+-Filter unwanted event types from recorder
+-Save download directory info for project
+-Keyboard hiding input field fix
+-Continue with tagging while downloading playback
+-Deletion and Playing of old video
+
+"# TagApp"
 0.1.15
 -Fixing bug with one team tagging when event is added for wrong team
 -Fixing sending XML when tagging without recorder

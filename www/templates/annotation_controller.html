@@ -13,15 +13,22 @@
 						<button ng-if="selectedCam.recorderType==='Panofield'" class="button gm-button gm-button-black no-bg" ng-click="showPlaybackList()">Playback</button>
 					</div>
 					<div class="col col-10">
-
+						<button class="button gm-button gm-big-button gm-button-yellow no-bg" ng-click="goal(data.team1, 1)">Goal</button>
 					</div>
 					<div class="col col-15">
-						<button class="button gm-button gm-button-red gm-no-border gm-md-font  no-bg">{{data.periodLabel}}</button>
+						<span class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular gm-large-font"><b >{{data.score1}}</b>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;<b>{{data.score2}}</b></span>
 					</div>
-					<div class="col col-20" style="background:none">
+					<div class="col col-10">
+						<button class="button gm-button gm-big-button gm-button-blue text-blue no-bg "  ng-click="goal(data.team2, 2)">Goal</button>
+					</div>
+					<!-- <div class="col col-15">
+
+					<button class="button gm-button gm-button-red gm-no-border gm-md-font  no-bg">{{data.periodLabel}}</button>
+					</div> -->
+					<div class="col col-5" style="background:none">
 
 					</div>
-					<div class="col col-15">
+					<div class="col col-20">
 						<button ng-click="toggleRecorder()" class="button gm-button gm-button-red gm-no-border gm-md-font gm-button-regular no-bg">{{data.periodCmdLabel}}</button>
 					</div>
 				</div>
@@ -75,7 +82,7 @@
 								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[0], data.team1, 1)">{{data.event_types[0].name}}</button>
 							</div>
 							<div class="col col-20">
-								<span class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular gm-large-font"><b>{{data.score1}}</b>&nbsp;&nbsp;&nbsp; <span>{{data.team1.name}}</span></span>
+								<span class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular gm-large-font"><b></b>&nbsp;&nbsp;&nbsp; <span>{{data.team1.name}}</span></span>
 							</div>
 							<div class="col col-20">
 								<span ng-click="toggleRecorder()" class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular gm-huge-font">
@@ -84,7 +91,7 @@
 								</span>
 							</div>
 							<div class="col col-20">
-								<span class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular gm-large-font"><span >{{data.team2.name}}</span>&nbsp;&nbsp;&nbsp;<b>{{data.score2}}</b></span>
+								<span class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular gm-large-font"><span >{{data.team2.name}}</span>&nbsp;&nbsp;&nbsp;<b></b></span>
 							</div>
 							<div class="col col-20">
 								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[0], data.team2, 2)">{{data.event_types[0].name}}</button>
@@ -186,7 +193,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="panel panel-modal" ng-class="(showPlaybackListModal) ? 'slide-up' : 'slide-down'" id="playback-list-modal" ng-hide="!showPlaybackListModal" style="opacity:{{data.vc_transparency/100}}">
+		<div class="panel panel-modal" ng-class="(showPlaybackListModal) ? 'slide-up' : 'slide-down'" id="playback-list-modal" ng-hide="!showPlaybackListModal" style="opacity:{{data.vc_transparency/100}}; height:80% !important;">
 			<div ng-if="!data.downloadingPlayback">
 				<ion-list class="limit-child-height gm-list">
 					<span class="item event-list" ng-repeat="video in data.videos | orderBy: '-id'" ng-if="video.event_details.id !== undefined">
@@ -200,20 +207,21 @@
 						<ion-spinner></ion-spinner>
 					</button>
 					<span ng-if="video.state === 'Finished'">
-							<button ng-click="showPlaybackVideo(video)" class="button button-outline button-balanced icon ion-ios-download" ng-if="!fileExists[$index] && video.state === 'Finished'" style="width:15%;border-radius:0;float:left;z-index: 9999;"></button>
-							<button ng-click="showPlaybackVideo(video)" class="button button-outline button-balanced gm-btn-green icon ion-play" ng-if="fileExists[$index] && video.state === 'Finished'" style="width:15%;border-radius:0;float:left;z-index: 9999;"></button>
-							<button class="button button-outline button-balanced icon ion-social-facebook" ng-click="shareVideo(video)" style="width:15%;border-radius:0;float:left;"></button>
+							<button ng-click="showPlaybackVideo(video)" class="button button-outline button-balanced icon ion-ios-download" ng-if="!fileExists[$index] && video.state === 'Finished'" style="width:12%;border-radius:0;float:left;z-index: 9999;"></button>
+							<button ng-click="showPlaybackVideo(video)" class="button button-outline button-balanced gm-btn-green icon ion-play" ng-if="fileExists[$index] && video.state === 'Finished'" style="width:12%;border-radius:0;float:left;z-index: 9999;"></button>
+							<button class="button button-outline button-balanced icon ion-social-facebook" ng-click="shareVideo(video)" style="width:10%;border-radius:0;float:left;"></button>
+							<!-- <button ng-click="playPlaybackVideo(video)" class="button button-outline button-positive icon ion-play" ng-if="video.state === 'Finished'" style="width:10%;border-radius:0;float:left;z-index: 9999;"></button> -->
 						</span>
 					</span>
 				</ion-list>
-				<ion-item style="text-align: center;background: none;border: none;padding:0">
-					<button class="button button-block gm-btn-white" ng-click="hidePlaybackList()">Close</button>
-				</ion-item>
 			</div>
 			<div ng-if="data.downloadingPlayback" class="item item-icon-left" style="color:white;background:linear-gradient(90deg, #0c60ee {{downloadProgress}}%, transparent {{downloadProgress}}%) !important;">
 				<i class="icon" style="color:black" ng-if="video.state !== 'Finished'"><ion-spinner></ion-spinner></i>
 				<span style="color:black">Downloading...</span>
 			</div>
+			<ion-item style="text-align: center;background: none;border: none;padding:0">
+				<button class="button gm-button gm-button-black no-bg" ng-click="hidePlaybackList()">Continue Tagging</button>
+			</ion-item>
 		</div>
 		<div class="panel panel-modal" ng-class="(showShareListModal) ? 'slide-up' : 'slide-down'" id="share-list-modal" ng-show="showShareListModal" style="opacity:{{data.vc_transparency/100}}">
 			<div>

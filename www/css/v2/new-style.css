@@ -39,3 +39,8 @@ li.gm-leatest-events-list span.time {
 .scrollable_outside_content{
 	overflow:auto;
 }
+
+.popup-container{
+	top:0 !important;
+	bottom:auto !important;
+}
