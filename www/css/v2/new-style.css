@@ -7,6 +7,7 @@
   z-index: 9000001;
 }
 
+
 /*.line-background {
   background: linear-gradient(0deg, transparent 49%, #e74a43 50%, transparent 51%);
 }
@@ -17,30 +18,52 @@
 #annotate {
   /*margin-top:50px;*/
 }
+
 li.gm-leatest-events-list {
   list-style-type: disc;
   font-size: 12px;
   line-height: 20px !important;
 }
+
 li.gm-leatest-events-list span {
   color: black;
 }
+
 li.gm-leatest-events-list span.time {
   color: #a4a4a4
 }
+
 .other_events {
   height: 64vh;
   overflow: auto;
   margin-top: -5px;
 }
+
 .add-top-margin .list {
   margin-top: 50px;
 }
-.scrollable_outside_content{
-	overflow:auto;
+
+.scrollable_outside_content {
+  overflow: auto;
 }
 
-.popup-container{
-	top:0 !important;
-	bottom:auto !important;
+.popup-container {
+  top: 0 !important;
+  bottom: auto !important;
+}
+
+.video-page>div {
+  height: 100%;
+  top: 0 !important;
+  width: 100%;
+  position: absolute;
+}
+
+.video-js {
+	position: absolute !important;
+	width: 100%;
+	height: 100%;
+}
+.white-bg{
+	background-color:white !important;
 }

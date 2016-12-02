@@ -1,4 +1,12 @@
 "# TagApp"
+0.1.17
+-Fix for sending xml in project overview
+-Periodicaly checking recorder state
+-Live stream video playing from recorder
+-Download event types from recorder when user connects to server
+-Start match, End match, Start Recorder, Stop Recorder
+
+"# TagApp"
 0.1.16
 -Fixing adding player function
 -Player picker please just with one click and no continue button, because now you need to click two times

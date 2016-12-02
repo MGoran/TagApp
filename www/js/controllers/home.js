@@ -1,4 +1,4 @@
-angular.module('home.controller', []).controller('HomeCtrl', function($rootScope, $scope, $ionicModal, $timeout, $state) {
+angular.module('home.controller', []).controller('HomeCtrl', function($rootScope, $scope, $ionicModal, $timeout, $state, $sce) {
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     if (!$rootScope.isUser()) {
       $state.go('login')
@@ -10,8 +10,10 @@ angular.module('home.controller', []).controller('HomeCtrl', function($rootScope
   }
 
   $scope.startProject = function() {
-		$rootScope.selectedCam = $rootScope.user.cameras[0];
+    $rootScope.selectedCam = $rootScope.user.cameras[0];
     $state.go('app.annotation_controller');
   }
+
+
 
 });

@@ -55,7 +55,7 @@ angular.module('projects.controller', []).controller('ProjectsCtrl', function($s
     xml += "	</annotations>";
     xml += '</recording>';
     console.log(xml);
-    //return false;
+    var filename = localStorage.lastRecordedVideo.replace(/\s+/g, '') + ".xml";
     $cordovaEmailComposer.isAvailable().then(function() {
       var email = {
         to: $rootScope.data.email_to,

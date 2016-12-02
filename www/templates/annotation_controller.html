@@ -1,6 +1,6 @@
 <ion-view view-title="{{selectedCam.name}}" hide-nav-bar="true" hide-back-button="true">
 	<ion-content padding="false" style="height:100%" class="video-page" scroll="false">
-		<img ng-if="selectedCam.cameraType !== 'disabled'  && data.live_view" ng-src="{{videoSource}}" class="annotation_video" />
+
 		<!-- <div ng-if="!data.live_view" style="background:grey" class="annotation_video" /> -->
 		<div ng-if="!data.live_view || selectedCam.cameraType == 'disabled'" style="background:white" class="annotation_video"> </div>
 		<div class="gm-controls" style="opacity:{{data.vc_transparency/100}}">
@@ -19,7 +19,7 @@
 						<span class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular gm-large-font"><b >{{data.score1}}</b>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;<b>{{data.score2}}</b></span>
 					</div>
 					<div class="col col-10">
-						<button class="button gm-button gm-big-button gm-button-blue text-blue no-bg "  ng-click="goal(data.team2, 2)">Goal</button>
+						<button class="button gm-button gm-big-button gm-button-blue text-blue no-bg " ng-click="goal(data.team2, 2)">Goal</button>
 					</div>
 					<!-- <div class="col col-15">
 
@@ -33,8 +33,11 @@
 					</div>
 				</div>
 				<div class="scrollable_outside_content" style="height:{{calculateHeight()}}">
+					<img ng-if="(selectedCam.cameraType == 'Dahua' || selectedCam.cameraType == 'Axis')  && data.live_view" ng-src="{{videoSource}}" class="annotation_video" />
+					<div id="LiveStreamVideo" ng-if="selectedCam.cameraType == 'LiveStream'  && data.live_view">
+					</div>
 					<div id="annotate">
-						<div ng-if="selectedCam.cameraType !== 'disabled'  && data.live_view">
+						<div ng-if="selectedCam.cameraType !== 'disabled' &&  selectedCam.cameraType !== 'LiveStream' && data.live_view">
 							<div class="row">
 								<div class="col col-30 btn-stack">
 									<button class="button button-80 icon ion-arrow-left-c gm-btn-white gm-btn-height" on-release="ptzMove('left', 'stop')" on-touch="ptzMove('left', 'start')"></button>
@@ -82,16 +85,16 @@
 								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[0], data.team1, 1)">{{data.event_types[0].name}}</button>
 							</div>
 							<div class="col col-20">
-								<span class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular gm-large-font"><b></b>&nbsp;&nbsp;&nbsp; <span>{{data.team1.name}}</span></span>
+								<span class="button gm-button gm-big-button gm-button-black gm-no-border gm-button-regular gm-large-font" ng-class="selectedCam.cameraType == 'LiveStream'  && data.live_view ? 'white-bg':'no-bg'"><b></b>&nbsp;&nbsp;&nbsp; <span>{{data.team1.name}}</span></span>
 							</div>
 							<div class="col col-20">
-								<span ng-click="toggleRecorder()" class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular gm-huge-font">
-								<timer ng-if="recorder.recording" start-time="recorder.time" max-time-unit="'minute'">{{mminutes}}:{{sseconds}}</timer>
-								<span ng-if="!recorder.recording">00:00</span>
+								<span ng-click="toggleRecorder()" class="button gm-button gm-big-button gm-button-black gm-no-border gm-button-regular gm-huge-font" ng-class="selectedCam.cameraType == 'LiveStream'  && data.live_view ? 'white-bg':'no-bg'">
+									<timer ng-if="recorder.recording" start-time="recorder.time" max-time-unit="'minute'">{{mminutes}}:{{sseconds}}</timer>
+									<span ng-if="!recorder.recording">00:00</span>
 								</span>
 							</div>
 							<div class="col col-20">
-								<span class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular gm-large-font"><span >{{data.team2.name}}</span>&nbsp;&nbsp;&nbsp;<b></b></span>
+								<span class="button gm-button gm-big-button gm-button-black gm-no-border gm-button-regular gm-large-font" ng-class="selectedCam.cameraType == 'LiveStream' && data.live_view ? 'white-bg':'no-bg'"><span >{{data.team2.name}}</span>&nbsp;&nbsp;&nbsp;<b></b></span>
 							</div>
 							<div class="col col-20">
 								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[0], data.team2, 2)">{{data.event_types[0].name}}</button>
@@ -142,9 +145,9 @@
 								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[1], data.team1,1)">{{data.event_types[1].name}}</button>
 							</div>
 							<div class="col col-20">
-								<span ng-click="toggleRecorder()" class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular gm-huge-font">
-								<timer ng-if="recorder.recording" start-time="recorder.time" max-time-unit="'minute'">{{mminutes}}:{{sseconds}}</timer>
-								<span ng-if="!recorder.recording">00:00</span>
+								<span ng-click="toggleRecorder()" class="button gm-button gm-big-button gm-button-black gm-no-border gm-button-regular gm-huge-font" ng-class="selectedCam.cameraType == 'LiveStream'  && data.live_view ? 'white-bg':'no-bg'">
+									<timer ng-if="recorder.recording" start-time="recorder.time" max-time-unit="'minute'">{{mminutes}}:{{sseconds}}</timer>
+									<span ng-if="!recorder.recording">00:00</span>
 								</span>
 							</div>
 							<div class="col col-20">
