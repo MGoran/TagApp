@@ -1,4 +1,8 @@
 "# TagApp"
+0.1.18
+-Fixing possible issue with black screen on app load
+
+"# TagApp"
 0.1.17
 -Fix for sending xml in project overview
 -Periodicaly checking recorder state
