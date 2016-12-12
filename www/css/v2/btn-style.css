@@ -8,59 +8,81 @@
   width: 100%;
   line-height: 8vh !important;
 }
-.gm-big-button{
-	/*line-height:14vh !important;*/
+
+.gm-big-button {
+  /*line-height:14vh !important;*/
 }
-.gm-button-regular{
-		font-weight: normal
+
+.gm-button-regular {
+  font-weight: normal
 }
-.gm-md-font{
-	font-size:15px
+
+.gm-md-font {
+  font-size: 15px
 }
-.gm-large-font{
-	font-size: 25px;
+
+.gm-large-font {
+  font-size: 25px;
 }
-.gm-huge-font{
-	font-size: 30px;
- }
-.no-bg{
-	background:transparent !important;
+
+.gm-huge-font {
+  font-size: 30px;
 }
-.text-white{
-	color:white !important;
+
+.no-bg {
+  background: transparent !important;
 }
+
+.text-white {
+  color: white !important;
+}
+
+
 /*Black button*/
+
 .gm-button-black {
   color: #000000;
   border-color: #000000;
-	background-color: #000000;
+  background-color: #000000;
 }
+
 .gm-button-black:hover {
   color: #000000;
 }
+
+
 /*Red button*/
+
 .gm-button-red.active {
   background: none;
 }
+
 .gm-button-red {
   color: #e74a43;
   border-color: #e74a43;
 }
+
 .gm-button-red:hover {
   color: #e74a43;
 }
+
+
 /*Yellow button*/
+
 .gm-button-yellow.active {
   background: none;
 }
+
 .gm-button-yellow {
   color: #f4b647;
   border-color: #f4b647;
-	background: #f4b647;
+  background: #f4b647;
 }
-.color-yellow{
-	color: #f4b647;
+
+.color-yellow {
+  color: #f4b647;
 }
+
 .gm-button-yellow:hover {
   color: #f4b647;
 }
@@ -68,24 +90,51 @@
 .gm-button-blue.active {
   background: none;
 }
+
 .gm-button-blue {
   color: #2375b7;
   border-color: #2375b7;
-	background: #2375b7;
+  background: #2375b7;
 }
-.color-blue{
-	color: #2375b7;
+
+.color-blue {
+  color: #2375b7;
 }
+
 .gm-button-blue:hover {
   color: #2375b7;
 }
 
-.gm-no-border{
-	border:0;
+.gm-no-border {
+  border: 0;
 }
-.button-full{
-	width:100%;
+
+.button-full {
+  width: 100%;
 }
-.button-80{
-	width:80px;
+
+.button-80 {
+  width: 80px;
+}
+
+.btn-gm-circle {
+  border-radius: 100%;
+  width: 70px;
+  height: 70px;
+}
+
+.gm-btn-rounded-group {
+  color: white;
+  width: 100px;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+.gm-btn-rounded-group span {
+  line-height: 30px;
+  font-weight: 700;
+}
+
+.gm-btn-rounded-group button:before {
+  font-size: 45px !important;
 }

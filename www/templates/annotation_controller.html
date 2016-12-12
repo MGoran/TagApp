@@ -6,10 +6,10 @@
 		<div class="gm-controls" style="opacity:{{data.vc_transparency/100}}">
 			<div class="panel panel-top-controlls">
 				<div class="row line-background header-buttons">
-					<div class="col col-20">
+					<div class="col col-10">
 						<button class="button gm-button gm-button-black no-bg" ng-click="undoLast(data.currentProject.annotations, data.currentProject.annotations.length-1)">Undo</button>
 					</div>
-					<div class="col col-20">
+					<div class="col col-15">
 						<button ng-if="selectedCam.recorderType==='Panofield'" class="button gm-button gm-button-black no-bg" ng-click="showPlaybackList()">Playback</button>
 					</div>
 					<div class="col col-10">
@@ -25,11 +25,11 @@
 
 					<button class="button gm-button gm-button-red gm-no-border gm-md-font  no-bg">{{data.periodLabel}}</button>
 					</div> -->
-					<div class="col col-5" style="background:none">
-
+					<div class="col col-20" style="background:none">
+						<button ng-if="selectedCam.recorderType !== 'WithoutRecorder'" ng-click="toggleRecorder()" class="button gm-md-font gm-button-regular no-bg button gm-button gm-button-black no-bg">{{data.recorderCmdLabel}} <timer ng-if="recorder.recording" start-time="recorder.time" max-time-unit="'minute'">{{mminutes}}:{{sseconds}}</timer></button>
 					</div>
 					<div class="col col-20">
-						<button ng-click="toggleRecorder()" class="button gm-button gm-button-red gm-no-border gm-md-font gm-button-regular no-bg">{{data.periodCmdLabel}}</button>
+						<button ng-click="toggleMatchPeriod()" class="button gm-button gm-button-red gm-no-border gm-md-font gm-button-regular no-bg">{{data.periodCmdLabel}}</button>
 					</div>
 				</div>
 				<div class="scrollable_outside_content" style="height:{{calculateHeight()}}">
@@ -89,7 +89,7 @@
 							</div>
 							<div class="col col-20">
 								<span ng-click="toggleRecorder()" class="button gm-button gm-big-button gm-button-black gm-no-border gm-button-regular gm-huge-font" ng-class="selectedCam.cameraType == 'LiveStream'  && data.live_view ? 'white-bg':'no-bg'">
-									<timer ng-if="recorder.recording" start-time="recorder.time" max-time-unit="'minute'">{{mminutes}}:{{sseconds}}</timer>
+									<timer ng-if="recorder.recording" start-time="calculateMatchTime()" max-time-unit="'minute'">{{mminutes}}:{{sseconds}}</timer>
 									<span ng-if="!recorder.recording">00:00</span>
 								</span>
 							</div>
@@ -146,7 +146,7 @@
 							</div>
 							<div class="col col-20">
 								<span ng-click="toggleRecorder()" class="button gm-button gm-big-button gm-button-black gm-no-border gm-button-regular gm-huge-font" ng-class="selectedCam.cameraType == 'LiveStream'  && data.live_view ? 'white-bg':'no-bg'">
-									<timer ng-if="recorder.recording" start-time="recorder.time" max-time-unit="'minute'">{{mminutes}}:{{sseconds}}</timer>
+									<timer ng-if="recorder.recording" start-time="calculateMatchTime()" max-time-unit="'minute'">{{mminutes}}:{{sseconds}}</timer>
 									<span ng-if="!recorder.recording">00:00</span>
 								</span>
 							</div>

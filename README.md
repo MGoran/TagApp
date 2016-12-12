@@ -1,6 +1,9 @@
 "# TagApp"
 0.1.18
 -Fixing possible issue with black screen on app load
+-Changes UI
+-Splitting recorder and match buttons into 2 different functionalities
+-Bugfixes
 
 "# TagApp"
 0.1.17
