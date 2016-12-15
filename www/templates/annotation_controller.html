@@ -2,40 +2,34 @@
 	<ion-content padding="false" style="height:100%" class="video-page" scroll="false">
 
 		<!-- <div ng-if="!data.live_view" style="background:grey" class="annotation_video" /> -->
-		<div ng-if="!data.live_view || selectedCam.cameraType == 'disabled'" style="background:white" class="annotation_video"> </div>
+		<div style="background:white" class="annotation_video"> </div>
 		<div class="gm-controls" style="opacity:{{data.vc_transparency/100}}">
 			<div class="panel panel-top-controlls">
 				<div class="row line-background header-buttons">
-					<div class="col col-10">
-						<button class="button gm-button gm-button-black no-bg" ng-click="undoLast(data.currentProject.annotations, data.currentProject.annotations.length-1)">Undo</button>
+					<div class="col col-20">
+						<button ng-if="data.currentProject.annotations.length > 0 && recorder.recording" class="button gm-button gm-button-black no-bg crop-text" ng-click="undoLast(data.currentProject.annotations, data.currentProject.annotations.length-1)">Undo - <small>{{data.currentProject.annotations[data.currentProject.annotations.length-1].event.name}}</small></button>
 					</div>
-					<div class="col col-15">
-						<button ng-if="selectedCam.recorderType==='Panofield'" class="button gm-button gm-button-black no-bg" ng-click="showPlaybackList()">Playback</button>
+					<div class="col col-20">
+						<button class="button gm-button gm-big-button gm-button-yellow no-bg" ng-click="goal(data.team1, 1)">Goal - {{data.team1.name}}</button>
 					</div>
-					<div class="col col-10">
-						<button class="button gm-button gm-big-button gm-button-yellow no-bg" ng-click="goal(data.team1, 1)">Goal</button>
+					<div class="col col-20">
+						<span class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular gm-large-font" style="font-size:35px"> {{data.score1}}&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;{{data.score2}}</span>
 					</div>
-					<div class="col col-15">
-						<span class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular gm-large-font"><b >{{data.score1}}</b>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;<b>{{data.score2}}</b></span>
+					<div class="col col-20">
+						<button class="button gm-button gm-big-button gm-button-blue text-blue no-bg " ng-click="goal(data.team2, 2)">Goal - {{data.team2.name}}</button>
 					</div>
-					<div class="col col-10">
-						<button class="button gm-button gm-big-button gm-button-blue text-blue no-bg " ng-click="goal(data.team2, 2)">Goal</button>
+					<div class="col col-20 button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular gm-large-font" style="font-size:50px;">
+						<timer ng-class="checkIfMatchStarted()?'':'font0'" ng-if="recorder.recording" start-time="calculateMatchTime()" max-time-unit="'minute'">{{mminutes}}:{{sseconds}}</timer>
+						<span ng-if="!recorder.recording || !checkIfMatchStarted()">00:00</span>
 					</div>
 					<!-- <div class="col col-15">
 
 					<button class="button gm-button gm-button-red gm-no-border gm-md-font  no-bg">{{data.periodLabel}}</button>
 					</div> -->
-					<div class="col col-20" style="background:none">
-						<button ng-if="selectedCam.recorderType !== 'WithoutRecorder'" ng-click="toggleRecorder()" class="button gm-md-font gm-button-regular no-bg button gm-button gm-button-black no-bg">{{data.recorderCmdLabel}} <timer ng-if="recorder.recording" start-time="recorder.time" max-time-unit="'minute'">{{mminutes}}:{{sseconds}}</timer></button>
-					</div>
-					<div class="col col-20">
-						<button ng-click="toggleMatchPeriod()" class="button gm-button gm-button-red gm-no-border gm-md-font gm-button-regular no-bg">{{data.periodCmdLabel}}</button>
-					</div>
+					<!--
+				 -->
 				</div>
 				<div class="scrollable_outside_content" style="height:{{calculateHeight()}}">
-					<img ng-if="(selectedCam.cameraType == 'Dahua' || selectedCam.cameraType == 'Axis')  && data.live_view" ng-src="{{videoSource}}" class="annotation_video" />
-					<div id="LiveStreamVideo" ng-if="selectedCam.cameraType == 'LiveStream'  && data.live_view">
-					</div>
 					<div id="annotate">
 						<div ng-if="selectedCam.cameraType !== 'disabled' &&  selectedCam.cameraType !== 'LiveStream' && data.live_view">
 							<div class="row">
@@ -80,83 +74,48 @@
 						</div>
 					</div>
 					<div class="annotation_panel" ng-if="!data.one_team_view">
+						<!-- ROW ONE -->
 						<div class="row">
 							<div class="col col-20">
 								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[0], data.team1, 1)">{{data.event_types[0].name}}</button>
 							</div>
-							<div class="col col-20">
-								<span class="button gm-button gm-big-button gm-button-black gm-no-border gm-button-regular gm-large-font" ng-class="selectedCam.cameraType == 'LiveStream'  && data.live_view ? 'white-bg':'no-bg'"><b></b>&nbsp;&nbsp;&nbsp; <span>{{data.team1.name}}</span></span>
-							</div>
-							<div class="col col-20">
-								<span ng-click="toggleRecorder()" class="button gm-button gm-big-button gm-button-black gm-no-border gm-button-regular gm-huge-font" ng-class="selectedCam.cameraType == 'LiveStream'  && data.live_view ? 'white-bg':'no-bg'">
-									<timer ng-if="recorder.recording" start-time="calculateMatchTime()" max-time-unit="'minute'">{{mminutes}}:{{sseconds}}</timer>
-									<span ng-if="!recorder.recording">00:00</span>
-								</span>
-							</div>
-							<div class="col col-20">
-								<span class="button gm-button gm-big-button gm-button-black gm-no-border gm-button-regular gm-large-font" ng-class="selectedCam.cameraType == 'LiveStream' && data.live_view ? 'white-bg':'no-bg'"><span >{{data.team2.name}}</span>&nbsp;&nbsp;&nbsp;<b></b></span>
-							</div>
-							<div class="col col-20">
-								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[0], data.team2, 2)">{{data.event_types[0].name}}</button>
-							</div>
-						</div>
-						<div class="row">
 							<div class="col col-20">
 								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[1], data.team1, 1)">{{data.event_types[1].name}}</button>
 							</div>
 							<div class="col col-20">
-								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[2], data.team1, 1)">{{data.event_types[2].name}}</button>
-							</div>
-							<div class="col col-20" style="text-align:center">
-								<ul ng-if="recorder.recording" class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular" style="width:auto;text-align: left;">
-									<li ng-repeat="annotation in data.currentProject.annotations | limitTo:-3" ng-if="annotation.team !== undefined" class="gm-leatest-events-list color-{{annotation.team.color}}"><span class="time">{{annotation.event.duration_after - annotation.event.time_after  | date:"mm:ss"}}</span> <span class="event">{{annotation.event.name}}</span></li>
-								</ul>
+								<button ng-if="selectedCam.recorderType !== 'WithoutRecorder'" ng-click="toggleRecorder()" class="button gm-big-button gm-button gm-button-green  text-white  crop-text" ng-class="recorder.recording?'gm-button-red small-line':'gm-button-green'">
+									{{data.recorderCmdLabel}}
+										<timer ng-if="recorder.recording" start-time="recorder.time" max-time-unit="'minute'">{{mminutes}}:{{sseconds}}</timer>
+								</button>
 							</div>
 							<div class="col col-20">
-								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[2], data.team2, 2)">{{data.event_types[2].name}}</button>
+								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[0], data.team2, 2)">{{data.event_types[0].name}}</button>
 							</div>
 							<div class="col col-20">
-								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[1],data.team2, 2)">{{data.event_types[1].name}}</button>
+								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[1], data.team2, 2)">{{data.event_types[1].name}}</button>
 							</div>
 						</div>
-						<div class="other_events">
-							<div class="row" ng-repeat="a in event_type_rows() track by $index" ng-init="btn_pos = 4+$index">
-								<div class="col col-25">
-									<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[btn_pos-1+$index],data.team1, 1)">{{data.event_types[btn_pos-1+$index].name}}</button>
-								</div>
-								<div class="col col-25">
-									<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-if="data.event_types[btn_pos+$index] !== undefined" ng-click="addEvent(data.event_types[btn_pos+$index],data.team1, 1)">{{data.event_types[btn_pos+$index].name}}</button>
-								</div>
-								<div class="col col-25">
-									<button class="button gm-button gm-big-button gm-button-blue text-white" ng-if="data.event_types[btn_pos+$index] !== undefined" ng-click="addEvent(data.event_types[btn_pos+$index],data.team2, 2)">{{data.event_types[btn_pos+$index].name}}</button>
-								</div>
-								<div class="col col-25">
-									<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[btn_pos-1+$index],data.team2, 2)">{{data.event_types[btn_pos-1+$index].name}}</button>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="annotation_panel" ng-if="data.one_team_view">
+						<!-- END ROW ONE -->
+						<!-- ROW TWO -->
 						<div class="row">
-							<div class="col col-20">
-								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[0], data.team1, 1)">{{data.event_types[0].name}}</button>
-							</div>
-							<div class="col col-20">
-								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[1], data.team1,1)">{{data.event_types[1].name}}</button>
-							</div>
-							<div class="col col-20">
-								<span ng-click="toggleRecorder()" class="button gm-button gm-big-button gm-button-black gm-no-border gm-button-regular gm-huge-font" ng-class="selectedCam.cameraType == 'LiveStream'  && data.live_view ? 'white-bg':'no-bg'">
-									<timer ng-if="recorder.recording" start-time="calculateMatchTime()" max-time-unit="'minute'">{{mminutes}}:{{sseconds}}</timer>
-									<span ng-if="!recorder.recording">00:00</span>
-								</span>
-							</div>
 							<div class="col col-20">
 								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[2], data.team1, 1)">{{data.event_types[2].name}}</button>
 							</div>
 							<div class="col col-20">
 								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[3], data.team1, 1)">{{data.event_types[3].name}}</button>
 							</div>
+							<div class="col col-20" style="text-align:center">
+								<button ng-click="toggleMatchPeriod()" class="button gm-big-button gm-button gm-button-green  text-white">{{data.periodCmdLabel}}</button>
+							</div>
+							<div class="col col-20">
+								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[3], data.team2, 2)">{{data.event_types[3].name}}</button>
+							</div>
+							<div class="col col-20">
+								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[2],data.team2, 2)">{{data.event_types[2].name}}</button>
+							</div>
 						</div>
+						<!-- END ROW TWO -->
+						<!-- ROW THREE -->
 						<div class="row">
 							<div class="col col-20">
 								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[4], data.team1, 1)">{{data.event_types[4].name}}</button>
@@ -166,95 +125,222 @@
 							</div>
 							<div class="col col-20">
 								<ul ng-if="recorder.recording" class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular" style="width:auto;text-align: left;">
-									<li ng-repeat="annotation in data.currentProject.annotations | limitTo:-3" class="gm-leatest-events-list color-{{annotation.team.color}}"><span class="time">{{annotation.event.duration_after - annotation.event.time_after  | date:"mm:ss"}}</span> <span class="event">{{annotation.event.name}}</span></li>
+									<li ng-repeat="annotation in data.currentProject.annotations | limitTo:-3" ng-if="annotation.team !== undefined" class="gm-leatest-events-list color-{{annotation.team.color}}"><span class="time">{{annotation.event.duration_after - annotation.event.time_after  | date:"mm:ss"}}</span> <span class="event">{{annotation.event.name}}</span></li>
 								</ul>
 							</div>
 							<div class="col col-20">
-								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[6], data.team1, 1)">{{data.event_types[6].name}}</button>
+								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[5], data.team2, 2)">{{data.event_types[5].name}}</button>
 							</div>
 							<div class="col col-20">
-								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[7], data.team1, 1)">{{data.event_types[7].name}}</button>
+								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[4], data.team2, 2)">{{data.event_types[4].name}}</button>
 							</div>
 						</div>
-						<div class="other_events">
-							<div ng-repeat="events in data.event_types track by $index" class="row" ng-if="$index % 4 == 0 && $index>7">
-								<div class="col col-25" ng-if="data.event_types.length > $index">
-									<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[$index],data.team1, 1)">{{data.event_types[$index].name}}</button>
+						<!-- END ROW THREE -->
+
+						<div class="row">
+							<div class="col col-20" style="height:{{calculateBottomHeight()}};overflow:scroll">
+								<div class="col col-100 no-lr-pad" ng-repeat="evt in data.event_types track by $index" ng-init="btn_pos = 6+$index" ng-if="$index < data.event_types.length - 6">
+									<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[btn_pos], data.team1, 1)">{{data.event_types[btn_pos].name}}</button>
 								</div>
-								<div class="col col-25" ng-if="data.event_types.length > ($index+1)">
-									<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[$index+1],data.team1, 1)">{{data.event_types[$index+1].name}}</button>
+							</div>
+							<div class="col col-60" style="height:{{calculateBottomHeight()}};position:relative; overflow: hidden;">
+								<div id="new-playback-video" class="new-playback-modal" ng-if="data.showPlaybackVideoModal">
+									<div id="playbackVideoPlayer" style="width:100%;height: 80%;"></div>
+									<button class="button gm-button gm-button-red no-bg" ng-click="data.showPlaybackVideoModal=false">Live View</button>
 								</div>
-								<div class="col col-25" ng-if="data.event_types.length > ($index+2)">
-									<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[$index+2],data.team1, 1)">{{data.event_types[$index+2].name}}</button>
+								<div id="new-playback-list-modal" class="new-playback-modal" ng-show="data.showNewPlaybackList">
+									<span class="item event-list" style="text-align:center" ng-if="data.videos == undefined || data.videos.length <= 0">
+										Playback Video List
+									</span>
+									<div ng-if="!data.downloadingPlayback" class="playbackListContent">
+										<ion-list class="">
+											<span class="item event-list" ng-repeat="video in data.videos | orderBy: '-id'" ng-if="video.event_details.id !== undefined">
+												<span class="item item-icon-left" style="float:left;width:70%;border:0">
+													<i class="icon {{video.event_details.event.icon}}"></i>
+													{{video.event_details.team.name}} - {{video.event_details.event.name}}
+													<i>{{video.event_details.event.duration_before | date: "mm:ss"}} - {{video.event_details.event.duration_after | date: "mm:ss"}}</i>
+													<small>[{{video.state}}]</small>
+												</span>
+											<button class="button-outline icon" style="width:30%" ng-if="video.state !== 'Finished'">
+												<ion-spinner></ion-spinner>
+											</button>
+											<span ng-if="video.state === 'Finished'">
+													<button ng-click="showPlaybackVideo(video)" class="button button-outline button-balanced icon ion-ios-download" ng-if="!fileExists[$index] && video.state === 'Finished'" style="width:12%;border-radius:0;float:left;z-index: 9999;"></button>
+													<button ng-click="showPlaybackVideo(video)" class="button button-outline button-balanced gm-btn-green icon ion-play" ng-if="fileExists[$index] && video.state === 'Finished'" style="width:12%;border-radius:0;float:left;z-index: 9999;"></button>
+													<button class="button button-outline button-balanced icon ion-social-facebook" ng-click="shareVideo(video)" style="width:10%;border-radius:0;float:left;"></button>
+													<!-- <button ng-click="playPlaybackVideo(video)" class="button button-outline button-positive icon ion-play" ng-if="video.state === 'Finished'" style="width:10%;border-radius:0;float:left;z-index: 9999;"></button> -->
+												</span>
+											</span>
+										</ion-list>
+									</div>
+									<div class="row">
+										<div ng-if="data.downloadingPlayback" class="item item-icon-left" style="color:white;background:linear-gradient(90deg, #0c60ee {{downloadProgress}}%, transparent {{downloadProgress}}%) !important; width:100%">
+											<i class="icon" style="color:black" ng-if="video.state !== 'Finished'"><ion-spinner></ion-spinner></i>
+											<span style="color:black">Downloading...</span>
+										</div>
+									</div>
+									<ion-item style="text-align: center;background: none;border: none;padding:0; width:100%" class=  ng-if="data.live_view">
+										<button class="button gm-button gm-button-red no-bg" ng-click="data.showNewPlaybackList=false">Live View</button>
+									</ion-item>
 								</div>
-								<div class="col col-25" ng-if="data.event_types.length > ($index+3)">
-									<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[$index+3],data.team1, 1)">{{data.event_types[$index+3].name}}</button>
+								<div style="position:absolute;z-index:99999;padding-right: 15px;" class="row">
+									<div class="col col-30">
+										<!-- <button ng-click="showNewPlaybackList=false" class="button gm-button gm-big-button gm-button-green no-bg">Live</button> -->
+									</div>
+									<div class="col col-40">
+									</div>
+									<div class="col col-30">
+										<button class="button gm-button gm-big-button gm-button-red no-bg" ng-click="showNewPBList()">Playback</button>
+									</div>
+								</div>
+								<div style="width:100%;height:100%;background:black;">
+									<div id="LiveStreamVideo" ng-if="selectedCam.cameraType == 'LiveStream'">
+									</div>
+									<img ng-if="(selectedCam.cameraType == 'Dahua' || selectedCam.cameraType == 'Axis')  && data.live_view" ng-src="{{videoSource}}" class="annotation_video" />
+								</div>
+							</div>
+							<div class="col col-20 no-lr-pad" style="height:{{calculateBottomHeight()}};overflow:scroll" id="scrollableContent">
+								<div class="col col-100" ng-repeat="evt in data.event_types track by $index" ng-init="btn_pos = 6+$index" ng-if="$index < data.event_types.length - 6">
+									<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[btn_pos], data.team2, 2)">{{data.event_types[btn_pos].name}}</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="annotation_panel" ng-if="data.one_team_view">
+						<!-- ROW ONE -->
+						<div class="row">
+							<div class="col col-20">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[0], data.team1, 1)">{{data.event_types[0].name}}</button>
+							</div>
+							<div class="col col-20">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[1], data.team1, 1)">{{data.event_types[1].name}}</button>
+							</div>
+							<div class="col col-20">
+								<button ng-if="selectedCam.recorderType !== 'WithoutRecorder'" ng-click="toggleRecorder()" class="button gm-big-button gm-button gm-button-green  text-white  crop-text" ng-class="recorder.recording?'gm-button-red small-line':'gm-button-green'">
+									{{data.recorderCmdLabel}}
+										<timer ng-if="recorder.recording" start-time="recorder.time" max-time-unit="'minute'">{{mminutes}}:{{sseconds}}</timer>
+								</button>
+							</div>
+							<div class="col col-20">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[2], data.team1, 1)">{{data.event_types[2].name}}</button>
+							</div>
+							<div class="col col-20">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[3], data.team1, 1)">{{data.event_types[3].name}}</button>
+							</div>
+						</div>
+						<!-- END ROW ONE -->
+						<!-- ROW TWO -->
+						<div class="row">
+							<div class="col col-20">
+								<button ng-if="data.event_types[4]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[4], data.team1, 1)">{{data.event_types[4].name}}</button>
+							</div>
+							<div class="col col-20">
+								<button ng-if="data.event_types[5]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[5], data.team1, 1)">{{data.event_types[5].name}}</button>
+							</div>
+							<div class="col col-20" style="text-align:center">
+								<button ng-click="toggleMatchPeriod()" class="button gm-big-button gm-button gm-button-green  text-white">{{data.periodCmdLabel}}</button>
+							</div>
+							<div class="col col-20">
+								<button  ng-if="data.event_types[6]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[6], data.team1, 2)">{{data.event_types[6].name}}</button>
+							</div>
+							<div class="col col-20">
+								<button  ng-if="data.event_types[7]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[7],data.team1, 1)">{{data.event_types[7].name}}</button>
+							</div>
+						</div>
+						<!-- END ROW TWO -->
+						<!-- ROW THREE -->
+						<div class="row">
+							<div class="col col-20">
+								<button  ng-if="data.event_types[8]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[8], data.team1, 1)">{{data.event_types[8].name}}</button>
+							</div>
+							<div class="col col-20">
+								<button ng-if="data.event_types[9]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[9], data.team1, 1)">{{data.event_types[9].name}}</button>
+							</div>
+							<div class="col col-20">
+								<ul ng-if="recorder.recording" class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular" style="width:auto;text-align: left;">
+									<li ng-repeat="annotation in data.currentProject.annotations | limitTo:-3" ng-if="annotation.team !== undefined" class="gm-leatest-events-list color-{{annotation.team.color}}"><span class="time">{{annotation.event.duration_after - annotation.event.time_after  | date:"mm:ss"}}</span> <span class="event">{{annotation.event.name}}</span></li>
+								</ul>
+							</div>
+							<div class="col col-20">
+								<button  ng-if="data.event_types[10]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[10], data.team1, 2)">{{data.event_types[10].name}}</button>
+							</div>
+							<div class="col col-20">
+								<button  ng-if="data.event_types[11]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[11], data.team1, 1)">{{data.event_types[11].name}}</button>
+							</div>
+						</div>
+						<!-- END ROW THREE -->
+
+						<div class="row">
+							<div class="col col-20" style="height:{{calculateBottomHeight()}};overflow:scroll">
+								<div class="col col-100 no-lr-pad" ng-repeat="evt in data.event_types track by $index" ng-init="btn_pos = 12+$index" ng-if="$index < data.event_types.length - 12 && btn_pos%2==0 && data.event_types[btn_pos]">
+									<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[btn_pos], data.team1, 1)">{{data.event_types[btn_pos].name}}</button>
+								</div>
+							</div>
+							<div class="col col-60" style="height:{{calculateBottomHeight()}};position:relative; overflow: hidden;">
+								<div id="new-playback-video" class="new-playback-modal" ng-if="data.showPlaybackVideoModal">
+									<div id="playbackVideoPlayer" style="width:100%;height: 80%;"></div>
+									<button class="button gm-button gm-button-red no-bg" ng-click="data.showPlaybackVideoModal=false">Live View</button>
+								</div>
+								<div id="new-playback-list-modal" class="new-playback-modal" ng-show="data.showNewPlaybackList">
+									<span class="item event-list" style="text-align:center" ng-if="data.videos == undefined || data.videos.length <= 0">
+										Playback Video List
+									</span>
+									<div ng-if="!data.downloadingPlayback" class="playbackListContent">
+										<ion-list class="">
+											<span class="item event-list" ng-repeat="video in data.videos | orderBy: '-id'" ng-if="video.event_details.id !== undefined">
+												<span class="item item-icon-left" style="float:left;width:70%;border:0">
+													<i class="icon {{video.event_details.event.icon}}"></i>
+													{{video.event_details.team.name}} - {{video.event_details.event.name}}
+													<i>{{video.event_details.event.duration_before | date: "mm:ss"}} - {{video.event_details.event.duration_after | date: "mm:ss"}}</i>
+													<small>[{{video.state}}]</small>
+												</span>
+											<button class="button-outline icon" style="width:30%" ng-if="video.state !== 'Finished'">
+												<ion-spinner></ion-spinner>
+											</button>
+											<span ng-if="video.state === 'Finished'">
+													<button ng-click="showPlaybackVideo(video)" class="button button-outline button-balanced icon ion-ios-download" ng-if="!fileExists[$index] && video.state === 'Finished'" style="width:12%;border-radius:0;float:left;z-index: 9999;"></button>
+													<button ng-click="showPlaybackVideo(video)" class="button button-outline button-balanced gm-btn-green icon ion-play" ng-if="fileExists[$index] && video.state === 'Finished'" style="width:12%;border-radius:0;float:left;z-index: 9999;"></button>
+													<button class="button button-outline button-balanced icon ion-social-facebook" ng-click="shareVideo(video)" style="width:10%;border-radius:0;float:left;"></button>
+													<!-- <button ng-click="playPlaybackVideo(video)" class="button button-outline button-positive icon ion-play" ng-if="video.state === 'Finished'" style="width:10%;border-radius:0;float:left;z-index: 9999;"></button> -->
+												</span>
+											</span>
+										</ion-list>
+									</div>
+									<div class="row">
+										<div ng-if="data.downloadingPlayback" class="item item-icon-left" style="color:white;background:linear-gradient(90deg, #0c60ee {{downloadProgress}}%, transparent {{downloadProgress}}%) !important; width:100%">
+											<i class="icon" style="color:black" ng-if="video.state !== 'Finished'"><ion-spinner></ion-spinner></i>
+											<span style="color:black">Downloading...</span>
+										</div>
+									</div>
+									<ion-item style="text-align: center;background: none;border: none;padding:0; width:100%" class=  ng-if="data.live_view">
+										<button class="button gm-button gm-button-red no-bg" ng-click="data.showNewPlaybackList=false">Live View</button>
+									</ion-item>
+								</div>
+								<div style="position:absolute;z-index:99999;padding-right: 15px;" class="row">
+									<div class="col col-30">
+										<!-- <button ng-click="showNewPlaybackList=false" class="button gm-button gm-big-button gm-button-green no-bg">Live</button> -->
+									</div>
+									<div class="col col-40">
+									</div>
+									<div class="col col-30">
+										<button class="button gm-button gm-big-button gm-button-red no-bg" ng-click="showNewPBList()">Playback</button>
+									</div>
+								</div>
+								<div style="width:100%;height:100%;background:black;">
+									<div id="LiveStreamVideo" ng-if="selectedCam.cameraType == 'LiveStream'">
+									</div>
+									<img ng-if="(selectedCam.cameraType == 'Dahua' || selectedCam.cameraType == 'Axis')  && data.live_view" ng-src="{{videoSource}}" class="annotation_video" />
+								</div>
+							</div>
+							<div class="col col-20 no-lr-pad" style="height:{{calculateBottomHeight()}};overflow:scroll" id="scrollableContent">
+								<div class="col col-100" ng-repeat="evt in data.event_types track by $index" ng-init="btn_pos = 12+$index" ng-if="$index < data.event_types.length - 12  && btn_pos%2 !=0  && data.event_types[btn_pos]">
+									<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[btn_pos], data.team1, 1)">{{data.event_types[btn_pos].name}}</button>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="panel panel-modal" ng-class="(showPlaybackListModal) ? 'slide-up' : 'slide-down'" id="playback-list-modal" ng-hide="!showPlaybackListModal" style="opacity:{{data.vc_transparency/100}}; height:80% !important;">
-			<div ng-if="!data.downloadingPlayback">
-				<ion-list class="limit-child-height gm-list">
-					<span class="item event-list" ng-repeat="video in data.videos | orderBy: '-id'" ng-if="video.event_details.id !== undefined">
-						<span class="item item-icon-left" style="float:left;width:70%;border:0">
-							<i class="icon {{video.event_details.event.icon}}"></i>
-							{{video.event_details.team.name}} - {{video.event_details.event.name}}
-							<i>{{video.event_details.event.duration_before | date: "mm:ss"}} - {{video.event_details.event.duration_after | date: "mm:ss"}}</i>
-							<small>[{{video.state}}]</small>
-						</span>
-					<button class="button-outline icon" style="width:30%" ng-if="video.state !== 'Finished'">
-						<ion-spinner></ion-spinner>
-					</button>
-					<span ng-if="video.state === 'Finished'">
-							<button ng-click="showPlaybackVideo(video)" class="button button-outline button-balanced icon ion-ios-download" ng-if="!fileExists[$index] && video.state === 'Finished'" style="width:12%;border-radius:0;float:left;z-index: 9999;"></button>
-							<button ng-click="showPlaybackVideo(video)" class="button button-outline button-balanced gm-btn-green icon ion-play" ng-if="fileExists[$index] && video.state === 'Finished'" style="width:12%;border-radius:0;float:left;z-index: 9999;"></button>
-							<button class="button button-outline button-balanced icon ion-social-facebook" ng-click="shareVideo(video)" style="width:10%;border-radius:0;float:left;"></button>
-							<!-- <button ng-click="playPlaybackVideo(video)" class="button button-outline button-positive icon ion-play" ng-if="video.state === 'Finished'" style="width:10%;border-radius:0;float:left;z-index: 9999;"></button> -->
-						</span>
-					</span>
-				</ion-list>
-			</div>
-			<div ng-if="data.downloadingPlayback" class="item item-icon-left" style="color:white;background:linear-gradient(90deg, #0c60ee {{downloadProgress}}%, transparent {{downloadProgress}}%) !important;">
-				<i class="icon" style="color:black" ng-if="video.state !== 'Finished'"><ion-spinner></ion-spinner></i>
-				<span style="color:black">Downloading...</span>
-			</div>
-			<ion-item style="text-align: center;background: none;border: none;padding:0">
-				<button class="button gm-button gm-button-black no-bg" ng-click="hidePlaybackList()">Continue Tagging</button>
-			</ion-item>
-		</div>
-		<div class="panel panel-modal" ng-class="(showShareListModal) ? 'slide-up' : 'slide-down'" id="share-list-modal" ng-show="showShareListModal" style="opacity:{{data.vc_transparency/100}}">
-			<div>
-				<ion-list class="limit-child-height">
-					<a class="item item-icon-left item-icon-right" ng-click="shareVideo(video)" ng-repeat="video in data.videos | orderBy: '-id'">
-						<i class="icon {{video.event_details.event.icon}}"></i> {{video.event_details.team.name}} - {{video.event_details.event.name}} <i>{{video.event_details.event.duration_before | date: "mm:ss"}} - {{video.event_details.event.duration_after | date: "mm:ss"}}</i>
-						<i class="icon ion-social-facebook"></i>
-					</a>
-				</ion-list>
-				<ion-item style="text-align: center;background: none;border: none;">
-					<button class="button button-block gm-btn-white" ng-click="hideShareList()">Close</button>
-				</ion-item>
-			</div>
-		</div>
-		<div class="panel panel-modal playback-modal" ng-class="(showPlaybackVideoModal) ? 'slide-up' : 'slide-down'" id="playback-video-modal" ng-hide="!showPlaybackVideoModal" style="width: 80%;left: 10%;height: 75%;">
-			<ion-header-bar class="bar bar-header bar-positive">
-				<button class="button button-clear button-primary" ng-click="hidePlaybackVideo()">Close</button>
-			</ion-header-bar>
-			<ion-content padding="false">
-
-				<!-- <video width="400" controls>
-					<source ng-src="{{targetPath | trustAsResourceUrl}}" type="video/mp4">
-					Your browser does not support HTML5 video
-				</video> -->
-				<div id="playbackVideoPlayer" style="width:100%;height:100%"></div>
-				<!-- <videogular vg-update-time="onUpdateTime($currentTime, $duration)" vg-theme="config.theme.url" vg-native-fullscreen="false" vg-plays-inline="'true'" vg-native-controls="true">
-					<vg-media vg-src="config.sources">
-					</vg-media>
-				</videogular> -->
-			</ion-content>
 		</div>
 	</ion-content>
 </ion-view>

@@ -60,10 +60,25 @@
 .gm-button-red {
   color: #e74a43;
   border-color: #e74a43;
+	background: #e74a43;
 }
 
 .gm-button-red:hover {
   color: #e74a43;
+}
+
+.gm-button-green.active {
+  background: none;
+}
+
+.gm-button-green {
+  color: #71a03e;
+  border-color: #71a03e;
+  background: #71a03e;
+}
+
+.gm-button-green:hover {
+  color: #71a03e;
 }
 
 

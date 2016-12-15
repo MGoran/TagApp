@@ -1,11 +1,8 @@
 angular.module('projects.controller', []).controller('ProjectsCtrl', function($scope, $rootScope, $ionicPopup, $state, $stateParams, $filter, $cordovaEmailComposer) {
   $scope.projects = JSON.parse(localStorage.recordings);
-  console.log($scope.projects);
   if ($stateParams.id) {
-    console.log($stateParams);
-    $scope.projectName = Object.keys($scope.projects)[0]
+    $scope.projectName = Object.keys($scope.projects)[$stateParams.id];
     $scope.project = $scope.projects[$scope.projectName];
-    console.log($scope.project);
     $scope.title = "Recording: " + $scope.project.recording_id;
     $scope.project.score1 = $filter('filter')($scope.project.annotations, function(value) {
       if (value.team !== undefined) {

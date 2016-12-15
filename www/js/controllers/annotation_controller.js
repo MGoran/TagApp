@@ -1,7 +1,15 @@
 angular.module('annotationController.controller', []).controller('AnnotationControllerCtrl', function($rootScope, $scope, $ionicPopup, $timeout, $state, cameraMovement, recorderControll, $interval, $cordovaEmailComposer, $filter, $cordovaFileTransfer, $ionicSideMenuDelegate, $ionicNavBarDelegate, $interval, $sce) {
   $ionicSideMenuDelegate.canDragContent(true);
 
+
+
+  $interval(function() {
+    $scope.getRecorderCmdLabel();
+    $scope.getPeriodCmdLabel();
+  }, 1000);
+
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
+		if(!$scope.data.live_view) $scope.data.showNewPlaybackList = true;
     if (!$rootScope.isUser()) {
       $state.go('login')
     }
@@ -14,15 +22,16 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
       $scope.directory = cordova.file.dataDirectory;
     }
     $scope.getRecorderState();
-    $scope.showPlaybackVideoModal = false;
+    $scope.data.showPlaybackVideoModal = false;
     $scope.showPlaybackListModal = false;
     $scope.data.score1 = 0;
     $scope.data.score2 = 0;
 
   });
   $interval(function() {
-    if ($scope.showPlaybackListModal) $scope.getExportQueue(true);
-  }, 5000);
+    if ($scope.showPlaybackListModal || $scope.data.showNewPlaybackList) $scope.getExportQueue(true);
+  }, 12000);
+
 
   $scope.$on("$ionicView.afterEnter", function(scopes, states) {
     console.log("loaded")
@@ -63,7 +72,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
   }
   $scope.data.periodCmdLabel = "Start Match";
   $scope.hidePlaybackVideo = function() {
-    $scope.showPlaybackVideoModal = false;
+    $scope.data.showPlaybackVideoModal = false;
   }
   $scope.$on("$ionicView.enter", function(event, data) {
     console.log($rootScope.selectedCam);
@@ -86,6 +95,12 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     $scope.getExportQueue();
     $scope.getRecorderState();
     $scope.showPlaybackListModal = true;
+  }
+
+  $scope.showNewPBList = function() {
+    $scope.getExportQueue();
+    $scope.getRecorderState();
+    $scope.data.showNewPlaybackList = true;
   }
 
   $scope.hidePlaybackList = function() {
@@ -412,6 +427,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
         $rootScope.data.recordings[localStorage.lastRecordedVideo].annotations.push(annotation);
         $scope.data.currentProject = $rootScope.data.recordings[localStorage.lastRecordedVideo];
         localStorage.recordings = JSON.stringify($rootScope.data.recordings);
+				$scope.showStopRecorderPrompt();
       } else {
         var promise = recorderControll.addEvent(annotation, $rootScope.selectedCam);
         promise.then(function(response) {
@@ -419,7 +435,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
           annotation.id = response.data.id
           $rootScope.data.recordings = JSON.parse(localStorage.recordings)
           console.log($rootScope.data.recordings);
-
+					$scope.showStopRecorderPrompt();
           $rootScope.data.recordings[localStorage.lastRecordedVideo].annotations.push(annotation);
           $scope.data.currentProject = $rootScope.data.recordings[localStorage.lastRecordedVideo];
           localStorage.recordings = JSON.stringify($rootScope.data.recordings);
@@ -429,11 +445,28 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
       }
 
     } else {
-			$scope.stopRecorder();
-		}
+      $scope.stopRecorder();
+    }
     $scope.getRecorderCmdLabel();
     $scope.getPeriodCmdLabel();
   }
+
+
+  $scope.showStopRecorderPrompt = function() {
+    var confirmPopup = $ionicPopup.confirm({
+      title: 'Match Finished',
+      template: 'Do you want to stop recorder?'
+    });
+
+    confirmPopup.then(function(res) {
+      if (res) {
+        $scope.stopRecorder();
+      } else {
+        console.log("Continue")
+      }
+    });
+  };
+
 
   $scope.getRecorderCmdLabel = function() {
     $timeout(function() {
@@ -480,12 +513,10 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
       } else if (secondHalfStart.length <= 0) {
         $scope.data.periodCmdLabel = "Start 2nd Half";
       } else if (endMatch.length <= 0) {
-        $scope.data.periodCmdLabel = "Finish Match";
+        $scope.data.periodCmdLabel = "End Match";
       } else {
         $scope.data.periodCmdLabel = "Game Finished";
       }
-
-      console.log($scope.data.periodCmdLabel);
     }, 100)
   }
 
@@ -510,7 +541,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
         console.log($rootScope.data.recordings)
         localStorage.recordings = JSON.stringify($rootScope.data.recordings);
       }
-			if(!$scope.recorder) $scope.recorder = {};
+      if (!$scope.recorder) $scope.recorder = {};
       $scope.recorder.recording = true;
       $scope.recorder.time = new Date().getTime();
       return false;
@@ -784,6 +815,9 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
   $scope.calculateHeight = function() {
     return $(".view-container").height() - $(".header-buttons").height() - 50 + "px";
   }
+  $scope.calculateBottomHeight = function() {
+    return window.innerHeight - $("#scrollableContent").position().top - 10 + "px";
+  }
   $scope.event_type_rows = function() {
     //console.log($scope.data.event_types);
     var n = Math.round(($scope.data.event_types.length - 3) / 2);
@@ -951,13 +985,18 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     return false;
   }
   $scope.startPlayback = function(targetPath, skipDecode) {
-    $scope.showPlaybackVideoModal = true;
+		console.log("show playback video")
+		$timeout(function(){
+			$scope.data.showPlaybackVideoModal = true;
+		})
+
     //video_src = "videos/example2.mp4"
     if (!skipDecode)
       targetPath = decodeURI(targetPath);
     console.log(targetPath);
     $scope.targetPath = targetPath;
     document.getElementById("playbackVideoPlayer").innerHTML = "<video width='100%' height='auto' controls autoplay src=" + targetPath + ">Your browser does not support video</video>";
+		$scope.data.showPlaybackVideoModal = true;
   }
 
   $scope.showPlaybackVideo = function(video) {
@@ -1056,24 +1095,37 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
 
 
   $scope.calculateMatchTime = function() {
-    if ($rootScope.selectedCam.recorderType === "WithoutRecorder") {
-      return $scope.recorder.time;
-    } else {
-      var startMatch = $filter('filter')($rootScope.data.recordings[localStorage.lastRecordedVideo].annotations, {
-        event: {
-          name: "Begin"
-        }
-      }, true);
-      var endMatch = $filter('filter')($rootScope.data.recordings[localStorage.lastRecordedVideo].annotations, {
-        event: {
-          name: "End"
-        }
-      }, true);
-      if (startMatch.length > 0 && endMatch.length <= 0) {
-        return $scope.recorder.time + startMatch[0].event.start
-      } else {
-        return new Date().getTime();
+    var startMatch = $filter('filter')($rootScope.data.recordings[localStorage.lastRecordedVideo].annotations, {
+      event: {
+        name: "Begin"
       }
+    }, true);
+    var endMatch = $filter('filter')($rootScope.data.recordings[localStorage.lastRecordedVideo].annotations, {
+      event: {
+        name: "End"
+      }
+    }, true);
+    if (startMatch.length > 0 && endMatch.length <= 0) {
+      return $scope.recorder.time + startMatch[0].event.start;
+    }
+    return $scope.recorder.time;
+  }
+
+  $scope.checkIfMatchStarted = function() {
+    var startMatch = $filter('filter')($rootScope.data.recordings[localStorage.lastRecordedVideo].annotations, {
+      event: {
+        name: "Begin"
+      }
+    }, true);
+    var endMatch = $filter('filter')($rootScope.data.recordings[localStorage.lastRecordedVideo].annotations, {
+      event: {
+        name: "End"
+      }
+    }, true);
+    if (startMatch.length > 0 && endMatch.length <= 0) {
+      return true;
+    } else {
+      return false;
     }
   }
 });

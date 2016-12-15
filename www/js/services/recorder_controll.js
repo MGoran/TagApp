@@ -54,7 +54,8 @@ angular.module('recorderControll.service', []).service('recorderControll', funct
             "url": "http://" + camera.recorderIP + "/api/recorder",
             "method": "PUT",
             "data": {
-              recording: true
+              recording: true,
+							streaming: true
             },
             "headers": {
               'Authorization': 'Basic ' + btoa(camera.username + ':' + camera.password)

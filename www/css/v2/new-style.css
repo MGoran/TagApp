@@ -44,7 +44,7 @@ li.gm-leatest-events-list span.time {
 }
 
 .scrollable_outside_content {
-  overflow: auto;
+  overflow: hidden;
 }
 
 .popup-container {
@@ -60,7 +60,6 @@ li.gm-leatest-events-list span.time {
 }
 
 .video-js {
-  position: absolute !important;
   width: 100%;
   height: 100%;
 }
@@ -79,13 +78,69 @@ li.gm-leatest-events-list span.time {
   float: left;
   position: relative;
   width: 100%;
-  height: 60%;
+  height: 45%;
   background-image: url(../../img/home-logo.png);
   background-repeat: no-repeat;
   background-position: center center;
-  background-size: auto 60%;
+  background-size: auto 75%;
 }
 
 .home-bottom {
   height: 50%;
+}
+
+.no-lr-pad {
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 0;
+}
+
+#LiveStreamVideo {
+  width: 100%;
+  height: 100%;
+}
+
+.panel-medium {
+  width: 60% !important;
+  ;
+  left: 20% !important;
+  ;
+  top: 10% !important;
+}
+
+.font0 {
+  font-size: 0;
+  visibility: hidden;
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+.gm-button.small-line {
+  /*line-height: 1.9em !important;*/
+	font-size:14px !important;
+}
+
+.new-playback-modal {
+  position: relative;
+  z-index: 999999;
+  background: black;
+  height: 100%;
+}
+
+.playbackListContent {
+  width: 100%;
+  padding: 0;
+  height: 74%;
+  overflow: scroll;
+}
+
+.crop-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.event-list{
+	padding-bottom:0;
+	padding-top:0
 }
