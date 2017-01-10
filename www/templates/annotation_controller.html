@@ -19,7 +19,7 @@
 						<button class="button gm-button gm-big-button gm-button-blue text-blue no-bg " ng-click="goal(data.team2, 2)">Goal - {{data.team2.name}}</button>
 					</div>
 					<div class="col col-20 button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular gm-large-font" style="font-size:50px;">
-						<timer ng-class="checkIfMatchStarted()?'':'font0'" ng-if="recorder.recording" start-time="calculateMatchTime()" max-time-unit="'minute'">{{mminutes}}:{{sseconds}}</timer>
+						<timer id="match-timer" ng-class="checkIfMatchStarted()?'':'font0'" ng-if="recorder.recording" start-time="calculateMatchTime()" max-time-unit="'minute'">{{mminutes}}:{{sseconds}}</timer>
 						<span ng-if="!recorder.recording || !checkIfMatchStarted()">00:00</span>
 					</div>
 					<!-- <div class="col col-15">
@@ -333,7 +333,7 @@
 								</div>
 							</div>
 							<div class="col col-20 no-lr-pad" style="height:{{calculateBottomHeight()}};overflow:scroll" id="scrollableContent">
-								<div class="col col-100" ng-repeat="evt in data.event_types track by $index" ng-init="btn_pos = 12+$index" ng-if="$index < data.event_types.length - 12  && btn_pos%2 !=0  && data.event_types[btn_pos]">
+								<div class="col col-100" ng-repeat="evt in data.event_types track by $index" ng-init="btn_pos = 12+$index" ng-if="$index < data.event_types.length - 12  && btn_pos%2==1  && data.event_types[btn_pos]">
 									<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[btn_pos], data.team1, 1)">{{data.event_types[btn_pos].name}}</button>
 								</div>
 							</div>

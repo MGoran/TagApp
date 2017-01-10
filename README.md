@@ -1,4 +1,12 @@
 "# TagApp"
+0.1.20
+-Minor fixes
+-Performance improvements
+-Second half calculations
+-Fixes for playback video player
+-Splash screen fix
+
+"# TagApp"
 0.1.19
 -Annotation Screen new UI
 -New Video functionality
