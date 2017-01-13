@@ -1,4 +1,9 @@
 "# TagApp"
+0.1.21
+-UI tweaks
+-Bugfixes
+
+"# TagApp"
 0.1.20
 -Minor fixes
 -Performance improvements

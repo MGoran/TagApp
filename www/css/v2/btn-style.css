@@ -134,8 +134,10 @@
 
 .btn-gm-circle {
   border-radius: 100%;
-  width: 70px;
-  height: 70px;
+  width: 75px;
+  height: 75px;
+	display: block;
+	margin:auto;
 }
 
 .gm-btn-rounded-group {
