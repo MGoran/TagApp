@@ -21,15 +21,15 @@
 					<div class="col col-20">
 						<button class="button gm-button gm-big-button gm-button-yellow no-bg" ng-click="goal(data.team1, 1)">Goal - {{data.team1.name}}</button>
 					</div>
-					<div class="col col-20">
-						<span class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-green gm-large-font"> {{data.score1}}&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;{{data.score2}}</span>
+					<div class="col col-20 button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-green gm-large-font">
+						<span class="v-align"> {{data.score1}}&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;{{data.score2}}</span>
 					</div>
 					<div class="col col-20">
 						<button class="button gm-button gm-big-button gm-button-blue text-blue no-bg " ng-click="goal(data.team2, 2)">Goal - {{data.team2.name}}</button>
 					</div>
 					<div class="col col-20 button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular gm-large-font" style="font-size:50px;">
-						<timer id="match-timer" ng-class="checkIfMatchStarted()?'':'font0'" ng-if="recorder.recording" start-time="calculateMatchTime()" max-time-unit="'minute'">{{mminutes}}:{{sseconds}}</timer>
-						<span ng-if="!recorder.recording || !checkIfMatchStarted()">00:00</span>
+						<timer id="match-timer" class="v-align" ng-class="checkIfMatchStarted()?'':'font0'" ng-if="recorder.recording" start-time="calculateMatchTime()" max-time-unit="'minute'">{{mminutes}}:{{sseconds}}</timer>
+						<span class="v-align" ng-if="!recorder.recording || !checkIfMatchStarted()">00:00</span>
 					</div>
 					<!-- <div class="col col-15">
 
@@ -251,7 +251,7 @@
 								</ul>
 							</div>
 							<div class="col col-20">
-								<button ng-if="data.event_types[6]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[6], data.team1, 2)">{{data.event_types[6].name}}</button>
+								<button ng-if="data.event_types[6]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[6], data.team1, 1)">{{data.event_types[6].name}}</button>
 							</div>
 							<div class="col col-20">
 								<button ng-if="data.event_types[7]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[7],data.team1, 1)">{{data.event_types[7].name}}</button>

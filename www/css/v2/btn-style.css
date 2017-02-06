@@ -6,7 +6,8 @@
   border-width: 2px;
   border-style: solid;
   width: 100%;
-  line-height: 8vh !important;
+	min-height: 70px;
+  /*line-height: 8vh !important;*/
 }
 
 .gm-big-button {
@@ -144,7 +145,6 @@ li.gm-leatest-events-list.gm-leatest-events-list .event{
 
 .gm-btn-rounded-group {
   color: white;
-  width: 170px;
   text-transform: uppercase;
   display: inline-block;
 }
@@ -167,8 +167,7 @@ li.gm-leatest-events-list.gm-leatest-events-list .event{
 }
 
 .undo-btn:before {
-  font-size: 45px !important;
-  line-height: 60px !important;
+
 }
 .playback-video-btn-list{
 	float:right;
@@ -177,4 +176,13 @@ li.gm-leatest-events-list.gm-leatest-events-list .event{
 .playback-video-btn-list button {
   height: 96%;
   top: 2%;
+}
+.header-buttons .col, .header-buttons button{
+	height:100% !important
+}
+.home-bottom .row{
+	padding:0;
+}
+.home-bottom .col{
+	padding:3px;
 }

@@ -54,7 +54,7 @@
     font-size: 15px;
   }
   .gm-button {
-    line-height: 4vh !important;
+    /*line-height: 4vh !important;*/
   }
   .gm-big-button {
     line-height: 12vh !important;
@@ -81,7 +81,6 @@
     font-size: 10px !important;
   }
   .gm-btn-rounded-group {
-    width: 120px;
     line-height: 15px !important;
   }
   .bottom-line-container {
@@ -96,7 +95,7 @@
     line-height: 8px !important;
   }
   .button {
-    min-height: 40px;
+    min-height: 50px;
   }
   .undo-btn:before {
     font-size: 30px !important;
@@ -118,5 +117,11 @@
 	}
 	.liveViewArea{
 		visibility:hidden;
+	}
+	.home-bottom .col{
+		padding:0;
+	}
+	.home-bottom .row{
+		padding:0;
 	}
 }

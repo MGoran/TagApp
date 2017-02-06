@@ -127,7 +127,7 @@ li.gm-leatest-events-list span.time {
   z-index: 999999;
   background: grey;
   height: 100%;
-	/*overflow: auto;*/
+  /*overflow: auto;*/
 }
 
 .playbackListContent {
@@ -149,18 +149,21 @@ li.gm-leatest-events-list span.time {
   height: 65px;
   line-height: 32px;
 }
-.event-list span{
-		color:#71a03e;
+
+.event-list span {
+  color: #71a03e;
 }
-.playback-video-btn-list .button.button-balanced.button-outline{
-	color:#71a03e;
-	border-color:#71a03e;
+
+.playback-video-btn-list .button.button-balanced.button-outline {
+  color: #71a03e;
+  border-color: #71a03e;
 }
-.event-list.event-list-header{
-	text-align: center;
-	line-height: 65px;
-	text-transform: uppercase;
-	color:black;
+
+.event-list.event-list-header {
+  text-align: center;
+  line-height: 65px;
+  text-transform: uppercase;
+  color: black;
 }
 
 .annotation_panel .col {
@@ -194,17 +197,34 @@ li.gm-leatest-events-list span.time {
   position: absolute;
   bottom: 13px;
 }
-.enableScrollableHeight{
-		position: relative;
-    float: left;
-    width: 100%;
+
+.enableScrollableHeight {
+  position: relative;
+  float: left;
+  width: 100%;
 }
-.bottom-line-container{
-	text-align:center;margin-top:10px
+
+.bottom-line-container {
+  text-align: center;
+  margin-top: 10px
 }
-.settings-home-icon{
-	color:white;margin-bottom: 10px;
+
+.settings-home-icon {
+  color: white;
+  margin-bottom: 10px;
 }
+
 button.settings-home-icon {
-    color: white;
+  color: white;
+}
+
+body .row .col .button {
+  line-height: 100% !important
+}
+
+.v-align {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
 }

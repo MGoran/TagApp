@@ -18,25 +18,25 @@
 		</ion-header-bar>
 		<ion-content>
 			<ion-list class="largeMenu">
-				<ion-item menu-close href="#/app/home">
+				<ion-item menu-toggle href="#/app/home">
 					<i class='ion-home'></i> Dashboard
 				</ion-item>
-				<ion-item menu-close href="#/app/settings">
+				<ion-item menu-toggle href="#/app/settings">
 					<i class='ion-gear-b'></i> Settings
 				</ion-item>
-				<ion-item menu-close href="#/app/event_types">
+				<ion-item menu-toggle href="#/app/event_types">
 					<i class='ion-code-download'></i> Analysis Dashboard
 				</ion-item>
-				<ion-item menu-close href="#/app/old_files">
+				<ion-item menu-toggle href="#/app/old_files">
 					<i class='ion-ios-flag'></i> Downloaded files
 				</ion-item>
-				<ion-item menu-close href="#/app/teams">
+				<ion-item menu-toggle href="#/app/teams">
 					<i class='ion-person-stalker'></i> Team Setup
 				</ion-item>
-				<ion-item menu-close ng-click="logout()" href="#">
+				<ion-item menu-toggle ng-click="logout()" href="#">
 					<i class='ion-log-out'></i> Logout
 				</ion-item>
-				<ion-item menu-close ng-click="exitApp()" href="#/app/home">
+				<ion-item menu-toggle ng-click="exitApp()" href="#/app/home">
 					<i class='ion-android-exit'></i> Exit
 				</ion-item>
 			</ion-list>

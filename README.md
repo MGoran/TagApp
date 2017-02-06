@@ -1,4 +1,11 @@
 "# TagApp"
+0.1.23
+-Reworking of Home screen design, better flexibility for different screens
+-Settings save button will show last screen before entering Settings screen
+-Changes in Annotation buttons (height tweaks so all buttons are full width)
+-Fix for wrong team id in grid for single team overview 
+
+"# TagApp"
 0.1.22
 -UI Rework
 -Adapting UI for small screens

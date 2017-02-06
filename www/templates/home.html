@@ -10,40 +10,70 @@
 			<div class="home-top">
 			</div>
 			<div class="home-bottom">
-				<div class="list" style="text-align:center">
-					<div style="text-align:center">
-						<div class="gm-btn-rounded-group" ng-click="startProject();">
-							<button class="button icon ion-ios-football button-assertive btn-gm-circle"></button>
-							<span>{{recorder.recording ? "Continue":"New Project"}}</span>
+				<div class="row">
+					<div class="col col-10">
+					</div>
+					<div class="col col-80">
+						<div class="row">
+							<div class="col col-25" style="text-align:center">
+								<div class="gm-btn-rounded-group" ng-click="startProject();">
+									<button class="button icon ion-ios-football button-assertive btn-gm-circle"></button>
+									<span>{{recorder.recording ? "Continue":"New Project"}}</span>
+								</div>
+							</div>
+							<div class="col col-25" style="text-align:center">
+								<div class="gm-btn-rounded-group" ui-sref="app.projects">
+									<button class="button icon ion-android-list button-assertive btn-gm-circle"></button>
+									<span>Projects</span>
+								</div>
+							</div>
+							<div class="col col-25" style="text-align:center">
+								<div class="gm-btn-rounded-group" ui-sref="app.event_types">
+									<button class="button icon ion-android-calendar button-assertive btn-gm-circle"></button>
+									<span>Analysis dashboard</span>
+								</div>
+							</div>
+							<div class="col col-25" style="text-align:center">
+								<div class="gm-btn-rounded-group" ui-sref="app.teams">
+									<button class="button icon ion-tshirt button-assertive btn-gm-circle"></button>
+									<span>Teams</span>
+								</div>
+							</div>
 						</div>
-						<div class="gm-btn-rounded-group" ui-sref="app.projects">
-							<button class="button icon ion-android-list button-assertive btn-gm-circle"></button>
-							<span>Projects</span>
-						</div>
-						<div class="gm-btn-rounded-group" ui-sref="app.event_types">
-							<button class="button icon ion-android-calendar button-assertive btn-gm-circle"></button>
-							<span>Analysis dashboard</span>
-						</div>
-						<div class="gm-btn-rounded-group" ui-sref="app.teams">
-							<button class="button icon ion-tshirt button-assertive btn-gm-circle"></button>
-							<span>Teams</span>
+						<div class="col col-10" style="text-align:center">
 						</div>
 					</div>
-					<div class="bottom-line-container">
-						<div class="gm-btn-rounded-group"  ui-sref="app.settings">
-							<button class="button icon ion-gear-a gm-button-red btn-gm-circle settings-home-icon"></button>
-							<span style="line-height: 20px;">Settings<br/>&nbsp;</span>
+				</div>
+				<div class="row">
+					<div class="col col-10">
+					</div>
+					<div class="col col-80">
+						<div class="row">
+							<div class="col col-25" style="text-align:center">
+							</div>
+							<div class="col col-25" style="text-align:center">
+								<div class="gm-btn-rounded-group"  ui-sref="app.settings">
+									<button class="button icon ion-gear-a gm-button-red btn-gm-circle settings-home-icon"></button>
+									<span style="line-height: 20px;">Settings<br/>&nbsp;</span>
+								</div>
+							</div>
+							<div class="col col-25" style="text-align:center">
+								<div class="gm-btn-rounded-group"  ui-sref="login">
+									<button class="button icon ion-android-wifi btn-gm-circle" ng-class="isRecorderAvailable() ?'gm-button-green': 'gm-button-yellow'" style="color:white"></button>
+									<span ng-if="isRecorderAvailable()">
+										<span style="color:white">Server</span> <br/>
+										<span style="line-height:10px">Connected</span>
+									</span>
+									<span ng-if="!isRecorderAvailable()">
+										<span style="color:white">Connect</span> <br/>
+										<span style="line-height:10px">Server</span>
+									</span>
+								</div>
+							</div>
+							<div class="col col-25" style="text-align:center">
+							</div>
 						</div>
-						<div class="gm-btn-rounded-group"  ui-sref="login">
-							<button class="button icon ion-android-wifi btn-gm-circle" ng-class="isRecorderAvailable() ?'gm-button-green': 'gm-button-yellow'" style="color:white"></button>
-							<span ng-if="isRecorderAvailable()">
-								<span style="color:white">Server</span> <br/>
-								<span style="line-height:10px">Connected</span>
-							</span>
-							<span ng-if="!isRecorderAvailable()">
-								<span style="color:white">Connect</span> <br/>
-								<span style="line-height:10px">Server</span>
-							</span>
+						<div class="col col-10" style="text-align:center">
 						</div>
 					</div>
 				</div>

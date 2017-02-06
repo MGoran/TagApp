@@ -1,4 +1,4 @@
-angular.module('settings.controller', []).controller('SettingsCtrl', function($scope, $rootScope, $ionicPopup, $state) {
+angular.module('settings.controller', []).controller('SettingsCtrl', function($scope, $rootScope, $ionicPopup, $state, $ionicHistory) {
   $rootScope.isUser = function() {
     console.log($rootScope.user)
     return $rootScope.user !== undefined && $rootScope.user.validated
@@ -28,7 +28,7 @@ angular.module('settings.controller', []).controller('SettingsCtrl', function($s
     });
     alertPopup.then(function(res) {
       console.log('Ok');
-			$state.go("app.home")
+			$ionicHistory.goBack();
     });
   }
 });
