@@ -1,4 +1,11 @@
 "# TagApp"
+0.1.22
+-UI Rework
+-Adapting UI for small screens
+-Redo functionality
+-Bugfixes
+
+"# TagApp"
 0.1.21
 -UI tweaks
 -Bugfixes

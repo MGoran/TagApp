@@ -45,6 +45,7 @@ li.gm-leatest-events-list span.time {
 
 .scrollable_outside_content {
   overflow: hidden;
+  padding-top: 0;
 }
 
 .popup-container {
@@ -90,9 +91,9 @@ li.gm-leatest-events-list span.time {
 }
 
 .no-lr-pad {
-  padding-left: 0;
-  padding-right: 0;
-  padding-top: 0;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  padding-top: 0px !important;
 }
 
 #LiveStreamVideo {
@@ -118,20 +119,21 @@ li.gm-leatest-events-list span.time {
 
 .gm-button.small-line {
   /*line-height: 1.9em !important;*/
-	font-size:14px !important;
+  font-size: 14px !important;
 }
 
 .new-playback-modal {
   position: relative;
   z-index: 999999;
-  background: black;
+  background: grey;
   height: 100%;
+	/*overflow: auto;*/
 }
 
 .playbackListContent {
   width: 100%;
   padding: 0;
-  height: 74%;
+  min-height: 60%;
   overflow: scroll;
 }
 
@@ -140,7 +142,69 @@ li.gm-leatest-events-list span.time {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.event-list{
-	padding-bottom:0;
-	padding-top:0
+
+.event-list {
+  padding-bottom: 0;
+  padding-top: 0;
+  height: 65px;
+  line-height: 32px;
+}
+.event-list span{
+		color:#71a03e;
+}
+.playback-video-btn-list .button.button-balanced.button-outline{
+	color:#71a03e;
+	border-color:#71a03e;
+}
+.event-list.event-list-header{
+	text-align: center;
+	line-height: 65px;
+	text-transform: uppercase;
+	color:black;
+}
+
+.annotation_panel .col {
+  padding: 1px;
+}
+
+.gm-button.force-size {
+  font-size: 11px !important;
+  line-height: 14px !important;
+  height: 100%
+}
+
+.header-buttons {
+  padding-bottom: 0px;
+}
+
+.header-buttons .col {
+  padding: 1px;
+}
+
+.annotation_panel .row {
+  padding-top: 1px;
+}
+
+.live-view-btn-bottom {
+  text-align: center;
+  background: none;
+  border: none;
+  padding: 0;
+  width: 100%;
+  position: absolute;
+  bottom: 13px;
+}
+.enableScrollableHeight{
+		position: relative;
+    float: left;
+    width: 100%;
+}
+.bottom-line-container{
+	text-align:center;margin-top:10px
+}
+.settings-home-icon{
+	color:white;margin-bottom: 10px;
+}
+button.settings-home-icon {
+    color: white;
 }

@@ -1,4 +1,4 @@
-@media (max-width: 670px) {
+@media (max-width: 740px) {
   .home-left {
     background-size: 80% 80%;
   }
@@ -25,10 +25,10 @@
     float: right;
     right: 0;
   }
-  .gm-list> .list> .item {
+  .gm-list>.list>.item {
     padding: 0;
   }
-  .limit-child-height> div.list {
+  .limit-child-height>div.list {
     max-height: 185px;
     overflow: scroll;
   }
@@ -48,7 +48,7 @@
     font-size: 9px
   }
   .gm-large-font {
-    font-size: 15px;
+    font-size: 25px !important;
   }
   .gm-huge-font {
     font-size: 15px;
@@ -57,7 +57,7 @@
     line-height: 4vh !important;
   }
   .gm-big-button {
-    line-height: 9vh !important;
+    line-height: 12vh !important;
   }
   li.gm-leatest-events-list {
     list-style-type: disc;
@@ -67,4 +67,56 @@
   .other_events {
     height: 44vh;
   }
+  .btn-gm-circle {
+    width: 45px;
+    height: 45px;
+    min-width: 45px;
+  }
+  .gm-btn-rounded-group button:before {
+    font-size: 24px !important;
+  }
+  .gm-btn-rounded-group span {
+    line-height: 10px !important;
+    font-weight: 700;
+    font-size: 10px !important;
+  }
+  .gm-btn-rounded-group {
+    width: 120px;
+    line-height: 15px !important;
+  }
+  .bottom-line-container {
+    margin-top: 0px
+  }
+  .settings-home-icon {
+    color: white;
+    margin-bottom: 0px;
+  }
+  .gm-button.force-size {
+    font-size: 8px !important;
+    line-height: 8px !important;
+  }
+  .button {
+    min-height: 40px;
+  }
+  .undo-btn:before {
+    font-size: 30px !important;
+    line-height: 30px !important;
+  }
+  .event-list {
+    height: 30px;
+    line-height: 0px;
+  }
+  .playback-video-btn-list {
+    margin-top: 0;
+  }
+  .playback-video-btn-list button {
+    min-width: 10px;
+    min-height: 10px;
+  }
+	.playback-video-btn-list button:before{
+		font-size:15px
+	}
+	.liveViewArea{
+		visibility:hidden;
+	}
 }

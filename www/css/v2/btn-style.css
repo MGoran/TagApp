@@ -1,6 +1,6 @@
 .gm-button {
   text-transform: uppercase;
-  font-weight: bold;
+  /*font-weight: bold;*/
   background: none;
   border-radius: 0px;
   border-width: 2px;
@@ -22,7 +22,7 @@
 }
 
 .gm-large-font {
-  font-size: 25px;
+  font-size: 50px;
 }
 
 .gm-huge-font {
@@ -60,7 +60,7 @@
 .gm-button-red {
   color: #e74a43;
   border-color: #e74a43;
-	background: #e74a43;
+  background: #e74a43;
 }
 
 .gm-button-red:hover {
@@ -70,7 +70,9 @@
 .gm-button-green.active {
   background: none;
 }
-
+li.gm-leatest-events-list.gm-leatest-events-list .event{
+	  color: #71a03e;
+}
 .gm-button-green {
   color: #71a03e;
   border-color: #71a03e;
@@ -134,15 +136,15 @@
 
 .btn-gm-circle {
   border-radius: 100%;
-  width: 75px;
-  height: 75px;
-	display: block;
-	margin:auto;
+  width: 90px;
+  height: 90px;
+  display: block;
+  margin: auto;
 }
 
 .gm-btn-rounded-group {
   color: white;
-  width: 100px;
+  width: 170px;
   text-transform: uppercase;
   display: inline-block;
 }
@@ -150,8 +152,29 @@
 .gm-btn-rounded-group span {
   line-height: 30px;
   font-weight: 700;
+  font-size: 15px;
 }
 
 .gm-btn-rounded-group button:before {
   font-size: 45px !important;
+}
+
+.undo-btn {
+  width: auto;
+  text-align: center;
+  height: auto;
+	width:49%;
+}
+
+.undo-btn:before {
+  font-size: 45px !important;
+  line-height: 60px !important;
+}
+.playback-video-btn-list{
+	float:right;
+	margin-top:9px;
+}
+.playback-video-btn-list button {
+  height: 96%;
+  top: 2%;
 }

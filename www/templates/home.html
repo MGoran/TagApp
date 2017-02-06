@@ -22,29 +22,30 @@
 						</div>
 						<div class="gm-btn-rounded-group" ui-sref="app.event_types">
 							<button class="button icon ion-android-calendar button-assertive btn-gm-circle"></button>
-							<span>Analysis</span>
+							<span>Analysis dashboard</span>
 						</div>
 						<div class="gm-btn-rounded-group" ui-sref="app.teams">
 							<button class="button icon ion-tshirt button-assertive btn-gm-circle"></button>
 							<span>Teams</span>
 						</div>
 					</div>
-					<div style="text-align:center;margin-top:10px">
+					<div class="bottom-line-container">
 						<div class="gm-btn-rounded-group"  ui-sref="app.settings">
-							<button class="button icon ion-gear-a gm-button-yellow btn-gm-circle" style="color:white"></button>
-							<span style="color:#f4b647">Settings</span>
+							<button class="button icon ion-gear-a gm-button-red btn-gm-circle settings-home-icon"></button>
+							<span style="line-height: 20px;">Settings<br/>&nbsp;</span>
 						</div>
 						<div class="gm-btn-rounded-group"  ui-sref="login">
-							<button class="button icon ion-android-wifi gm-button-yellow btn-gm-circle" style="color:white"></button>
-							<span style="color:#f4b647">Server</span>
+							<button class="button icon ion-android-wifi btn-gm-circle" ng-class="isRecorderAvailable() ?'gm-button-green': 'gm-button-yellow'" style="color:white"></button>
+							<span ng-if="isRecorderAvailable()">
+								<span style="color:white">Server</span> <br/>
+								<span style="line-height:10px">Connected</span>
+							</span>
+							<span ng-if="!isRecorderAvailable()">
+								<span style="color:white">Connect</span> <br/>
+								<span style="line-height:10px">Server</span>
+							</span>
 						</div>
 					</div>
-					<!-- <button class="gm-btn-white button btn-home-width" ng-click="startProject();">{{recorder.recording ? "Continue":"New Project"}}</button>
-				<button class="gm-btn-white button btn-home-width" ui-sref="app.projects">Projects</button>
-				<button class="gm-btn-white button btn-home-width" ui-sref="app.event_types">Analysis Dashboard</button>
-				<button class="gm-btn-white button btn-home-width" ui-sref="app.teams">Teams</button>
-				<button class="gm-btn-green button btn-home-width" ui-sref="app.settings">Settings</button>
-				<button class="gm-btn-green button btn-home-width" ui-sref="login">Connect Server</button> -->
 				</div>
 			</div>
 		</div>
