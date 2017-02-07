@@ -76,7 +76,6 @@
     font-size: 24px !important;
   }
   .gm-btn-rounded-group span {
-    line-height: 10px !important;
     font-weight: 700;
     font-size: 10px !important;
   }
@@ -95,7 +94,7 @@
     line-height: 8px !important;
   }
   .button {
-    min-height: 50px;
+    min-height: 45px;
   }
   .undo-btn:before {
     font-size: 30px !important;

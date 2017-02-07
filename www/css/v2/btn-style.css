@@ -150,11 +150,13 @@ li.gm-leatest-events-list.gm-leatest-events-list .event{
 }
 
 .gm-btn-rounded-group span {
-  line-height: 30px;
+  /*line-height: 30px;*/
   font-weight: 700;
   font-size: 15px;
 }
-
+.btn-gm-circle{
+	margin-bottom:4px
+}
 .gm-btn-rounded-group button:before {
   font-size: 45px !important;
 }
