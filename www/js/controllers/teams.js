@@ -12,6 +12,7 @@ angular.module('teams.controller', []).controller('TeamsCtrl', function($rootSco
     // $rootScope.selectedCam = $rootScope.user.cameras[0];
   });
 
+
   $scope.selectTeam = function(index) {
     $scope.selectedIndex = index;
     $rootScope.data.team1 = JSON.parse(localStorage.team1);
@@ -55,7 +56,7 @@ angular.module('teams.controller', []).controller('TeamsCtrl', function($rootSco
       $rootScope.data.team2 = JSON.parse(localStorage.team2);
       console.log($rootScope.data)
       if ($scope.selectedIndex === 1) {
-				if($rootScope.data.team1.players === undefined) $rootScope.data.team1.players = [];
+        if ($rootScope.data.team1.players === undefined) $rootScope.data.team1.players = [];
         $rootScope.data.team1.players.push({
           "id": $rootScope.data.team1.players.length,
           "number": res.number,
@@ -63,7 +64,7 @@ angular.module('teams.controller', []).controller('TeamsCtrl', function($rootSco
         });
         $scope.selectedTeam = $rootScope.data.team1;
       } else {
-				if($rootScope.data.team2.players === undefined) $rootScope.data.team2.players = [];
+        if ($rootScope.data.team2.players === undefined) $rootScope.data.team2.players = [];
         $rootScope.data.team2.players.push({
           "id": $rootScope.data.team1.players.length,
           "number": res.number,
@@ -96,7 +97,7 @@ angular.module('teams.controller', []).controller('TeamsCtrl', function($rootSco
     }
     var temp = '<div class="list">';
     temp += '<label class="item item-input">';
-    temp += '  <input type="text" ng-model="team.name" placeholder="Player Name">';
+    temp += '  <input type="text" ng-model="team.name" limit-char limit="3" style="text-transform:uppercase" placeholder="Player Name">';
     temp += '</label>';
     temp += '</div>';
     var myPopup = $ionicPopup.show({
@@ -143,22 +144,22 @@ angular.module('teams.controller', []).controller('TeamsCtrl', function($rootSco
     });
   }
 
-	$scope.getTeamNames = function(){
-		localStorage.user = JSON.stringify($rootScope.user);
-		$rootScope.selectedCam = $rootScope.user.cameras[0];
-		$scope.showLoading();
-		var promise = recorderControll.getTeamNames($rootScope.selectedCam);
-		promise.then(function(response) {
-			console.log(response);
-			localStorage.team1 = JSON.stringify(response.data.team[0]);
+  $scope.getTeamNames = function() {
+    localStorage.user = JSON.stringify($rootScope.user);
+    $rootScope.selectedCam = $rootScope.user.cameras[0];
+    $scope.showLoading();
+    var promise = recorderControll.getTeamNames($rootScope.selectedCam);
+    promise.then(function(response) {
+      console.log(response);
+      localStorage.team1 = JSON.stringify(response.data.team[0]);
       localStorage.team2 = JSON.stringify(response.data.team[1]);
-			$rootScope.data.team1 = JSON.parse(localStorage.team1);
-			$rootScope.data.team2 = JSON.parse(localStorage.team2);
-			console.log($rootScope.data);
-			$scope.hideLoading();
-		}, function(err) {
-			console.log(err);
-			$scope.hideLoading();
-		})
-	}
+      $rootScope.data.team1 = JSON.parse(localStorage.team1);
+      $rootScope.data.team2 = JSON.parse(localStorage.team2);
+      console.log($rootScope.data);
+      $scope.hideLoading();
+    }, function(err) {
+      console.log(err);
+      $scope.hideLoading();
+    })
+  }
 });

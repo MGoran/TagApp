@@ -28,7 +28,7 @@ angular.module('TagApp', [
   "com.2fdevs.videogular.plugins.controls",
   "com.2fdevs.videogular.plugins.buffering",
   "com.2fdevs.videogular.plugins.overlayplay",
-	"com.2fdevs.videogular.plugins.hls"
+  "com.2fdevs.videogular.plugins.hls"
 ])
 
 .run(function($ionicPlatform) {
@@ -171,6 +171,26 @@ angular.module('TagApp', [
       return $sce.trustAsResourceUrl(val);
     };
   }])
+	.directive('limitChar', function() {
+    'use strict';
+    return {
+        restrict: 'A',
+        scope: {
+            limit: '=limit',
+            ngModel: '=ngModel'
+        },
+        link: function(scope) {
+            scope.$watch('ngModel', function(newValue, oldValue) {
+                if (newValue) {
+                    var length = newValue.toString().length;
+                    if (length > scope.limit) {
+                        scope.ngModel = oldValue;
+                    }
+                }
+            });
+        }
+    };
+})
 String.prototype.capitalizeFirstLetter = function() {
   return this.charAt(0).toUpperCase() + this.slice(1);
 }
