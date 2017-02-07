@@ -13,7 +13,7 @@
 						</button>
 					</div>
 					<div class="col col-10">
-						<button  ng-click="toggleMatchPeriod()" class="button gm-big-button gm-button gm-button-green  text-white force-size">{{data.periodCmdLabel}}</button>
+						<button  ng-click="toggleMatchPeriod()" class="button gm-big-button gm-button text-white force-size" ng-class="data.periodCmdLabel == 'Start Match'?'gm-button-green':'gm-button-red'">{{data.periodCmdLabel}}</button>
 					</div>
 					<!-- <div class="col col-20">
 						<button ng-if="data.currentProject.annotations.length > 0 && recorder.recording" class="button gm-button gm-button-black no-bg crop-text" ng-click="undoLast(data.currentProject.annotations, data.currentProject.annotations.length-1)">Undo - <small>{{data.currentProject.annotations[data.currentProject.annotations.length-1].event.name}}</small></button>
