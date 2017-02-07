@@ -33,7 +33,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     $scope.getExportQueue(true);
   }, 1500)
   $interval(function() {
-    //if ($scope.showPlaybackListModal || $scope.data.showNewPlaybackList) $scope.getExportQueue(true);
+    if ($scope.showPlaybackListModal || $scope.data.showNewPlaybackList) $scope.getExportQueue(true);
   }, 12000);
 
   $scope.showRecorderButton = function() {
