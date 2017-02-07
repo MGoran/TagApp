@@ -290,9 +290,9 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
   }
 
   $scope.toggleMatchPeriod = function() {
-
     if ($scope.recorder === undefined || !$scope.recorder.recording) {
-      $scope.startRecorder();
+      $scope.startRecorder(true);
+			return false;
     }
 
     if ($rootScope.data.recordings[localStorage.lastRecordedVideo] === undefined) {
@@ -347,7 +347,6 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
       } else {
         var promise = recorderControll.addEvent(annotation, $rootScope.selectedCam);
         promise.then(function(response) {
-          //console.log(response);
           annotation.id = response.data.id
           $rootScope.data.recordings = JSON.parse(localStorage.recordings)
           //console.log($rootScope.data.recordings)
@@ -538,7 +537,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     }, 100)
   }
 
-  $scope.startRecorder = function() {
+  $scope.startRecorder = function(startMatch) {
     if ($rootScope.selectedCam.recorderType === "WithoutRecorder") {
       var date = $filter("date")(new Date(), "dd MMMM yyyy - hh-mm a");
       var filename = "capture - " + date;
@@ -618,11 +617,15 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
 
 
         }
+				$timeout(function(){
+					if(startMatch) $scope.toggleMatchPeriod(startMatch);
+				},1000)
         //console.log($rootScope.data.recordings);
         $scope.getRecorderState();
         $scope.hideLoading();
         $scope.getTeamScores();
       }, 1000);
+
 
     }, function(error) {
       $scope.hideLoading();

@@ -3,7 +3,8 @@
 -Fix wrong screen state for Project screen
 -Match time in green color
 -Fix refreshing playback video state
--Change match control button color to Red when match is started 
+-Change match control button color to Red when match is started
+-When starting match if recorder is not started start recorder and match 
 
 "# TagApp"
 0.1.23
