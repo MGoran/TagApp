@@ -96,10 +96,10 @@
 								<button style="float:right" class="button button-icon icon ion-forward button gm-button gm-button-green no-bg crop-text undo-btn" ng-click="redoLast(data.currentProject.annotations)"></button>
 							</div>
 							<div class="col col-20">
-								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[0], data.team2, 2)">{{data.event_types[0].name}}</button>
+								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[1], data.team2, 2)">{{data.event_types[1].name}}</button>
 							</div>
 							<div class="col col-20">
-								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[1], data.team2, 2)">{{data.event_types[1].name}}</button>
+								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[0], data.team2, 2)">{{data.event_types[0].name}}</button>
 							</div>
 						</div>
 						<!-- END ROW ONE -->
@@ -147,22 +147,22 @@
 						<!-- END ROW THREE -->
 
 						<div class="row">
-							<div class="col col-20" style="height:{{calculateBottomHeight()}};overflow:scroll;padding-top:0;">
+							<div class="col col-20" style="height:{{calculateBottomHeight()}}px;overflow:scroll;padding-top:0;">
 								<div class="col col-100 no-lr-pad" ng-repeat="evt in data.event_types track by $index" ng-init="btn_pos = 6+$index" ng-if="$index < data.event_types.length - 6">
 									<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[btn_pos], data.team1, 1)">{{data.event_types[btn_pos].name}}</button>
 								</div>
 							</div>
-							<div class="col col-60 liveViewArea" style="height:{{calculateBottomHeight()}};position:relative; overflow: hidden;">
+							<div class="col col-60 liveViewArea" style="height:{{calculateBottomHeight()}}px;position:relative; overflow: hidden;">
 								<div id="new-playback-video" class="new-playback-modal" ng-if="data.showPlaybackVideoModal">
 									<div id="playbackVideoPlayer" style="width:100%;height: 80%;"></div>
 									<button class="button gm-button gm-button-red no-bg" ng-click="data.showPlaybackVideoModal=false">Live View</button>
 								</div>
-								<div id="new-playback-list-modal" class="new-playback-modal" ng-show="data.showNewPlaybackList">
+								<div id="new-playback-list-modal" style="height:" class="new-playback-modal" ng-show="data.showNewPlaybackList">
 									<span class="item event-list event-list-header" ng-if="data.videos == undefined || data.videos.length <= 0">
 										Playback Video List
 									</span>
 									<div ng-if="!data.downloadingPlayback" class="playbackListContent">
-										<ion-list class="enableScrollableHeight" style="max-height:{{calculateBottomHeight()-77+'px'}}">
+										<ion-list class="enableScrollableHeight" style="max-height:{{calculateBottomHeight()-50+'px'}}">
 											<span class="item event-list" ng-repeat="video in data.videos | orderBy: '-id'" ng-if="video.event_details.id !== undefined">
 												<span class="item item-icon-left" style="float:left;width:70%;border:0">
 													<i class="icon {{video.event_details.event.icon}}"></i>
