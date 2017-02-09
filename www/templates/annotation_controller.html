@@ -162,7 +162,7 @@
 										Playback Video List
 									</span>
 									<div ng-if="!data.downloadingPlayback" class="playbackListContent">
-										<ion-list class="enableScrollableHeight" style="max-height:{{calculateBottomHeight()-50+'px'}}">
+										<ion-list class="enableScrollableHeight" style="max-height:{{calculateBottomHeight()-77+'px'}}">
 											<span class="item event-list" ng-repeat="video in data.videos | orderBy: '-id'" ng-if="video.event_details.id !== undefined">
 												<span class="item item-icon-left" style="float:left;width:70%;border:0">
 													<i class="icon {{video.event_details.event.icon}}"></i>
