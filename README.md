@@ -1,4 +1,8 @@
 "# TagApp"
+0.2.0
+-Adapting code to work with API v2
+
+"# TagApp"
 0.1.24
 -Fix wrong screen state for Project screen
 -Match time in green color
@@ -6,6 +10,8 @@
 -Change match control button color to Red when match is started
 -When starting match if recorder is not started start recorder and match
 -Limit team names to 3 letters and capitalize it
+-Removing login and exit buttons
+-Fixing iOS issue with playback list
 
 "# TagApp"
 0.1.23
