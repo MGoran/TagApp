@@ -574,13 +574,15 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
       }
 
       $scope.recorderCheck = $interval(function() {
-        //console.log("Checking recorder state");
+        console.log("Checking recorder state");
         if ($rootScope.selectedCam.recorderType === "WithoutRecorder") {
           $rootScope.recorder = $scope.recorder;
           return false;
         }
         var promise = recorderControll.getRecorderState($rootScope.selectedCam);
+				var requestTimeStart = Date.now();
         promise.then(function(response) {
+					console.log(Date.now() - requestTimeStart);
           if ($rootScope.selectedCam.recorderType === "Panofield") {
             $scope.recorder.recording = response.data.recording;
             if (!$scope.recorder.recording) {
@@ -593,7 +595,6 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
           alert(error.data.error);
         });
       }, 5000);
-
       $timeout(function() {
         var date = $filter("date")(new Date(), "dd MMMM yyyy - hh-mm a");
         var filename = "capture - " + date;

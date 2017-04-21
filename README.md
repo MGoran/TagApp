@@ -1,4 +1,10 @@
 "# TagApp"
+0.2.1
+-UI adaptation fixes
+-Changes on home page
+-Removing live-view feature
+
+"# TagApp"
 0.2.0
 -Adapting code to work with API v2
 

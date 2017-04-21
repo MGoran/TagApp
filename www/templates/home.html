@@ -30,7 +30,7 @@
 							<div class="col col-25" style="text-align:center">
 								<div class="gm-btn-rounded-group" ui-sref="app.event_types">
 									<button class="button icon ion-android-calendar button-assertive btn-gm-circle"></button>
-									<span>Analysis dashboard</span>
+									<span>Panels</span>
 								</div>
 							</div>
 							<div class="col col-25" style="text-align:center">
@@ -61,12 +61,10 @@
 								<div class="gm-btn-rounded-group"  ui-sref="login">
 									<button class="button icon ion-android-wifi btn-gm-circle" ng-class="isRecorderAvailable() ?'gm-button-green': 'gm-button-yellow'" style="color:white"></button>
 									<span ng-if="isRecorderAvailable()">
-										<span style="color:white">Server</span> <br/>
 										<span style="line-height:10px">Connected</span>
 									</span>
 									<span ng-if="!isRecorderAvailable()">
-										<span style="color:white">Connect</span> <br/>
-										<span style="line-height:10px">Server</span>
+										<span style="color:white">Connect</span>
 									</span>
 								</div>
 							</div>

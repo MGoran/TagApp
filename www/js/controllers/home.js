@@ -2,6 +2,15 @@ angular.module('home.controller', []).controller('HomeCtrl', function($rootScope
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
 		$rootScope.user = JSON.parse(localStorage.user);
 		$rootScope.selectedCam = $rootScope.user.cameras[0];
+
+
+		/*
+			* Disable live view
+		 */
+		$rootScope.selectedCam.cameraType = "disabled";
+
+
+
     if (!$rootScope.isUser()) {
       $state.go('login')
     }
