@@ -940,7 +940,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     });
     xml += "	</annotations>";
     xml += '</recording>';
-    //console.log(xml);
+    console.log(xml);
     //return false;
     var filename = localStorage.lastRecordedVideo.replace(/\s+/g, '') + ".xml";
 
