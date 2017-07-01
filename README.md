@@ -1,4 +1,9 @@
 "# TagApp"
+0.2.3
+-Adding missing assets
+-Adapting home design for iphone7/6
+
+"# TagApp"
 0.2.2
 -New resources
 
