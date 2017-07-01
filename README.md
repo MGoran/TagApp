@@ -1,4 +1,8 @@
 "# TagApp"
+0.2.2
+-New resources
+
+"# TagApp"
 0.2.1
 -UI adaptation fixes
 -Changes on home page
