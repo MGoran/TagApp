@@ -43,6 +43,7 @@
     <splash src="resources/ios/splash/Default-Portrait~ipad.png" width="768" height="1024"/>
     <splash src="resources/ios/splash/Default@2x~iphone.png" width="640" height="960"/>
     <splash src="resources/ios/splash/Default~iphone.png" width="320" height="480"/>
+    <splash src="resources/ios/splash/Default-Portrait-2xipad_1536x2048.png" width="2048" height="1536"/>
     <icon src="resources/ios/icon/icon-60@3x.png" width="180" height="180"/>
     <icon src="resources/ios/icon/icon-60.png" width="60" height="60"/>
     <icon src="resources/ios/icon/icon-60@2x.png" width="120" height="120"/>
