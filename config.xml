@@ -63,7 +63,7 @@
     <icon src="resources/ios/icon/icon-small@3x.png" width="87" height="87"/>
     <icon src="resources/ios/icon/icon-50.png" width="50" height="50"/>
     <icon src="resources/ios/icon/icon-50@2x.png" width="100" height="100"/>
-    <plugin name="cordova-plugin-email-composer" source="npm" version="0.8.3"/>
+    <plugin name="cordova-plugin-email-composer" source="npm" version="0.8.7"/>
   </platform>
   <icon src="resources\android\icon\drawable-xhdpi-icon.png"/>
   <plugin name="cordova-plugin-device" spec="1.1.2"/>
