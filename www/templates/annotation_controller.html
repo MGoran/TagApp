@@ -5,15 +5,15 @@
 		<div style="background:white" class="annotation_video"> </div>
 		<div class="gm-controls" style="opacity:{{data.vc_transparency/100}}">
 			<div class="panel panel-top-controlls">
-				<div class="row line-background header-buttons">
+				<div class="row line-background header-buttons relative-div">
 					<div class="col col-10">
-						<button ng-if="selectedCam.recorderType !== 'WithoutRecorder'" ng-click="toggleRecorder()" class="button gm-big-button gm-button gm-button-green text-white force-size" ng-class="recorder.recording?'gm-button-red small-line':'gm-button-green'">
+						<button ng-if="selectedCam.recorderType !== 'WithoutRecorder'" ng-click="toggleRecorder()" class="button gm-big-button gm-button gm-button-green text-white force-size match-recorder" ng-class="recorder.recording?'gm-button-red small-line':'gm-button-green'">
 							{{data.recorderCmdLabel}}
 								<timer ng-if="recorder.recording" start-time="recorder.time" max-time-unit="'minute'">{{mminutes}}:{{sseconds}}</timer>
 						</button>
 					</div>
 					<div class="col col-10">
-						<button  ng-click="toggleMatchPeriod()" class="button gm-big-button gm-button text-white force-size" ng-class="data.periodCmdLabel == 'Start Match'?'gm-button-green':'gm-button-red'">{{data.periodCmdLabel}}</button>
+						<button  ng-click="toggleMatchPeriod()" class="button gm-big-button gm-button text-white force-size match-recorder second" ng-class="data.periodCmdLabel == 'Start Match'?'gm-button-green':'gm-button-red'">{{data.periodCmdLabel}}</button>
 					</div>
 					<!-- <div class="col col-20">
 						<button ng-if="data.currentProject.annotations.length > 0 && recorder.recording" class="button gm-button gm-button-black no-bg crop-text" ng-click="undoLast(data.currentProject.annotations, data.currentProject.annotations.length-1)">Undo - <small>{{data.currentProject.annotations[data.currentProject.annotations.length-1].event.name}}</small></button>
