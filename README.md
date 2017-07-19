@@ -2,6 +2,7 @@
 0.2.3
 -Adding missing assets
 -Removing default user from login
+-UI changes for small screens
 
 "# TagApp"
 0.2.3
