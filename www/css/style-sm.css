@@ -141,7 +141,7 @@
  .gm-button.force-size.match-recorder{
     position: absolute;
     min-width: 32px;
-    max-width: 71px;
+    max-width: 79px;
     min-height: 21px!important;
     height: 21px!important;
     line-height: inherit!important;
@@ -154,5 +154,20 @@
   }
   .no-bg .v-align{
     font-size: 19px;
+  }
+  .undo-btn:before{
+    font-size: 14px!important;
+  }
+}
+
+@media (max-width: 380px){
+  .gm-button.force-size.match-recorder{
+    max-width: 71px;
+  }
+}
+
+@media (max-width: 330px){
+  .gm-button.force-size.match-recorder{
+    max-width: 60px;
   }
 }
