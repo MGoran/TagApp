@@ -130,3 +130,29 @@
     padding:5px;
   }
 }
+
+@media (max-width: 480px){
+  .button{
+    font-size: 10px;
+  }
+  .relative-div{
+    position: relative;
+  }
+ .gm-button.force-size.match-recorder{
+    position: absolute;
+    min-width: 32px;
+    max-width: 71px;
+    min-height: 21px!important;
+    height: 21px!important;
+    line-height: inherit!important;
+    padding: 0!important;
+    font-size: 7px!important;
+ }
+  .gm-button.force-size.match-recorder.second{
+    top: 29px;
+    left: 6px;
+  }
+  .no-bg .v-align{
+    font-size: 19px;
+  }
+}
