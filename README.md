@@ -1,6 +1,11 @@
 "# TagApp"
 0.2.3
 -Adding missing assets
+-Removing default user from login
+
+"# TagApp"
+0.2.3
+-Adding missing assets
 -Adapting home design for iphone7/6
 
 "# TagApp"

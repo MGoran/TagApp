@@ -1,15 +1,16 @@
 angular.module('login.controller', []).controller('LoginCtrl', function($rootScope, $scope, $ionicModal, $timeout, $state, $ionicLoading,recorderControll) {
   //console.log(JSON.parse(localStorage.user));
   if (localStorage.user === undefined || localStorage.user === "") {
-    $scope.data = {
-      username: "user1",
-      password: "password1",
-      cameraType: "disabled",
-      cameraIP: "84.104.56.233:8080",
-      recorderType: "Panofield",
-      //recorderIP: "62.238.246.143:5050" -> vMix
-      recorderIP: "84.104.56.233:9090"
-    };
+    $scope.data = {};
+    // $scope.data = {
+    //   username: "user1",
+    //   password: "password1",
+    //   cameraType: "disabled",
+    //   cameraIP: "84.104.56.233:8080",
+    //   recorderType: "Panofield",
+    //   //recorderIP: "62.238.246.143:5050" -> vMix
+    //   recorderIP: "84.104.56.233:9090"
+    // };
   } else {
     $rootScope.user = JSON.parse(localStorage.user);
     $scope.data = $rootScope.user.cameras[0];
