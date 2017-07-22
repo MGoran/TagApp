@@ -1,5 +1,5 @@
 <ion-view view-title="Project" hide-nav-bar="true" hide-back-button="true">
-	<ion-content padding="false" style="height:100%" class="video-page" scroll="false">
+	<ion-content padding="false" style="height:100%" class="video-page annon-page" scroll="false">
 
 		<!-- <div ng-if="!data.live_view" style="background:grey" class="annotation_video" /> -->
 		<div style="background:white" class="annotation_video"> </div>
@@ -18,16 +18,16 @@
 					<!-- <div class="col col-20">
 						<button ng-if="data.currentProject.annotations.length > 0 && recorder.recording" class="button gm-button gm-button-black no-bg crop-text" ng-click="undoLast(data.currentProject.annotations, data.currentProject.annotations.length-1)">Undo - <small>{{data.currentProject.annotations[data.currentProject.annotations.length-1].event.name}}</small></button>
 					</div> -->
-					<div class="col col-20">
-						<button class="button gm-button gm-big-button gm-button-yellow no-bg" ng-click="goal(data.team1, 1)">Goal - {{data.team1.name}}</button>
+					<div class="col col-20 iphone-col">
+						<button class="button gm-button gm-big-button gm-button-yellow no-bg first-team" ng-click="goal(data.team1, 1)">Goal - {{data.team1.name}}</button>
 					</div>
-					<div class="col col-20 button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-green gm-large-font">
+					<div class="col col-20 iphone-col button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-green gm-large-font">
 						<span class="v-align"> {{data.score1}}&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;{{data.score2}}</span>
 					</div>
-					<div class="col col-20">
-						<button class="button gm-button gm-big-button gm-button-blue text-blue no-bg " ng-click="goal(data.team2, 2)">Goal - {{data.team2.name}}</button>
+					<div class="col col-20 iphone-col">
+						<button class="button gm-button gm-big-button gm-button-blue text-blue no-bg second-team " ng-click="goal(data.team2, 2)">Goal - {{data.team2.name}}</button>
 					</div>
-					<div class="col col-20 button gm-button gm-big-button gm-button-green no-bg gm-no-border gm-button-regular gm-large-font" style="font-size:50px;">
+					<div class="col col-20 button gm-button  center-time gm-big-button gm-button-green no-bg gm-no-border gm-button-regular gm-large-font" style="font-size:50px;">
 						<timer id="match-timer" class="v-align" ng-class="checkIfMatchStarted()?'':'font0'" ng-if="recorder.recording" start-time="calculateMatchTime()" max-time-unit="'minute'">{{mminutes}}:{{sseconds}}</timer>
 						<span class="v-align" ng-if="!recorder.recording || !checkIfMatchStarted()">00:00</span>
 					</div>
@@ -85,69 +85,69 @@
 					<div class="annotation_panel" ng-if="!data.one_team_view">
 						<!-- ROW ONE -->
 						<div class="row">
-							<div class="col col-20">
+							<div class="col col-20 iphone-col">
 								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[0], data.team1, 1)">{{data.event_types[0].name}}</button>
 							</div>
-							<div class="col col-20">
+							<div class="col col-20 iphone-col">
 								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[1], data.team1, 1)">{{data.event_types[1].name}}</button>
 							</div>
-							<div class="col col-20">
+							<div class="col col-20 iphone-col abs-col-1">
 								<button style="float:left" class="button button-icon icon ion-reply button gm-button gm-button-green no-bg crop-text undo-btn" ng-click="undoLast(data.currentProject.annotations, data.currentProject.annotations.length-1)"></button>
 								<button style="float:right" class="button button-icon icon ion-forward button gm-button gm-button-green no-bg crop-text undo-btn" ng-click="redoLast(data.currentProject.annotations)"></button>
 							</div>
-							<div class="col col-20">
+							<div class="col col-20 iphone-col">
 								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[1], data.team2, 2)">{{data.event_types[1].name}}</button>
 							</div>
-							<div class="col col-20">
+							<div class="col col-20 iphone-col">
 								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[0], data.team2, 2)">{{data.event_types[0].name}}</button>
 							</div>
 						</div>
 						<!-- END ROW ONE -->
 						<!-- ROW TWO -->
 						<div class="row">
-							<div class="col col-20">
+							<div class="col col-20 iphone-col">
 								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[2], data.team1, 1)">{{data.event_types[2].name}}</button>
 							</div>
-							<div class="col col-20">
+							<div class="col col-20 iphone-col">
 								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[3], data.team1, 1)">{{data.event_types[3].name}}</button>
 							</div>
-							<div class="col col-20" style="padding-left: 10px;">
+							<div class="col col-20 iphone-col abs-col-2" style="padding-left: 10px;">
 								<ul ng-if="recorder.recording" class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular" style="width:auto;text-align: left;">
 									<li ng-repeat="annotation in data.currentProject.annotations | limitTo:-3 | orderBy: '-event.duration_after'" class="gm-leatest-events-list color-{{annotation.team.color}}"><span class="time">{{annotation.event.duration_after - annotation.event.time_after  | date:"mm:ss"}}</span> <span class="event">{{annotation.event.name}}</span></li>
 								</ul>
 							</div>
-							<div class="col col-20">
+							<div class="col col-20 iphone-col">
 								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[3], data.team2, 2)">{{data.event_types[3].name}}</button>
 							</div>
-							<div class="col col-20">
+							<div class="col col-20 iphone-col">
 								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[2],data.team2, 2)">{{data.event_types[2].name}}</button>
 							</div>
 						</div>
 						<!-- END ROW TWO -->
 						<!-- ROW THREE -->
 						<div class="row">
-							<div class="col col-20">
+							<div class="col col-20 iphone-col">
 								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[4], data.team1, 1)">{{data.event_types[4].name}}</button>
 							</div>
-							<div class="col col-20">
+							<div class="col col-20 iphone-col">
 								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[5], data.team1, 1)">{{data.event_types[5].name}}</button>
 							</div>
-							<div class="col col-20" style="padding-left: 10px;">
+							<div class="col col-20 iphone-col abs-col-3" style="padding-left: 10px;">
 								<ul ng-if="recorder.recording && data.currentProject.annotations.length > 3" class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular" style="width:auto;text-align: left;">
 									<li ng-repeat="annotation in data.currentProject.annotations | limitTo:-3:-3 | orderBy: '-event.duration_after'" class="gm-leatest-events-list color-{{annotation.team.color}}"><span class="time">{{annotation.event.duration_after - annotation.event.time_after  | date:"mm:ss"}}</span> <span class="event">{{annotation.event.name}}</span></li>
 								</ul>
 							</div>
-							<div class="col col-20">
+							<div class="col col-20 iphone-col">
 								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[5], data.team2, 2)">{{data.event_types[5].name}}</button>
 							</div>
-							<div class="col col-20">
+							<div class="col col-20 iphone-col">
 								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[4], data.team2, 2)">{{data.event_types[4].name}}</button>
 							</div>
 						</div>
 						<!-- END ROW THREE -->
 
 						<div class="row">
-							<div class="col col-20" style="height:{{calculateBottomHeight()}}px;overflow:scroll;padding-top:0;">
+							<div class="col col-20 iphone-col" style="height:{{calculateBottomHeight()}}px;overflow:scroll;padding-top:0;">
 								<div class="col col-100 no-lr-pad" ng-repeat="evt in data.event_types track by $index" ng-init="btn_pos = 6+$index" ng-if="$index < data.event_types.length - 6">
 									<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[btn_pos], data.team1, 1)">{{data.event_types[btn_pos].name}}</button>
 								</div>
@@ -219,69 +219,69 @@
 					<div class="annotation_panel" ng-if="data.one_team_view">
 						<!-- ROW ONE -->
 						<div class="row">
-							<div class="col col-20">
+							<div class="col col-20 iphone-col">
 								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[0], data.team1, 1)">{{data.event_types[0].name}}</button>
 							</div>
-							<div class="col col-20">
+							<div class="col col-20 iphone-col">
 								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[1], data.team1, 1)">{{data.event_types[1].name}}</button>
 							</div>
-							<div class="col col-20">
+							<div class="col col-20 iphone-col">
 								<button style="float:left" class="button button-icon icon ion-reply button gm-button gm-button-green no-bg crop-text undo-btn" ng-click="undoLast(data.currentProject.annotations, data.currentProject.annotations.length-1)"></button>
 								<button style="float:right" class="button button-icon icon ion-forward button gm-button gm-button-green no-bg crop-text undo-btn" ng-click="redoLast(data.currentProject.annotations)"></button>
 							</div>
-							<div class="col col-20">
+							<div class="col col-20 iphone-col">
 								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[2], data.team1, 1)">{{data.event_types[2].name}}</button>
 							</div>
-							<div class="col col-20">
+							<div class="col col-20 iphone-col">
 								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[3], data.team1, 1)">{{data.event_types[3].name}}</button>
 							</div>
 						</div>
 						<!-- END ROW ONE -->
 						<!-- ROW TWO -->
 						<div class="row">
-							<div class="col col-20">
+							<div class="col col-20 iphone-col">
 								<button ng-if="data.event_types[4]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[4], data.team1, 1)">{{data.event_types[4].name}}</button>
 							</div>
-							<div class="col col-20">
+							<div class="col col-20 iphone-col">
 								<button ng-if="data.event_types[5]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[5], data.team1, 1)">{{data.event_types[5].name}}</button>
 							</div>
-							<div class="col col-20" style="padding-left:10px">
+							<div class="col col-20 iphone-col abs-col-2" style="padding-left:10px">
 								<ul ng-if="recorder.recording" class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular" style="width:auto;text-align: left;">
 									<li ng-repeat="annotation in data.currentProject.annotations | limitTo:-3 | orderBy: '-event.duration_after'" class="gm-leatest-events-list color-{{annotation.team.color}}"><span class="time">{{annotation.event.duration_after - annotation.event.time_after  | date:"mm:ss"}}</span> <span class="event">{{annotation.event.name}}</span></li>
 								</ul>
 							</div>
-							<div class="col col-20">
+							<div class="col col-20 iphone-col">
 								<button ng-if="data.event_types[6]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[6], data.team1, 1)">{{data.event_types[6].name}}</button>
 							</div>
-							<div class="col col-20">
+							<div class="col col-20 iphone-col">
 								<button ng-if="data.event_types[7]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[7],data.team1, 1)">{{data.event_types[7].name}}</button>
 							</div>
 						</div>
 						<!-- END ROW TWO -->
 						<!-- ROW THREE -->
 						<div class="row">
-							<div class="col col-20">
+							<div class="col col-20 iphone-col">
 								<button ng-if="data.event_types[8]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[8], data.team1, 1)">{{data.event_types[8].name}}</button>
 							</div>
-							<div class="col col-20">
+							<div class="col col-20 iphone-col">
 								<button ng-if="data.event_types[9]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[9], data.team1, 1)">{{data.event_types[9].name}}</button>
 							</div>
-							<div class="col col-20">
+							<div class="col col-20 iphone-col">
 								<!-- <ul ng-if="recorder.recording" class="button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-regular" style="width:auto;text-align: left;">
 									<li ng-repeat="annotation in data.currentProject.annotations | limitTo:-3:-3" ng-if="annotation.team !== undefined" class="gm-leatest-events-list color-{{annotation.team.color}}"><span class="time">{{annotation.event.duration_after - annotation.event.time_after  | date:"mm:ss"}}</span> <span class="event">{{annotation.event.name}}</span></li>
 								</ul> -->
 							</div>
-							<div class="col col-20">
+							<div class="col col-20 iphone-col">
 								<button ng-if="data.event_types[10]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[10], data.team1, 2)">{{data.event_types[10].name}}</button>
 							</div>
-							<div class="col col-20">
+							<div class="col col-20 iphone-col">
 								<button ng-if="data.event_types[11]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[11], data.team1, 1)">{{data.event_types[11].name}}</button>
 							</div>
 						</div>
 						<!-- END ROW THREE -->
 
 						<div class="row">
-							<div class="col col-20" style="height:{{calculateBottomHeight()+'px'}};overflow:scroll">
+							<div class="col col-20 iphone-col" style="height:{{calculateBottomHeight()+'px'}};overflow:scroll">
 								<div class="col col-100 no-lr-pad" ng-repeat="evt in data.event_types track by $index" ng-init="btn_pos = 12+$index" ng-if="$index < data.event_types.length - 12 && btn_pos%2==0 && data.event_types[btn_pos]">
 									<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[btn_pos], data.team1, 1)">{{data.event_types[btn_pos].name}}</button>
 								</div>
@@ -343,7 +343,7 @@
 									<img ng-if="(selectedCam.cameraType == 'Dahua' || selectedCam.cameraType == 'Axis')  && data.live_view" ng-src="{{videoSource}}" class="annotation_video" />
 								</div>
 							</div>
-							<div class="col col-20 no-lr-pad" style="height:{{calculateBottomHeight()+'px'}};overflow:scroll" id="scrollableContent">
+							<div class="col col-20 iphone-col no-lr-pad" style="height:{{calculateBottomHeight()+'px'}};overflow:scroll" id="scrollableContent">
 								<div class="col col-100" ng-repeat="evt in data.event_types track by $index" ng-init="btn_pos = 12+$index" ng-if="$index < data.event_types.length - 12  && btn_pos%2==1  && data.event_types[btn_pos]">
 									<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[btn_pos], data.team1, 1)">{{data.event_types[btn_pos].name}}</button>
 								</div>

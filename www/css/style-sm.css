@@ -132,8 +132,36 @@
 }
 
 @media (max-width: 480px){
-  .button{
+  .abs-col-1, .abs-col-2, .abs-col-3{
+    position: absolute;
+    left: 38%;
+  }
+  .abs-col-1{
+    top: 276px;
+  }
+  .abs-col-2{
+    top: 320px;
+  }
+  .abs-col-3{
+    top: 370px;
+  }
+  .iphone-col.col-20{
+    max-width: 25%;
+  }
+  .iphone-col .button{
     font-size: 10px;
+    min-width: 99px;
+    min-height: 60px;
+    padding: 0;
+  }
+  .abs-col-1 .button, .abs-col-2 .button, .abs-col-3 .button{
+    min-width: 45px;
+  }
+  .first-team{
+    margin-left: 20px;
+  }
+  .second-team{
+    margin-left: 39px;
   }
   .relative-div{
     position: relative;
@@ -141,33 +169,148 @@
  .gm-button.force-size.match-recorder{
     position: absolute;
     min-width: 32px;
-    max-width: 79px;
-    min-height: 21px!important;
+    max-width: 99px;
+    min-height: 29px!important;
     height: 21px!important;
     line-height: inherit!important;
     padding: 0!important;
     font-size: 7px!important;
  }
   .gm-button.force-size.match-recorder.second{
-    top: 29px;
+    top: 37px;
     left: 6px;
   }
   .no-bg .v-align{
     font-size: 19px;
+    /*position: absolute;
+    top: -10px;
+    left: -35px;*/
+    left: 69px;
+  }
+  .center-time .v-align{
+        position: absolute;
+    top: 50px;
+    left: -142px;
   }
   .undo-btn:before{
     font-size: 14px!important;
   }
-}
-
-@media (max-width: 380px){
+  .no-bg .v-align{
+    left: 39px;
+    top: 5px;
+  }
+  .center-time .v-align{
+    left: -142px;
+    top: 23px;
+  }
   .gm-button.force-size.match-recorder{
-    max-width: 71px;
+            max-width: 98px;
+    top: 37px;
+    left: 208px;
+  }
+ 
+  
+  .second-team{
+    margin-left: 61px;
+  }
+  .first-team{
+    margin-left: -81px;
+  }
+  .gm-button.force-size.match-recorder.second{
+    top: 37px;
+    left: 108px;
   }
 }
 
-@media (max-width: 330px){
+@media (max-width: 380px){
+  .no-bg .v-align{
+    left: 64px;
+  }
+  .center-time .v-align{
+       
+    left: -100px;
+  }
+  
   .gm-button.force-size.match-recorder{
-    max-width: 60px;
+    max-width: 89px;
+  }
+  .abs-col-1{
+    top: 276px;
+  }
+  .abs-col-2{
+    top: 320px;
+  }
+  .abs-col-3{
+    top: 370px;
+  }
+  .iphone-col.col-20{
+    max-width: 25%;
+  }
+  .iphone-col .button{
+    font-size: 10px;
+    min-width: 90px;
+    min-height: 60px;
+  }
+  .abs-col-1 .button, .abs-col-2 .button, .abs-col-3 .button{
+    min-width: 45px;
+  }
+  .no-bg .v-align{
+    left: 37px;
+    top: 5px;
+  }
+  .center-time .v-align{
+    left: -126px;
+    top: 23px;
+  }
+  .gm-button.force-size.match-recorder{
+        max-width: 89px;
+    top: 37px;
+    left: 189px;
+  }
+ 
+  
+  .second-team{
+    margin-left: 55px;
+  }
+  .first-team{
+    margin-left: -73px;
+  }
+  .gm-button.force-size.match-recorder.second{
+    top: 37px;
+    left: 98px;
+  }
+  
+}
+
+@media (max-width: 330px){
+  
+  .no-bg .v-align{
+    left: 30px;
+    top: 5px;
+  }
+  .center-time .v-align{
+    left: -108px;
+    top: 23px;
+  }
+  .gm-button.force-size.match-recorder{
+    max-width: 76px;
+    top: 37px;
+    left: 161px;
+  }
+  .iphone-col .button{
+    min-width: 76px;
+  }
+  .iphone-col .button.undo-btn{
+    min-width: 23px;
+  }
+  .second-team{
+    margin-left: 47px;
+  }
+  .first-team{
+    margin-left: -62px;
+  }
+  .gm-button.force-size.match-recorder.second{
+    top: 37px;
+    left: 84px;
   }
 }
