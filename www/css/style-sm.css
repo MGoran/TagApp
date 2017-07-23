@@ -220,6 +220,21 @@
     top: 37px;
     left: 108px;
   }
+
+  .one-team-abs{
+    position: absolute;
+    right: 103px;
+    top: 150px;
+  }
+  .iphone-col.one-team-abs .button{
+    min-width: 49px;
+  }
+  .iphone-col.one-team-abs .button:first-child{
+    left: -1px;
+  }
+  .iphone-col.one-team-abs .button:last-child{
+    left: -2px;
+  }
 }
 
 @media (max-width: 380px){
@@ -280,6 +295,13 @@
     left: 98px;
   }
   
+  .one-team-abs{
+      right: 92px;
+  }
+
+  .iphone-col.one-team-abs .button{
+    min-width: 45px;
+  }
 }
 
 @media (max-width: 330px){
@@ -312,5 +334,12 @@
   .gm-button.force-size.match-recorder.second{
     top: 37px;
     left: 84px;
+  }
+  .one-team-abs{
+    right: 79px;
+    top: 151px;
+  }
+  .iphone-col.one-team-abs .button{
+    min-width: 38px;
   }
 }
