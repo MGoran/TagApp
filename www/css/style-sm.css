@@ -342,4 +342,13 @@
   .iphone-col.one-team-abs .button{
     min-width: 38px;
   }
+  .iphone-col.one-team-abs .button:first-child{
+    left: 79px;
+  }
+  .iphone-col.one-team-abs .button:last-child{
+    left: 76px;
+  }
+.iphone-col.one-team-abs.col-20{
+  max-width: 50%;
+}
 }
