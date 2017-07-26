@@ -619,3 +619,6 @@ videogular .video_controlls {
   height: 20px;
   line-height: 0px !important;
 }
+.xs-hide{
+  display: none;
+}

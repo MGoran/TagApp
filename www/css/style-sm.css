@@ -352,3 +352,23 @@
   max-width: 50%;
 }
 }
+
+.mobile{
+  display: none;
+}
+
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 480px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: portrait) {
+   .desktop{
+     display: none;
+   }
+  .mobile{
+    display: block;
+  }
+  .home-bottom .col{
+    padding: 2px;
+  }
+}
