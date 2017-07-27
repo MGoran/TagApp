@@ -357,6 +357,8 @@
   display: none;
 }
 
+
+
 @media only screen 
   and (min-device-width: 320px) 
   and (max-device-width: 480px)
@@ -371,4 +373,12 @@
   .home-bottom .col{
     padding: 2px;
   }
+  .mobile .btn-gm-circle{
+    width: 70px;
+    height: 70px;
+  }
+  .home-top{
+    height: 42%;
+  }
 }
+
