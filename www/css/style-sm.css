@@ -358,6 +358,29 @@
 }
 
 
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : portrait) { 
+  .desktop{
+     display: none;
+   }
+  .mobile{
+    display: block;
+  }
+  .home-bottom .col{
+    padding: 2px;
+  }
+  .mobile .btn-gm-circle{
+    width: 125px;
+    height: 125px;
+  }
+  .home-top{
+    height: 42%;
+  }
+
+}
+
 
 @media only screen 
   and (min-device-width: 320px) 
