@@ -387,6 +387,9 @@ and (orientation : portrait) {
   and (max-device-width: 480px)
   and (-webkit-min-device-pixel-ratio: 2)
   and (orientation: portrait) {
+    .mobile-lg{
+      display: none;
+    }
    .desktop{
      display: none;
    }
@@ -402,6 +405,26 @@ and (orientation : portrait) {
   }
   .home-top{
     height: 42%;
+  }
+  .iphone-col.col-10 .button.plus-btn{
+    min-width: 50px;
+  }
+  .annotation_panel .col.res{
+    padding-top: 20px;
+    text-align: center;
+    font-size: 18px;
+  }
+  .iphone-col.col-30{
+    max-width: 35%;
+  }
+  .iphone-col.col-30 .button{
+    min-width: 132px;
+  }
+  .relative-div{
+    display: none;
+  }
+  .iphone-col .button{
+    min-width: 75px;
   }
 }
 

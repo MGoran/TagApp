@@ -216,7 +216,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="annotation_panel" ng-if="data.one_team_view">
+					<div class="annotation_panel mobile-lg" ng-if="data.one_team_view">
 						<!-- ROW ONE -->
 						<div class="row">
 							<div class="col col-20 iphone-col">
@@ -279,6 +279,234 @@
 							</div>
 						</div>
 						<!-- END ROW THREE -->
+
+						<div class="row">
+							<div class="col col-20 iphone-col" style="height:{{calculateBottomHeight()+'px'}};overflow:scroll">
+								<div class="col col-100 no-lr-pad" ng-repeat="evt in data.event_types track by $index" ng-init="btn_pos = 12+$index" ng-if="$index < data.event_types.length - 12 && btn_pos%2==0 && data.event_types[btn_pos]">
+									<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[btn_pos], data.team1, 1)">{{data.event_types[btn_pos].name}}</button>
+								</div>
+							</div>
+							<div class="col col-60 liveViewArea" style="height:{{calculateBottomHeight()+'px'}};position:relative; overflow: hidden;">
+								<div id="new-playback-video" class="new-playback-modal" ng-if="data.showPlaybackVideoModal">
+									<div id="playbackVideoPlayer" style="width:100%;height: 80%;"></div>
+									<button class="button gm-button gm-button-red no-bg" ng-click="data.showPlaybackVideoModal=false">Live View</button>
+								</div>
+								<div id="new-playback-list-modal" class="new-playback-modal" ng-show="data.showNewPlaybackList">
+									<span class="item event-list event-list-header" ng-if="data.videos == undefined || data.videos.length <= 0">
+										Playback Video List
+									</span>
+									<div ng-if="!data.downloadingPlayback" class="playbackListContent">
+										<ion-list class="enableScrollableHeight" style="max-height:{{calculateBottomHeight()-77+'px'}}">
+											<span class="item event-list" ng-repeat="video in data.videos | orderBy: '-id'" ng-if="video.event_details.id !== undefined">
+												<span class="item item-icon-left" style="float:left;width:70%;border:0">
+													<i class="icon {{video.event_details.event.icon}}"></i>
+													{{video.event_details.team.name}} - {{video.event_details.event.name}}
+													<i>{{video.event_details.event.duration_before | date: "mm:ss"}} - {{video.event_details.event.duration_after | date: "mm:ss"}}</i>
+													<small>[{{video.state}}]</small>
+												</span>
+											<button class="button-outline icon" style="width:30%;margin-top:9px;" ng-if="video.state !== 'Finished'">
+												<ion-spinner></ion-spinner>
+											</button>
+											<span ng-if="video.state === 'Finished'">
+													<button class="button button-outline button-balanced icon ion-social-facebook" ng-click="shareVideo(video)" style="width:15%;border-radius:0;float:right;"></button>
+													<button ng-click="showPlaybackVideo(video)" class="button button-outline button-balanced icon ion-ios-download" ng-if="!fileExists[$index] && video.state === 'Finished'" style="width:15%;border-radius:0;float:right;z-index: 9999;"></button>
+													<button ng-click="showPlaybackVideo(video)" class="button button-outline button-balanced gm-btn-green icon ion-play" ng-if="fileExists[$index] && video.state === 'Finished'" style="width:15%;border-radius:0;float:right;z-index: 9999;"></button>
+
+													<!-- <button ng-click="playPlaybackVideo(video)" class="button button-outline button-positive icon ion-play" ng-if="video.state === 'Finished'" style="width:10%;border-radius:0;float:left;z-index: 9999;"></button> -->
+												</span>
+											</span>
+										</ion-list>
+									</div>
+									<div class="row">
+										<div ng-if="data.downloadingPlayback" class="item item-icon-left" style="color:white;background:linear-gradient(90deg, #0c60ee {{downloadProgress}}%, transparent {{downloadProgress}}%) !important; width:100%">
+											<i class="icon" style="color:black" ng-if="video.state !== 'Finished'"><ion-spinner></ion-spinner></i>
+											<span style="color:black">Downloading...</span>
+										</div>
+									</div>
+									<ion-item class="live-view-btn-bottom" ng-if="data.live_view">
+										<button class="button gm-button gm-button-red no-bg" ng-click="data.showNewPlaybackList=false">Live View</button>
+									</ion-item>
+								</div>
+								<div style="position:absolute;z-index:99999;" class="row">
+									<div class="col col-30">
+										<!-- <button ng-click="showNewPlaybackList=false" class="button gm-button gm-big-button gm-button-green no-bg">Live</button> -->
+									</div>
+									<div class="col col-40">
+									</div>
+									<div class="col col-30">
+										<button class="button gm-button gm-big-button gm-button-red no-bg" ng-click="showNewPBList()">Playback</button>
+									</div>
+								</div>
+								<div style="width:100%;height:100%;background:black;">
+									<div id="LiveStreamVideo" ng-if="selectedCam.cameraType == 'LiveStream'">
+									</div>
+									<img ng-if="(selectedCam.cameraType == 'Dahua' || selectedCam.cameraType == 'Axis')  && data.live_view" ng-src="{{videoSource}}" class="annotation_video" />
+								</div>
+							</div>
+							<div class="col col-20 iphone-col no-lr-pad" style="height:{{calculateBottomHeight()+'px'}};overflow:scroll" id="scrollableContent">
+								<div class="col col-100" ng-repeat="evt in data.event_types track by $index" ng-init="btn_pos = 12+$index" ng-if="$index < data.event_types.length - 12  && btn_pos%2==1  && data.event_types[btn_pos]">
+									<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[btn_pos], data.team1, 1)">{{data.event_types[btn_pos].name}}</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="annotation_panel mobile" ng-if="data.one_team_view">
+						<!-- ROW ONE -->
+						<div class="row">
+							<div class="col col-20 iphone-col">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white" style = "background: white; color: #f4b647!important">VVT</button>
+							</div>
+							<div class="col col-10 iphone-col">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white plus-btn">+</button>
+							</div>
+							
+							<div class="col col-30 iphone-col res" style="padding-left: 20px; color: #71a03e">
+								<span>0 - 0</span>
+							</div>
+							<div class="col col-10 iphone-col" style = "margin-left: 7px;">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white plus-btn">+</button>
+							</div>
+							<div class="col col-20 iphone-col" style = "margin-left: 12px;">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white" style = "background: white; color: #f4b647!important">Fey</button>
+							</div>
+						</div>
+						<!-- END ROW ONE -->
+						<!-- ROW TWO -->
+						<div class="row">
+							<div class="col col-30 iphone-col">
+								<button class="button gm-button gm-big-button gm-button-green text-white">Kickoff</button>
+							</div>
+							
+							<div class="col col-30 iphone-col res" style="margin-left: 5px; color: #71a03e">
+								<span>00 : 00</span>
+							</div>
+							
+							<div class="col col-30 iphone-col">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white">Half/Half</button>
+							</div>
+
+						</div>
+						<!-- END ROW TWO -->
+						<!-- ROW THREE -->
+						<div class="row">
+							<div class="col col-30 iphone-col">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white">Corner</button>
+							</div>
+							<div class="col col-30 iphone-col">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white">Btn</button>
+							</div>
+						
+							<div class="col col-30 iphone-col">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white">Freekick</button>
+							</div>
+							
+						</div>
+						<div class="row">
+							<div class="col col-30 iphone-col">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white">Corner</button>
+							</div>
+							<div class="col col-30 iphone-col">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white">Btn</button>
+							</div>
+						
+							<div class="col col-30 iphone-col">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white">Freekick</button>
+							</div>
+							
+						</div>
+						<!-- END ROW THREE -->
+						<div class="row">
+							<div class="col col-30 iphone-col">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white">Throwin</button>
+							</div>
+							<div class="col col-30 iphone-col">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white">Change</button>
+							</div>
+							<div class="col col-30 iphone-col">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white">Yellow</button>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col col-30 iphone-col">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white">Btn 1</button>
+							</div>
+							<div class="col col-30 iphone-col">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white">Btn 2</button>
+							</div>
+						
+							<div class="col col-30 iphone-col">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white">Btn 3</button>
+							</div>
+							
+						</div>
+						<div class="row">
+							<div class="col col-30 iphone-col">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white">Btn 1</button>
+							</div>
+							<div class="col col-30 iphone-col">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white">Btn 2</button>
+							</div>
+						
+							<div class="col col-30 iphone-col">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white">Btn 3</button>
+							</div>
+							
+						</div>
+						<div class="row">
+							<div class="col col-30 iphone-col">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white">Btn 1</button>
+							</div>
+							<div class="col col-30 iphone-col">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white">Btn 2</button>
+							</div>
+						
+							<div class="col col-30 iphone-col">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white">Btn 3</button>
+							</div>
+							
+						</div>
+						<div class="row">
+							<div class="col col-30 iphone-col">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white">Btn 1</button>
+							</div>
+							<div class="col col-30 iphone-col">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white">Btn 2</button>
+							</div>
+						
+							<div class="col col-30 iphone-col">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white">Btn 3</button>
+							</div>
+							
+						</div>
+							<div class="row">
+							<div class="col col-30 iphone-col">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white">Btn 1</button>
+							</div>
+							<div class="col col-30 iphone-col">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white">Btn 2</button>
+							</div>
+						
+							<div class="col col-30 iphone-col">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white">Btn 3</button>
+							</div>
+							
+						</div>
+							<div class="row">
+							<div class="col col-30 iphone-col">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white">Btn 1</button>
+							</div>
+							<div class="col col-30 iphone-col">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white">Btn 2</button>
+							</div>
+						
+							<div class="col col-30 iphone-col">
+								<button class="button gm-button gm-big-button gm-button-yellow text-white">Btn 3</button>
+							</div>
+							
+						</div>
+						
 
 						<div class="row">
 							<div class="col col-20 iphone-col" style="height:{{calculateBottomHeight()+'px'}};overflow:scroll">
