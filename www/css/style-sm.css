@@ -407,7 +407,7 @@ and (orientation : portrait) {
     height: 42%;
   }
   .iphone-col.col-10 .button.plus-btn{
-    min-width: 50px;
+    min-width: 129%;
   }
   .annotation_panel .col.res{
     padding-top: 20px;
@@ -418,13 +418,13 @@ and (orientation : portrait) {
     max-width: 35%;
   }
   .iphone-col.col-30 .button{
-    min-width: 132px;
+    min-width: 100%px;
   }
   .relative-div{
     display: none;
   }
   .iphone-col .button{
-    min-width: 75px;
+    min-width: 100%;
   }
 }
 
