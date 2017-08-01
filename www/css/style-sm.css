@@ -426,5 +426,8 @@ and (orientation : portrait) {
   .iphone-col .button{
     min-width: 100%;
   }
+  .gm-btn-rounded-group button:before{
+    font-size: 30px!important;
+  }
 }
 
