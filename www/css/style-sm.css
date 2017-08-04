@@ -387,9 +387,9 @@ and (orientation : portrait) {
   and (max-device-width: 480px)
   and (-webkit-min-device-pixel-ratio: 2)
   and (orientation: portrait) {
-    .mobile-lg{
+   /* .mobile-lg{
       display: none;
-    }
+    }*/
    .desktop{
      display: none;
    }
@@ -416,18 +416,80 @@ and (orientation : portrait) {
   }
   .iphone-col.col-30{
     max-width: 35%;
+    max-height: 62px;
   }
   .iphone-col.col-30 .button{
     min-width: 100%px;
   }
-  .relative-div{
+  /*.relative-div{
     display: none;
-  }
+  }*/
   .iphone-col .button{
     min-width: 100%;
   }
   .gm-btn-rounded-group button:before{
     font-size: 30px!important;
+  }
+
+  .recorder-start{
+    display: none;
+  }
+
+  .relative-div{
+    display: none;
+  }
+
+  .large-screen{
+    display: none;
+  }
+
+  .small-screen{
+    display: block;
+  }
+
+  .small-screen .match-time, .fixed-row .match-time{
+    color: #71a03e;
+
+    font-size: 22px;
+
+  }
+
+  
+
+  .small-screen .col-15, .fixed-row .col-15{
+    max-width: 13%;
+  }
+
+  .two-large-screen{
+    display: none;
+  }
+
+  .two-small-screen{
+    display: block;
+  }
+
+  .two-small-screen .col-15{
+    max-width: 13%;
+  }
+
+  .two-small-screen .match-time span{
+    color: #71a03e;
+
+    font-size: 22px;
+
+  }
+
+  .fixed-row .col{
+    padding: 1px;
+  }
+
+    .small-screen .match-time, .two-small-screen .match-time, .fixed-row .match-time{
+    text-align: center;
+    padding-top: 20px;
+  }
+
+  .fixed-row{
+    display: block;
   }
 }
 

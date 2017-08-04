@@ -622,3 +622,12 @@ videogular .video_controlls {
 .xs-hide{
   display: none;
 }
+.small-screen{
+  display: none;
+}
+.two-small-screen{
+  display: none;
+}
+.fixed-row{
+  display: none;
+}
