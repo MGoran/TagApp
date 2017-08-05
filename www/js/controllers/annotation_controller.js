@@ -839,7 +839,7 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     }
   }
   $scope.calculateHeight = function() {
-    return $(".view-container").height() - $(".header-buttons").height() - 50 + "px";
+    return $(".view-container").height() - $(".header-buttons").height() + 150 + "px";
   }
   $scope.calculateBottomHeight = function() {
     return window.innerHeight - $("#scrollableContent").position().top - 10;
