@@ -382,6 +382,9 @@ and (orientation : portrait) {
 }
 
 
+
+
+
 @media only screen 
   and (min-device-width: 320px) 
   and (max-device-width: 480px)
@@ -426,6 +429,7 @@ and (orientation : portrait) {
   }*/
   .iphone-col .button{
     min-width: 100%;
+        min-height: 60px;
   }
   .gm-btn-rounded-group button:before{
     font-size: 30px!important;
@@ -493,3 +497,12 @@ and (orientation : portrait) {
   }
 }
 
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 330px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: portrait) {
+    .iphone-col .button{
+      min-height: 49px;
+    }
+  }
