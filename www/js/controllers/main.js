@@ -115,8 +115,10 @@ angular.module('main.controller', []).controller('MainCtrl', function($rootScope
 
 	//Setting for One team view
   if (localStorage.one_team_view == undefined || localStorage.one_team_view == null || localStorage.one_team_view == "") {
-    localStorage.one_team_view = false;
+    localStorage.one_team_view = true;
   }
+  /* OVERIDE THIS SETTING */
+  localStorage.one_team_view = true;
   $rootScope.data.one_team_view = JSON.parse(localStorage.one_team_view);
 
 	//Setting for sending xml

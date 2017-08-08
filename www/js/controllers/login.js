@@ -7,10 +7,18 @@ angular.module('login.controller', []).controller('LoginCtrl', function($rootSco
     //   password: "password1",
     //   cameraType: "disabled",
     //   cameraIP: "84.104.56.233:8080",
-    //   recorderType: "Panofield",
+    //   recorderType: "Tag Without Recorder",
     //   //recorderIP: "62.238.246.143:5050" -> vMix
     //   recorderIP: "84.104.56.233:9090"
     // };
+    $scope.data = {
+      username: "",
+      password: "",
+      cameraType: "disabled",
+      cameraIP: "",
+      recorderType: "Tag Without Recorder",
+      recorderIP: ""
+    };
   } else {
     $rootScope.user = JSON.parse(localStorage.user);
     $scope.data = $rootScope.user.cameras[0];
