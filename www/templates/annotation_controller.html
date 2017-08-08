@@ -65,7 +65,7 @@
 										<span  ng-if="!recorder.recording || !checkIfMatchStarted()">00:00</span>
 									</div>
 									<div class="col col-30 iphone-col">
-										<button ng-if="data.event_types[24]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[24], data.team1, 1)">{{data.event_types[24].name}}</button>
+										<button ng-if="data.event_types[24]" class="button gm-button gm-big-button gm-button-yellow text-white half" ng-click="addEvent(data.event_types[24], data.team1, 1)">{{data.event_types[24].name}}</button>
 									</div>
 								</div>
 							</div>
@@ -183,90 +183,90 @@
 						
 						<div class="row">
 							<div class="col col-30 iphone-col">
-								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[0], data.team1, 1)">{{data.event_types[0].name}}</button>
+								<button ng-if="data.event_types[0]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[0], data.team1, 1)">{{data.event_types[0].name}}</button>
 							</div>
 							<div class="col col-30 iphone-col">
-								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[1], data.team1, 1)">{{data.event_types[1].name}}</button>
+								<button ng-if="data.event_types[1]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[1], data.team1, 1)">{{data.event_types[1].name}}</button>
 							</div>
 							<div class="col col-30 iphone-col">
-								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[2], data.team1, 1)">{{data.event_types[2].name}}</button>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col col-30 iphone-col">
-								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[3], data.team1, 1)">{{data.event_types[3].name}}</button>
-							</div>
-							<div class="col col-30 iphone-col">
-								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[4], data.team1, 1)">{{data.event_types[4].name}}</button>
-							</div>
-							<div class="col col-30 iphone-col">
-								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[5], data.team1, 1)">{{data.event_types[5].name}}</button>
+								<button ng-if="data.event_types[2]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[2], data.team1, 1)">{{data.event_types[2].name}}</button>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col col-30 iphone-col">
-								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[6], data.team1, 1)">{{data.event_types[6].name}}</button>
+								<button ng-if="data.event_types[3]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[3], data.team1, 1)">{{data.event_types[3].name}}</button>
 							</div>
 							<div class="col col-30 iphone-col">
-								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[7], data.team1, 1)">{{data.event_types[7].name}}</button>
+								<button ng-if="data.event_types[4]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[4], data.team1, 1)">{{data.event_types[4].name}}</button>
 							</div>
 							<div class="col col-30 iphone-col">
-								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[8], data.team1, 1)">{{data.event_types[8].name}}</button>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col col-30 iphone-col">
-								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[9], data.team1, 1)">{{data.event_types[9].name}}</button>
-							</div>
-							<div class="col col-30 iphone-col">
-								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[10], data.team1, 1)">{{data.event_types[10].name}}</button>
-							</div>
-							<div class="col col-30 iphone-col">
-								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[11], data.team1, 1)">{{data.event_types[11].name}}</button>
+								<button ng-if="data.event_types[5]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[5], data.team1, 1)">{{data.event_types[5].name}}</button>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col col-30 iphone-col">
-								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[0], data.team2, 2)">{{data.event_types[0].name}}</button>
+								<button ng-if="data.event_types[6]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[6], data.team1, 1)">{{data.event_types[6].name}}</button>
 							</div>
 							<div class="col col-30 iphone-col">
-								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[1], data.team2, 2)">{{data.event_types[1].name}}</button>
+								<button ng-if="data.event_types[7]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[7], data.team1, 1)">{{data.event_types[7].name}}</button>
 							</div>
 							<div class="col col-30 iphone-col">
-								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[2], data.team2, 2)">{{data.event_types[2].name}}</button>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col col-30 iphone-col">
-								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[3], data.team2, 2)">{{data.event_types[3].name}}</button>
-							</div>
-							<div class="col col-30 iphone-col">
-								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[4], data.team2, 2)">{{data.event_types[4].name}}</button>
-							</div>
-							<div class="col col-30 iphone-col">
-								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[5], data.team2, 2)">{{data.event_types[5].name}}</button>
+								<button ng-if="data.event_types[8]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[8], data.team1, 1)">{{data.event_types[8].name}}</button>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col col-30 iphone-col">
-								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[6], data.team2, 2)">{{data.event_types[6].name}}</button>
+								<button ng-if="data.event_types[9]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[9], data.team1, 1)">{{data.event_types[9].name}}</button>
 							</div>
 							<div class="col col-30 iphone-col">
-								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[7], data.team2, 2)">{{data.event_types[7].name}}</button>
+								<button ng-if="data.event_types[10]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[10], data.team1, 1)">{{data.event_types[10].name}}</button>
 							</div>
 							<div class="col col-30 iphone-col">
-								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[8], data.team2, 2)">{{data.event_types[8].name}}</button>
+								<button ng-if="data.event_types[11]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[11], data.team1, 1)">{{data.event_types[11].name}}</button>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col col-30 iphone-col">
-								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[9], data.team2, 2)">{{data.event_types[9].name}}</button>
+								<button ng-if="data.event_types[0]" class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[0], data.team2, 2)">{{data.event_types[0].name}}</button>
 							</div>
 							<div class="col col-30 iphone-col">
-								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[10], data.team2, 2)">{{data.event_types[10].name}}</button>
+								<button ng-if="data.event_types[1]" class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[1], data.team2, 2)">{{data.event_types[1].name}}</button>
 							</div>
 							<div class="col col-30 iphone-col">
-								<button class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[11], data.team2, 2)">{{data.event_types[11].name}}</button>
+								<button ng-if="data.event_types[2]" class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[2], data.team2, 2)">{{data.event_types[2].name}}</button>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col col-30 iphone-col">
+								<button ng-if="data.event_types[3]" class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[3], data.team2, 2)">{{data.event_types[3].name}}</button>
+							</div>
+							<div class="col col-30 iphone-col">
+								<button ng-if="data.event_types[4]" class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[4], data.team2, 2)">{{data.event_types[4].name}}</button>
+							</div>
+							<div class="col col-30 iphone-col">
+								<button ng-if="data.event_types[5]" class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[5], data.team2, 2)">{{data.event_types[5].name}}</button>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col col-30 iphone-col">
+								<button ng-if="data.event_types[6]" class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[6], data.team2, 2)">{{data.event_types[6].name}}</button>
+							</div>
+							<div class="col col-30 iphone-col">
+								<button ng-if="data.event_types[7]" class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[7], data.team2, 2)">{{data.event_types[7].name}}</button>
+							</div>
+							<div class="col col-30 iphone-col">
+								<button ng-if="data.event_types[8]" class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[8], data.team2, 2)">{{data.event_types[8].name}}</button>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col col-30 iphone-col">
+								<button  ng-if="data.event_types[9]" class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[9], data.team2, 2)">{{data.event_types[9].name}}</button>
+							</div>
+							<div class="col col-30 iphone-col">
+								<button ng-if="data.event_types[10]"  class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[10], data.team2, 2)">{{data.event_types[10].name}}</button>
+							</div>
+							<div class="col col-30 iphone-col">
+								<button ng-if="data.event_types[11]" class="button gm-button gm-big-button gm-button-blue text-white" ng-click="addEvent(data.event_types[11], data.team2, 2)">{{data.event_types[11].name}}</button>
 							</div>
 						</div>
 						<!--<div class="row">
@@ -469,17 +469,17 @@
 						<!-- ROW ONE -->
 						<div class="row">
 							<div class="col col-30 iphone-col">
-								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[0], data.team1, 1)">{{data.event_types[0].name}}</button>
+								<button  ng-if="data.event_types[0]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[0], data.team1, 1)">{{data.event_types[0].name}}</button>
 							</div>
 							<div class="col col-30 iphone-col">
-								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[1], data.team1, 1)">{{data.event_types[1].name}}</button>
+								<button  ng-if="data.event_types[1]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[1], data.team1, 1)">{{data.event_types[1].name}}</button>
 							</div>
 							<div class="col col-20 iphone-col one-team-abs" style="display: none">
 								<button style="float:left" class="button button-icon icon ion-reply button gm-button gm-button-green no-bg crop-text undo-btn" ng-click="undoLast(data.currentProject.annotations, data.currentProject.annotations.length-1)"></button>
 								<button style="float:right" class="button button-icon icon ion-forward button gm-button gm-button-green no-bg crop-text undo-btn" ng-click="redoLast(data.currentProject.annotations)"></button>
 							</div>
 							<div class="col col-30 iphone-col">
-								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[2], data.team1, 1)">{{data.event_types[2].name}}</button>
+								<button  ng-if="data.event_types[2]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[2], data.team1, 1)">{{data.event_types[2].name}}</button>
 							</div>
 							
 						</div>
@@ -487,7 +487,7 @@
 						<!-- ROW TWO -->
 						<div class="row">
 							<div class="col col-30 iphone-col">
-								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[3], data.team1, 1)">{{data.event_types[3].name}}</button>
+								<button  ng-if="data.event_types[3]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[3], data.team1, 1)">{{data.event_types[3].name}}</button>
 							</div>
 
 							<div class="col col-30 iphone-col">
