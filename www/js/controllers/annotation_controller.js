@@ -692,6 +692,9 @@ angular.module('annotationController.controller', []).controller('AnnotationCont
     } else {
       $scope.addEventToList(event, team, null);
     }
+    if(event.name === "Goal"){
+         $scope.getTeamScores();
+    }
   }
 
   $scope.selectPlayer = function(event, team) {

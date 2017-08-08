@@ -16,7 +16,7 @@ angular.module('login.controller', []).controller('LoginCtrl', function($rootSco
       password: "",
       cameraType: "disabled",
       cameraIP: "",
-      recorderType: "Tag Without Recorder",
+      recorderType: "WithoutRecorder",
       recorderIP: ""
     };
   } else {
