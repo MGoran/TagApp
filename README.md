@@ -1,5 +1,10 @@
 "# TagApp"
-0.2.3
+0.3.0
+-UI improvements
+-Enable Portrait mode
+
+"# TagApp"
+0.2.4
 -Adding missing assets
 -Removing default user from login
 -UI changes for small screens
