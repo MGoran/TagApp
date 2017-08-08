@@ -4,7 +4,7 @@
   <description>
 		TagApp - Camera controll application
 	</description>
-  <author email="goranmaslic@gmail.com" href="">
+    <author email="goranmaslic@gmail.com" href="">
 		Goran Maslic
 	</author>
   <content src="index.html"/>
