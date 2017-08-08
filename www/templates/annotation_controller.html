@@ -44,13 +44,13 @@
 										<button class="button gm-button gm-big-button gm-button-yellow no-bg" ng-click="goal(data.team1, 1)">Goal - {{data.team1.name}}</button>
 									</div>
 									<div class="col col-15 iphone-col plus">
-										<button class="button gm-button gm-big-button gm-button-yellow text-white plus-btn" ng-click="undoLast(data.currentProject.annotations, data.currentProject.annotations.length-1)">+</button>
+										<button class="button button-icon icon ion-reply gm-button gm-big-button gm-button-yellow text-white plus-btn" ng-click="undoLast(data.currentProject.annotations, data.currentProject.annotations.length-1)"></button>
 									</div>
 									<div class="col col-30 iphone-col button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-green gm-large-font">
 										<span> {{data.score1}}&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;{{data.score2}}</span>
 									</div>
 									<div class="col col-15 iphone-col plus">
-										<button class="button gm-button gm-big-button gm-button-yellow text-white plus-btn" ng-click="redoLast(data.currentProject.annotations)">+</button>
+										<button class="button button-icon icon ion-forward  gm-button gm-big-button gm-button-yellow text-white plus-btn" ng-click="redoLast(data.currentProject.annotations)"></button>
 									</div>
 									<div class="col col-20 iphone-col">
 										<button class="button gm-button gm-big-button gm-button-blue text-blue no-bg" ng-click="goal(data.team2, 2)">Goal - {{data.team2.name}}</button>
@@ -58,7 +58,7 @@
 								</div>
 								<div class="row">
 									<div class="col col-30 start-match">
-										<button  ng-click="toggleMatchPeriod()" class="button gm-big-button gm-button text-white force-size" ng-class="data.periodCmdLabel == 'Start Match'?'gm-button-green':'gm-button-red'"><!--{{data.periodCmdLabel}}-->Kickoff</button>
+										<button  ng-click="toggleMatchPeriod()" class="button gm-big-button gm-button text-white force-size" ng-class="data.periodCmdLabel == 'Start Match'?'gm-button-green':'gm-button-red'">{{data.periodCmdLabel}}</button>
 									</div>
 									<div class="col col-30 match-time">
 										<timer id="match-timer"  ng-class="checkIfMatchStarted()?'':'font0'" ng-if="recorder.recording" start-time="calculateMatchTime()" max-time-unit="'minute'">{{mminutes}}:{{sseconds}}</timer>
