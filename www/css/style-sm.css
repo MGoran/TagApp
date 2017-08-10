@@ -461,7 +461,7 @@ and (orientation : portrait) {
   
 
   .small-screen .col-15, .fixed-row .col-15{
-    max-width: 13%;
+    max-width: 13.3%;
   }
 
   .two-large-screen{
@@ -489,7 +489,7 @@ and (orientation : portrait) {
 
     .small-screen .match-time, .two-small-screen .match-time, .fixed-row .match-time{
     text-align: center;
-    padding-top: 20px;
+    margin-top: 4px;
   }
 
   .fixed-row{
@@ -508,6 +508,48 @@ and (orientation : portrait) {
     .button{
       font-size: 10px;
     }
+
+    li.gm-leatest-events-list{
+      font-size: 9px;
+    }
+
+    .abs-col-2{
+      left: 40%;
+      top: 95px;
+    }
+
+    .iphone-col.col-30.undo-redo .button{
+      min-width: 49%;
+      max-width: 65px;
+      width: 100%;
+    }
+    .iphone-col.col-30.undo-redo .button:first-child{
+      float: left;
+    }
+    .iphone-col.col-30.undo-redo .button:last-child{
+      float: right;
+    }
+
+    .small-screen .match-time, .fixed-row .match-time{
+      padding-top: 20px;
+    }
+
+    .score, .add-score{
+      font-size: 18px;
+    }
+
+}
+
+@media only screen 
+  and (min-device-width: 375px) 
+  and (max-device-width: 380px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: portrait) {
+     .iphone-col.col-30.undo-redo .button{
+    
+      max-width: 45px;
+   
+    }
 }
 
 @media only screen 
@@ -524,6 +566,12 @@ and (orientation : portrait) {
     .iphone-col .button.half{
       min-height: 45px;
     }
-    
+    .abs-col-2{
+      top: 85px;
+
+    }
+      li.gm-leatest-events-list{
+      font-size: 8px;
+    }
     
   }

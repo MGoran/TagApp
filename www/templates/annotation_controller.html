@@ -41,31 +41,46 @@
 				<div class="fixed-row">
 								<div class="row">
 									<div class="col col-20 iphone-col">
-										<button class="button gm-button gm-big-button gm-button-yellow no-bg" ng-click="goal(data.team1, 1)">Goal - {{data.team1.name}}</button>
+										<button class="button gm-button gm-big-button gm-button-yellow no-bg">{{data.team1.name | limitTo: 3}}</button>
 									</div>
+									
 									<div class="col col-15 iphone-col plus">
+										<button class="button gm-button gm-big-button gm-button-yellow text-white plus-btn"  ng-click="goal(data.team1, 1)"><div class="score">{{data.score1}}<div> <br><div class="add-score">+</div></button>
+									</div>
+									<!--<div class="col col-15 iphone-col plus">
 										<button class="button button-icon icon ion-reply gm-button gm-big-button gm-button-yellow text-white plus-btn" ng-click="undoLast(data.currentProject.annotations, data.currentProject.annotations.length-1)"></button>
 									</div>
-									<div class="col col-30 iphone-col button gm-button gm-big-button gm-button-black no-bg gm-no-border gm-button-green gm-large-font">
-										<span> {{data.score1}}&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;{{data.score2}}</span>
-									</div>
+									
 									<div class="col col-15 iphone-col plus">
 										<button class="button button-icon icon ion-forward  gm-button gm-big-button gm-button-yellow text-white plus-btn" ng-click="redoLast(data.currentProject.annotations)"></button>
+									</div>-->
+									<div class="col col-30 iphone-col match-time">
+										<timer id="match-timer"  ng-class="checkIfMatchStarted()?'':'font0'" ng-if="recorder.recording" start-time="calculateMatchTime()" max-time-unit="'minute'">{{mminutes}}:{{sseconds}}</timer>
+										<span  ng-if="!recorder.recording || !checkIfMatchStarted()">00:00</span>
+									</div>
+
+									<div class="col col-15 iphone-col plus">
+										<button class="button gm-button gm-big-button gm-button-yellow text-white plus-btn"  ng-click="goal(data.team2, 2)"><div class="score">{{data.score2}}</div> <br><div class="add-score">+</div></button>
 									</div>
 									<div class="col col-20 iphone-col">
-										<button class="button gm-button gm-big-button gm-button-blue text-blue no-bg" ng-click="goal(data.team2, 2)">Goal - {{data.team2.name}}</button>
+										<button class="button gm-button gm-big-button gm-button-blue text-blue no-bg">{{data.team2.name | limitTo: 3}}</button>
 									</div>
+								</div>
+								<div class="row">
+									
 								</div>
 								<div class="row">
 									<div class="col col-30 start-match">
 										<button  ng-click="toggleMatchPeriod()" class="button gm-big-button gm-button text-white force-size" ng-class="data.periodCmdLabel == 'Start Match'?'gm-button-green':'gm-button-red'">{{data.periodCmdLabel}}</button>
+						
 									</div>
 									<div class="col col-30 match-time">
-										<timer id="match-timer"  ng-class="checkIfMatchStarted()?'':'font0'" ng-if="recorder.recording" start-time="calculateMatchTime()" max-time-unit="'minute'">{{mminutes}}:{{sseconds}}</timer>
-										<span  ng-if="!recorder.recording || !checkIfMatchStarted()">00:00</span>
+										
+										
 									</div>
 									<div class="col col-30 iphone-col">
-										<button ng-if="data.event_types[24]" class="button gm-button gm-big-button gm-button-yellow text-white half" ng-click="addEvent(data.event_types[24], data.team1, 1)">{{data.event_types[24].name}}</button>
+										<!--<button ng-if="data.event_types[24]" class="button gm-button gm-big-button gm-button-yellow text-white half" ng-click="addEvent(data.event_types[24], data.team1, 1)">{{data.event_types[24].name}}</button>-->
+										<button  ng-click="toggleMatchPeriod()" class="button gm-big-button gm-button text-white force-size" ng-class="data.periodCmdLabel == 'Start Match'?'gm-button-green':'gm-button-red'">Record Match</button>	
 									</div>
 								</div>
 							</div>
@@ -124,6 +139,7 @@
 							<div class="col col-20 iphone-col">
 								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[1], data.team1, 1)">{{data.event_types[1].name}}</button>
 							</div>
+							
 							<div class="col col-20 iphone-col abs-col-1">
 								<button style="float:left" class="button button-icon icon ion-reply button gm-button gm-button-green no-bg crop-text undo-btn" ng-click="undoLast(data.currentProject.annotations, data.currentProject.annotations.length-1)"></button>
 								<button style="float:right" class="button button-icon icon ion-forward button gm-button gm-button-green no-bg crop-text undo-btn" ng-click="redoLast(data.currentProject.annotations)"></button>
@@ -409,6 +425,7 @@
 							<div class="col col-20 iphone-col">
 								<button class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[1], data.team1, 1)">{{data.event_types[1].name}}</button>
 							</div>
+						
 							<div class="col col-20 iphone-col one-team-abs">
 								<button style="float:left" class="button button-icon icon ion-reply button gm-button gm-button-green no-bg crop-text undo-btn" ng-click="undoLast(data.currentProject.annotations, data.currentProject.annotations.length-1)"></button>
 								<button style="float:right" class="button button-icon icon ion-forward button gm-button gm-button-green no-bg crop-text undo-btn" ng-click="redoLast(data.currentProject.annotations)"></button>
@@ -471,9 +488,14 @@
 							<div class="col col-30 iphone-col">
 								<button  ng-if="data.event_types[0]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[0], data.team1, 1)">{{data.event_types[0].name}}</button>
 							</div>
-							<div class="col col-30 iphone-col">
+							<!--<div class="col col-30 iphone-col">
 								<button  ng-if="data.event_types[1]" class="button gm-button gm-big-button gm-button-yellow text-white" ng-click="addEvent(data.event_types[1], data.team1, 1)">{{data.event_types[1].name}}</button>
-							</div>
+							</div>-->
+								<div class="col col-30 iphone-col plus undo-redo">
+										<button class="button button-icon icon ion-reply gm-button gm-big-button gm-button-yellow text-white plus-btn" ng-click="undoLast(data.currentProject.annotations, data.currentProject.annotations.length-1)"></button>
+										<button class="button button-icon icon ion-forward  gm-button gm-big-button gm-button-yellow text-white plus-btn" ng-click="redoLast(data.currentProject.annotations)"></button>	
+								</div>
+								
 							<div class="col col-20 iphone-col one-team-abs" style="display: none">
 								<button style="float:left" class="button button-icon icon ion-reply button gm-button gm-button-green no-bg crop-text undo-btn" ng-click="undoLast(data.currentProject.annotations, data.currentProject.annotations.length-1)"></button>
 								<button style="float:right" class="button button-icon icon ion-forward button gm-button gm-button-green no-bg crop-text undo-btn" ng-click="redoLast(data.currentProject.annotations)"></button>
