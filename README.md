@@ -1,7 +1,7 @@
 "# TagApp"
 0.3.0
 -UI improvements
--Enable Portrait mode
+
 
 "# TagApp"
 0.2.4
