@@ -510,11 +510,11 @@ and (orientation : portrait) {
     }
 
     li.gm-leatest-events-list{
-      font-size: 9px;
+      font-size: 8px;
     }
 
     .abs-col-2{
-      left: 40%;
+      left: 36%;
       top: 95px;
     }
 
@@ -572,6 +572,9 @@ and (orientation : portrait) {
     }
       li.gm-leatest-events-list{
       font-size: 8px;
+    }
+    .iphone-col.col-30.undo-redo .button{
+      max-width: 30%;
     }
     
   }
