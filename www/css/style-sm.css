@@ -532,6 +532,8 @@ and (orientation : portrait) {
 
     .small-screen .match-time, .fixed-row .match-time{
       padding-top: 20px;
+      font-size: 32px;
+      color: #2375b7;
     }
 
     .score, .add-score{
@@ -575,6 +577,10 @@ and (orientation : portrait) {
     }
     .iphone-col.col-30.undo-redo .button{
       max-width: 30%;
+    }
+
+    .small-screen .match-time, .fixed-row .match-time{
+      padding-top: 10px;
     }
     
   }
