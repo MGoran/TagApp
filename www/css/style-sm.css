@@ -552,6 +552,14 @@ and (orientation : portrait) {
       min-height: 71px;
     }
 
+     .col-30.start-match, .col-30.match-start{
+      max-height: 50px;
+    }
+
+    .start-match .button, .match-start .button{
+      min-height: 48px;
+    }
+
 }
 
 @media only screen 
@@ -593,6 +601,14 @@ and (orientation : portrait) {
 
     .small-screen .match-time, .fixed-row .match-time{
       padding-top: 10px;
+    }
+
+    .col-30.start-match, .col-30.match-start{
+      max-height: 50px;
+    }
+
+    .start-match .button, .match-start .button{
+      min-height: 48px;
     }
     
   }
