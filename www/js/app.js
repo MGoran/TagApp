@@ -70,6 +70,16 @@ angular.module('TagApp', [
         }
 
       })
+      .state('app.players', {
+        url: '/players',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/players.html',
+            controller: 'AnnotationControllerCtrl'
+          }
+        }
+
+      })
       .state('app.panofield', {
         url: '/panofield',
         views: {
