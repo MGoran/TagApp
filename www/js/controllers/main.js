@@ -10,7 +10,7 @@ angular.module('main.controller', []).controller('MainCtrl', function($rootScope
     $rootScope.data.vc_transparency = "99";
     $rootScope.data.player_picker = false;
     $rootScope.data.dahua_speed = "1";
-    $rootScope.data.email_to = "goranmaslic92@gmail.com";
+    $rootScope.data.email_to = "your@email.com";
     $rootScope.data.email_subject = "TagApp Event";
     $rootScope.data.event_after = 10;
     $rootScope.data.event_before = 5;
