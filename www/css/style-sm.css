@@ -90,7 +90,7 @@
     margin-bottom: 0px;
   }
   .gm-button.force-size {
-    font-size: 8px !important;
+    font-size: 12px !important;
     line-height: 8px !important;
   }
   .button {
@@ -149,7 +149,7 @@
     max-width: 25%;
   }
   .iphone-col .button{
-    font-size: 10px;
+    font-size: 12px;
     min-width: 99px;
     min-height: 60px;
     padding: 0;
@@ -174,7 +174,7 @@
     height: 21px!important;
     line-height: inherit!important;
     padding: 0!important;
-    font-size: 7px!important;
+    font-size: 12px!important;
  }
   .gm-button.force-size.match-recorder.second{
     top: 37px;
@@ -262,7 +262,7 @@
     max-width: 25%;
   }
   .iphone-col .button{
-    font-size: 10px;
+    font-size: 12px;
     min-width: 90px;
     min-height: 60px;
   }
@@ -404,8 +404,8 @@ and (orientation : portrait) {
     padding-bottom: 15px;
   }
   .mobile .btn-gm-circle{
-    width: 100px;
-    height: 100px;
+    width: 95px;
+    height: 95px;
   }
   .home-top{
     height: 42%;
@@ -622,6 +622,10 @@ and (orientation : portrait) {
 
     .start-match .button, .match-start .button{
       min-height: 48px;
+    }
+
+    .gm-button.force-size, .iphone-col .button{
+      font-size: 10px!important;
     }
     
   }
